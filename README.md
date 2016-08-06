@@ -4,5 +4,6 @@
 [![Issue Count](https://codeclimate.com/github/kunagpal/express-boilerplate/badges/issue_count.svg)](https://codeclimate.com/github/kunagpal/express-boilerplate/issues)
 [![Dependency Status](https://david-dm.org/kunagpal/express-boilerplate.svg)](https://david-dm.org/kunagpal/express-boilerplate)
 [![devDependency Status](https://david-dm.org/kunagpal/express-boilerplate/dev-status.svg)](https://david-dm.org/kunagpal/express-boilerplate#info=devDependencies)
+[![Build Status](https://travis-ci.org/kunagpal/express-boilerplate.svg?branch=master)](https://travis-ci.org/kunagpal/express-boilerplate)
 
 # express-boilerplate

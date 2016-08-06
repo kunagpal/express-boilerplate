@@ -1,6 +1,6 @@
 {
   "name": "express-boilerplate",
-  "description": "",
+  "description": "A project scaffold for use with Express.js",
   "keywords": [
     "express",
     "boilerplate",
@@ -8,7 +8,7 @@
   ],
   "homepage": "https://github.com/kunagpal/express-boilerplate",
   "bugs": {
-    "url": "https://waffle.io/kunagpal/"
+    "url": "https://waffle.io/kunagpal/express-boilerplate"
   },
   "version": "0.0.0",
   "private": true,
@@ -34,6 +34,7 @@
     "forever": "^0.15.2",
     "helmet": "^2.1.2",
     "heroku-client": "^3.0.0-beta3",
+    "lodash": "^4.14.1",
     "mongodb": "^2.2.5",
     "morgan": "~1.7.0",
     "passport": "^0.3.2",
