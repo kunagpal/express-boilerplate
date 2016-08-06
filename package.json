@@ -1,6 +1,12 @@
 {
   "name": "express-boilerplate",
-  "version": "0.0.0",
+	"description": "",
+	"keywords": ["express", "boilerplate", "skeleton"],
+	"homepage": "https://github.com/kunagpal/express-boilerplate",
+	"bugs": {
+		"url": "https://waffle.io/kunagpal/"
+	},
+	"version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -17,7 +23,6 @@
     "compression": "^1.6.2",
     "cookie-parser": "~1.4.3",
     "csurf": "^1.9.0",
-    "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "emailjs": "^1.0.5",
     "express": "~4.13.4",
@@ -41,6 +46,11 @@
     "uglify-js": "^2.7.0"
   },
   "optionalDependencies": {
-    "bcrypt": "^0.8.7"
-  }
+    "bcrypt": "^0.8.7",
+		"debug": "~2.2.0"
+  },
+	"license": "GPL-3.0+",
+	"engines": {
+		"node": "6.x"
+	}
 }
