@@ -38,3 +38,6 @@ jspm_packages
 
 # IDE specific project metadata files
 .idea/
+
+# Environment configuration files
+.env
