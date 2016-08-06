@@ -5,6 +5,12 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+	"contributors": [
+		{
+			"name": "Kunal Nagpal",
+			"email": "kunagpal@gmail.com"
+		}
+	],
   "dependencies": {
     "async": "^2.0.1",
     "body-parser": "~1.15.1",
