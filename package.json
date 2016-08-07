@@ -44,15 +44,16 @@
   },
   "devDependencies": {
     "clean-css": "^3.4.19",
+    "debug": "~2.2.0",
     "dotenv": "^2.0.0",
+    "eslint": "^3.2.2",
     "faker": "^3.1.0",
     "mocha": "^3.0.1",
     "nsp": "^2.6.1",
     "uglify-js": "^2.7.0"
   },
   "optionalDependencies": {
-    "bcrypt": "^0.8.7",
-    "debug": "~2.2.0"
+    "bcrypt": "^0.8.7"
   },
   "license": "GPL-3.0+",
   "engines": {
