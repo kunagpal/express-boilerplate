@@ -25,7 +25,7 @@ rules:
   no-empty-character-class: 2
   no-ex-assign: 2
   no-extra-boolean-cast: 2
-  no-extra-parens: [2, all, { "nestedBinaryExpressions": false }]
+  // no-extra-parens: [2, all, { "nestedBinaryExpressions": false }]
   no-extra-semi: 2
   no-func-assign: 2
   no-inner-declarations: [2, functions]
@@ -142,7 +142,7 @@ rules:
   id-match: 0
   indent: [2, tab]
   jsx-quotes: [2, prefer-double]
-  key-spacing: [2, { "beforeColon": false, "afterColon": true, "mode": strict }]
+  // key-spacing: [2, { "beforeColon": false, "afterColon": true, "mode": strict }]
   linebreak-style: 2
   lines-around-comment: 2
   max-depth: 2
