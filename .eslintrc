@@ -14,7 +14,7 @@ rules:
   # Possible Errors
   comma-dangle: [2, never]
   no-cond-assign: 2
-  no-console: [2, { allow: ["warn", "error", "info"] }]
+  no-console: [2, { "allow": ["warn", "error", "info"] }]
   no-constant-condition: 2
   no-control-regex: 2
   no-debugger: 2
@@ -142,7 +142,7 @@ rules:
   id-match: 0
   indent: [2, tab]
   jsx-quotes: [2, prefer-double]
-  key-spacing: [2, { "beforeColon": false, "afterColon": true, mode: strict }]
+  key-spacing: [2, { "beforeColon": false, "afterColon": true, "mode": strict }]
   linebreak-style: 2
   lines-around-comment: 2
   max-depth: 2

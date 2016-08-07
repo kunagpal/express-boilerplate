@@ -12,7 +12,7 @@ engines:
   fixme:
     enabled: true
   markdownlint:
-    enbaled: true
+    enabled: true
 ratings:
   paths:
   - "**.css"
