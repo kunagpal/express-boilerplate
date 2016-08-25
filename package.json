@@ -30,7 +30,7 @@
     "ejs": "^2.5.1",
     "emailjs": "^1.0.5",
     "express": "^4.14.0",
-    "express-session": "^1.14.0",
+    "express-session": "^1.14.1",
     "forever": "^0.15.2",
     "helmet": "^2.1.2",
     "heroku-client": "^3.0.0-beta3",
