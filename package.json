@@ -35,7 +35,7 @@
     "helmet": "^2.1.2",
     "heroku-client": "^3.0.0-beta3",
     "lodash": "^4.14.1",
-    "mongodb": "^2.2.7",
+    "mongodb": "^2.2.8",
     "morgan": "~1.7.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
