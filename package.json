@@ -24,9 +24,11 @@
   "dependencies": {
     "async": "^2.0.1",
     "body-parser": "~1.15.1",
+    "clean-css": "3.4.19",
     "compression": "^1.6.2",
     "cookie-parser": "~1.4.3",
     "csurf": "^1.9.0",
+    "debug": "2.2.0",
     "ejs": "^2.5.1",
     "emailjs": "^1.0.5",
     "express": "^4.14.0",
@@ -40,7 +42,8 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth2": "^0.1.6",
-    "raven": "^0.12.1"
+    "raven": "^0.12.1",
+    "uglify-js": "2.7.3"
   },
   "devDependencies": {
     "clean-css": "^3.4.19",
@@ -48,6 +51,7 @@
     "dotenv": "^2.0.0",
     "eslint": "^3.4.0",
     "faker": "^3.1.0",
+    "istanbul": "0.4.5",
     "mocha": "^3.0.1",
     "nsp": "^2.6.1",
     "uglify-js": "^2.7.0"
