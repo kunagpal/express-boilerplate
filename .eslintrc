@@ -9,6 +9,18 @@ env:
   jquery: true
   node: true
 
+globals:
+  it: true
+  db: true
+  before: true
+  after: true
+  globals: true
+  afterEach: true
+  beforeEach: true
+  testFlag: true
+  testDb: true
+  describe: true
+
 # http://eslint.org/docs/rules/
 rules:
   # Possible Errors
@@ -117,7 +129,7 @@ rules:
 
   # Node.js and CommonJS
   callback-return: 2
-  global-require: 2
+  global-require: 1
   handle-callback-err: 2
   no-mixed-requires: 0
   no-new-require: 2
