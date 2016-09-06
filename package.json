@@ -13,7 +13,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node node_modules/.bin/forever ./bin/www",
+    "stop": "node node_modules/.bin/forever stop ./bin/www",
+    "restart": "node node_modules/.bin/forever restart ./bin/www",
+    "security": "node node_modules/.bin/nsp check",
+    "lint-css": "node node_modules/.bin/csslint public/stylesheets",
+	"lint-js": "node node_modules/.bin/eslint .",
+	"lint": "npm run lint-js && npm run lint-css",
+	"test-unit": "node node_modules/.bin/mocha"
   },
   "contributors": [
     {
@@ -47,6 +54,7 @@
   },
   "devDependencies": {
     "clean-css": "^3.4.19",
+    "csslint": "1.0.2",
     "debug": "~2.2.0",
     "dotenv": "^2.0.0",
     "eslint": "^3.4.0",
