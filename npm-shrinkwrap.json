@@ -1273,6 +1273,110 @@
         }
       }
     },
+    "eslint-plugin-jsdoc": {
+      "version": "2.3.1",
+      "from": "eslint-plugin-jsdoc@latest",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-2.3.1.tgz",
+      "dependencies": {
+        "comment-parser": {
+          "version": "0.4.0",
+          "from": "comment-parser@>=0.4.0 <0.5.0",
+          "resolved": "https://registry.npmjs.org/comment-parser/-/comment-parser-0.4.0.tgz",
+          "dependencies": {
+            "readable-stream": {
+              "version": "2.1.5",
+              "from": "readable-stream@>=2.0.4 <3.0.0",
+              "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.1.5.tgz",
+              "dependencies": {
+                "buffer-shims": {
+                  "version": "1.0.0",
+                  "from": "buffer-shims@>=1.0.0 <2.0.0",
+                  "resolved": "https://registry.npmjs.org/buffer-shims/-/buffer-shims-1.0.0.tgz"
+                },
+                "core-util-is": {
+                  "version": "1.0.2",
+                  "from": "core-util-is@>=1.0.0 <1.1.0",
+                  "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.2.tgz"
+                },
+                "inherits": {
+                  "version": "2.0.1",
+                  "from": "inherits@>=2.0.1 <2.1.0",
+                  "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
+                },
+                "isarray": {
+                  "version": "1.0.0",
+                  "from": "isarray@>=1.0.0 <1.1.0",
+                  "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz"
+                },
+                "process-nextick-args": {
+                  "version": "1.0.7",
+                  "from": "process-nextick-args@>=1.0.6 <1.1.0",
+                  "resolved": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-1.0.7.tgz"
+                },
+                "string_decoder": {
+                  "version": "0.10.31",
+                  "from": "string_decoder@>=0.10.0 <0.11.0",
+                  "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
+                },
+                "util-deprecate": {
+                  "version": "1.0.2",
+                  "from": "util-deprecate@>=1.0.1 <1.1.0",
+                  "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "eslint-plugin-lodash": {
+      "version": "1.10.3",
+      "from": "eslint-plugin-lodash@latest",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-lodash/-/eslint-plugin-lodash-1.10.3.tgz"
+    },
+    "eslint-plugin-mocha": {
+      "version": "4.5.1",
+      "from": "eslint-plugin-mocha@latest",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-mocha/-/eslint-plugin-mocha-4.5.1.tgz",
+      "dependencies": {
+        "ramda": {
+          "version": "0.22.1",
+          "from": "ramda@>=0.22.1 <0.23.0",
+          "resolved": "https://registry.npmjs.org/ramda/-/ramda-0.22.1.tgz"
+        }
+      }
+    },
+    "eslint-plugin-mongodb": {
+      "version": "0.2.4",
+      "from": "eslint-plugin-mongodb@latest",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-mongodb/-/eslint-plugin-mongodb-0.2.4.tgz",
+      "dependencies": {
+        "yerror": {
+          "version": "1.0.2",
+          "from": "yerror@>=1.0.1 <2.0.0",
+          "resolved": "https://registry.npmjs.org/yerror/-/yerror-1.0.2.tgz"
+        }
+      }
+    },
+    "eslint-plugin-security": {
+      "version": "1.2.0",
+      "from": "eslint-plugin-security@latest",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-security/-/eslint-plugin-security-1.2.0.tgz",
+      "dependencies": {
+        "safe-regex": {
+          "version": "1.1.0",
+          "from": "safe-regex@>=1.1.0 <2.0.0",
+          "resolved": "https://registry.npmjs.org/safe-regex/-/safe-regex-1.1.0.tgz",
+          "dependencies": {
+            "ret": {
+              "version": "0.1.12",
+              "from": "ret@>=0.1.10 <0.2.0",
+              "resolved": "https://registry.npmjs.org/ret/-/ret-0.1.12.tgz"
+            }
+          }
+        }
+      }
+    },
     "express": {
       "version": "4.14.0",
       "from": "express@4.14.0",
