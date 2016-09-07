@@ -38,7 +38,7 @@
     "cookie-parser": "1.4.3",
     "csurf": "1.9.0",
     "debug": "2.2.0",
-    "ejs": "2.5.1",
+    "ejs": "2.5.2",
     "emailjs": "1.0.5",
     "express": "4.14.0",
     "express-session": "1.14.1",
