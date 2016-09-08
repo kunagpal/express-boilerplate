@@ -2,9 +2,11 @@ var path = require('path'),
 	http = require('http'),
 
 	_ = require('lodash'),
+	mongodb = require('mongodb').MongoClient,
+	debug = require('debug')('express-boilerplate:server'),
+
 	app = require(path.join(__dirname, '..', 'app')),
 	port = _.toInteger(process.env.PORT) || 3000,
-	debug = require('debug')('express-boilerplate:server'),
 	server = http.createServer(app),
 
 	onError = function (error) {
@@ -14,7 +16,7 @@ var path = require('path'),
 			throw error;
 		}
 
-		bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+		bind = _.isString(port) ? `Pipe ${port}` : `Port ${port}`;
 
 		// handle specific listen errors with friendly messages
 		switch (error.code) {
@@ -26,16 +28,23 @@ var path = require('path'),
 			throw error;
 		}
 	},
-
 	onListening = function () {
 		var addr = server.address(),
-			bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+			bind = _.isString(addr) ? `pipe ${addr}` : `port ${addr.port}`;
 
 		debug(`Listening on ${bind}`);
 	};
 
 app.set('port', port);
 
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+mongodb.connect(process.env.MONGO, function (err, database) {
+	if (err) {
+		throw err;
+	}
+
+	globals.db = database;
+	server.listen(port);
+});

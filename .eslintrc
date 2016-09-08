@@ -309,12 +309,11 @@ rules:
   mongodb/check-insert-calls: 2
   mongodb/check-query-calls: 2
   mongodb/check-update-calls: 2
-  mongodb/check-insert-calls: 2
   mongodb/check-remove-calls: 2
   mongodb/check-deprecated-calls: 2
   mongodb/no-replace: 2
-  mongodb/check-rename-calls: 2
-  mongodb/check-unset-calls: 2
+  mongodb/check-rename-updates: 2
+  mongodb/check-unset-updates: 2
   mongodb/check-current-date-updates: 2
   mongodb/check-numeric-updates: 2
   mongodb/check-minmax-updates: 2
@@ -332,9 +331,9 @@ rules:
   security/detect-disable-mustache-escape: 2
   security/detect-eval-with-expression: 2
   security/detect-no-csrf-before-method-override: 2
-  security/detect-non-literal-fs-filename: 2
+  security/detect-non-literal-fs-filename: 1
   security/detect-non-literal-regexp: 2
-  security/detect-non-literal-require: 2
+  security/detect-non-literal-require: 1
   security/detect-object-injection: 2
   security/detect-possible-timing-attacks: 2
   security/detect-pseudoRandomBytes: 2

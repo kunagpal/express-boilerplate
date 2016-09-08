@@ -7,19 +7,19 @@ var url = require('url'),
 
 describe('package.json', function () {
 	describe('glossary', function () {
-		it('must have a name', function () {
+		it('should have a name', function () {
 			assert.ok(_.get(packageJSON, 'name'), 'Project name is empty / non-existent');
 		});
 
-		it('must point to a valid, precise version', function () {
+		it('should point to a valid, precise version', function () {
 			assert.ok(/^\d/.test(_.get(packageJSON, 'version')), 'Project version is invalid');
 		});
 
-		it('must contain a valid description', function () {
+		it('should contain a valid description', function () {
 			assert.ok(_.get(packageJSON, 'description'), 'Project description is missing');
 		});
 
-		it('must be defined privately', function () {
+		it('should be defined privately', function () {
 			assert(_.get(packageJSON, 'private'), true, 'Project may have been public to the npm registry');
 		});
 	});
@@ -27,47 +27,47 @@ describe('package.json', function () {
 	describe('scripts', function () {
 		var packageScripts = _.get(packageJSON, 'scripts', false);
 
-		it('must exist', function () {
+		it('should exist', function () {
 			assert(packageScripts, 'Project scripts are missing!');
 		});
 
-		it('must have a start script', function () {
+		it('should have a start script', function () {
 			assert(_.get(packageScripts, 'start'), 'Project start script missing');
 		});
 
-		it('must have a stop script', function () {
+		it('should have a stop script', function () {
 			assert(_.get(packageScripts, 'stop'), 'Project stop script missing');
 		});
 
-		it('must have a restart script', function () {
+		it('should have a restart script', function () {
 			assert(_.get(packageScripts, 'restart'), 'Project restart script missing');
 		});
 
-		it('must have a docs script', function () {
+		it('should have a docs script', function () {
 			assert(_.get(packageScripts, 'docs'), 'Project docs script missing');
 		});
 
-		it('must have a seed script', function () {
+		it('should have a seed script', function () {
 			assert(_.get(packageScripts, 'seed'), 'Project seed script missing');
 		});
 
-		it('must have a purge script', function () {
+		it('should have a purge script', function () {
 			assert(_.get(packageScripts, 'purge'), 'Project purge script missing');
 		});
 
-		it('must have a lint script', function () {
+		it('should have a lint script', function () {
 			assert(_.get(packageScripts, 'test-lint'), 'Project lint script missing');
 		});
 
-		it('must have a test script', function () {
+		it('should have a test script', function () {
 			assert(_.get(packageScripts, 'test'), 'Project test script missing');
 		});
 
-		it('must have a security check script', function () {
+		it('should have a security check script', function () {
 			assert(_.get(packageScripts, 'security'), 'Project security script missing');
 		});
 
-		it('must have a postinstall script', function () {
+		it('should have a postinstall script', function () {
 			assert(_.get(packageScripts, 'postinstall'), 'Project postinstall script missing');
 		});
 	});
@@ -106,7 +106,7 @@ describe('package.json', function () {
 			});
 		});
 
-		it('specified and installed versions should match', function () {
+		it('should have the same versions across package.json and node_modules', function () {
 			var dependencies = _.merge({}, _.get(packageDependencies, 'dependencies', {}),
 			_.get(packageDependencies, 'devDependencies', {}), _.get(packageDependencies, 'optionalDependencies', {}),
 			_.get(packageDependencies, 'peerDependencies', {}));
@@ -138,7 +138,7 @@ describe('package.json', function () {
 	});
 
 	describe('engine', function () {
-		it('must point to a valid engine', function () {
+		it('should point to a valid engine', function () {
 			assert(_.get(packageJSON, 'engines.node'), 'Project engine is invalid');
 		});
 	});
