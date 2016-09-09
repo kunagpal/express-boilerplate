@@ -1,16 +1,15 @@
 var fs = require('fs'),
-	path = require('path'),
 	assert = require('assert'),
-	yaml = require('js-yaml'),
 
-	travisPath = path.join(__dirname, '..', '..', '.travis.yml');
+	yaml = require('js-yaml');
 
 describe('.travis.yml', function () {
-	var travisYAML;
+	var travisYAML,
+		TRAVIS_PATH = '.travis.yml';
 
 	before(function () {
 		try {
-			travisYAML = yaml.safeLoad(fs.readFileSync(travisPath, 'utf-8'));
+			travisYAML = yaml.safeLoad(fs.readFileSync(TRAVIS_PATH, 'utf-8'));
 		}
 		catch (err) {
 			throw err;
@@ -18,7 +17,7 @@ describe('.travis.yml', function () {
 	});
 
 	it('should exist', function (done) {
-		fs.stat(travisPath, done);
+		fs.stat(TRAVIS_PATH, done);
 	});
 
 	it('should have a language field with value node_js', function () {

@@ -1,17 +1,16 @@
 var fs = require('fs'),
-	_ = require('lodash'),
-	path = require('path'),
 	assert = require('assert'),
-	yaml = require('js-yaml'),
 
-	appveyorPath = path.join(__dirname, '..', '..', 'appveyor.yml');
+	_ = require('lodash'),
+	yaml = require('js-yaml');
 
 describe('appveyor.yml', function () {
-	var appveyorYAML;
+	var appveyorYAML,
+		APPVEYOR_PATH = 'appveyor.yml';
 
 	before(function () {
 		try {
-			appveyorYAML = yaml.safeLoad(fs.readFileSync(appveyorPath, 'utf-8'));
+			appveyorYAML = yaml.safeLoad(fs.readFileSync(APPVEYOR_PATH, 'utf-8'));
 		}
 		catch (err) {
 			throw err;
@@ -19,7 +18,7 @@ describe('appveyor.yml', function () {
 	});
 
 	it('should exist', function (done) {
-		fs.stat(appveyorPath, done);
+		fs.stat(APPVEYOR_PATH, done);
 	});
 
 	it('should have an init script for git line ending config', function () {

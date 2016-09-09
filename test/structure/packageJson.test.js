@@ -2,78 +2,80 @@ var url = require('url'),
 	path = require('path'),
 	assert = require('assert'),
 
-	_ = require('lodash'),
-	packageJSON = require(path.join(__dirname, '..', '..', 'package.json'));
+	_ = require('lodash');
 
 describe('package.json', function () {
+	var rootPath = path.join(__dirname, '..', '..'),
+		packageJSON = require(path.join(rootPath, 'package.json'));
+
 	describe('glossary', function () {
 		it('should have a name', function () {
-			assert.ok(_.get(packageJSON, 'name'), 'Project name is empty / non-existent');
+			assert.ok(packageJSON.name, 'Project name is empty / non-existent');
 		});
 
 		it('should point to a valid, precise version', function () {
-			assert.ok(/^\d/.test(_.get(packageJSON, 'version')), 'Project version is invalid');
+			assert.ok(/^\d/.test(packageJSON.version), 'Project version may start with ^ / ~');
 		});
 
 		it('should contain a valid description', function () {
-			assert.ok(_.get(packageJSON, 'description'), 'Project description is missing');
+			assert.ok(packageJSON.description, 'Project description is missing');
 		});
 
 		it('should be defined privately', function () {
-			assert(_.get(packageJSON, 'private'), true, 'Project may have been public to the npm registry');
+			assert(packageJSON.private, true, 'Project may have been public to the npm registry');
 		});
 	});
 
 	describe('scripts', function () {
-		var packageScripts = _.get(packageJSON, 'scripts', false);
+		var packageScripts = packageJSON.scripts;
 
 		it('should exist', function () {
 			assert(packageScripts, 'Project scripts are missing!');
 		});
 
 		it('should have a start script', function () {
-			assert(_.get(packageScripts, 'start'), 'Project start script missing');
+			assert(packageScripts.start, 'Project start script missing');
 		});
 
 		it('should have a stop script', function () {
-			assert(_.get(packageScripts, 'stop'), 'Project stop script missing');
+			assert(packageScripts.stop, 'Project stop script missing');
 		});
 
 		it('should have a restart script', function () {
-			assert(_.get(packageScripts, 'restart'), 'Project restart script missing');
+			assert(packageScripts.restart, 'Project restart script missing');
 		});
 
 		it('should have a docs script', function () {
-			assert(_.get(packageScripts, 'docs'), 'Project docs script missing');
+			assert(packageScripts.docs, 'Project docs script missing');
 		});
 
 		it('should have a seed script', function () {
-			assert(_.get(packageScripts, 'seed'), 'Project seed script missing');
+			assert(packageScripts.seed, 'Project seed script missing');
 		});
 
 		it('should have a purge script', function () {
-			assert(_.get(packageScripts, 'purge'), 'Project purge script missing');
+			assert(packageScripts.purge, 'Project purge script missing');
 		});
 
 		it('should have a lint script', function () {
-			assert(_.get(packageScripts, 'lint'), 'Project lint script missing');
+			assert(packageScripts.lint, 'Project lint script missing');
 		});
 
 		it('should have a test script', function () {
-			assert(_.get(packageScripts, 'test'), 'Project test script missing');
+			assert(packageScripts.test, 'Project test script missing');
 		});
 
 		it('should have a security check script', function () {
-			assert(_.get(packageScripts, 'security'), 'Project security script missing');
+			assert(packageScripts.security, 'Project security script missing');
 		});
 
 		it('should have a postinstall script', function () {
-			assert(_.get(packageScripts, 'postinstall'), 'Project postinstall script missing');
+			assert(packageScripts.postinstall, 'Project postinstall script missing');
 		});
 	});
 
 	describe('contributors', function () {
-		var packageContributors = _.get(packageJSON, 'contributors');
+		var packageContributors = packageJSON.contributors;
 
 		it('should exist and be an array', function () {
 			assert(_.isArray(packageContributors), 'Project contributor details missing / in non array form');
@@ -85,8 +87,8 @@ describe('package.json', function () {
 
 		it('should contain valid contributor details', function () {
 			_.forEach(packageContributors, function (contributor, index) {
-				assert(_.get(contributor, 'name'), `Project contributor ${index} name missing`);
-				assert(/@.+\./i.test(_.get(contributor, 'email')), `Project contributor ${index} email invalid`);
+				assert(contributor.name, `Project contributor ${index} name missing`);
+				assert(/@.+\./i.test(contributor.email), `Project contributor ${index} email invalid`);
 			});
 		});
 	});
@@ -107,13 +109,12 @@ describe('package.json', function () {
 		});
 
 		it('should have the same versions across package.json and node_modules', function () {
-			var dependencies = _.merge({}, _.get(packageDependencies, 'dependencies', {}),
-			_.get(packageDependencies, 'devDependencies', {}), _.get(packageDependencies, 'optionalDependencies', {}),
-			_.get(packageDependencies, 'peerDependencies', {}));
+			var dependencyPath = path.join(rootPath, 'node_modules'),
+				dependencies = _.merge({}, packageDependencies.dependencies, packageDependencies.devDependencies,
+				packageDependencies.optionalDependencies, packageDependencies.peerDependencies);
 
 			_.forEach(dependencies, function (specifiedVersion, dependency) {
-				var installationPath = path.join(__dirname, '..', '..', 'node_modules', dependency, 'package.json'),
-					installedVersion = require(installationPath).version;
+				var installedVersion = require(path.join(dependencyPath, dependency, 'package.json')).version;
 
 				assert(specifiedVersion === installedVersion,
 					`${dependency} is specified as ${specifiedVersion}, but installed as ${installedVersion}`);
@@ -122,24 +123,24 @@ describe('package.json', function () {
 	});
 
 	describe('repository', function () {
-		var packageRepository = _.get(packageJSON, 'repository');
+		var packageRepository = packageJSON.repository;
 
 		it('should exist and be an object', function () {
 			assert(_.isPlainObject(packageRepository), 'Project repository details missing / in non object form');
 		});
 
 		it('should have a type git', function () {
-			assert(_.get(packageRepository, 'type') === 'git', 'Project repository is of a non-git type');
+			assert(packageRepository.type === 'git', 'Project repository is of a non-git type');
 		});
 
 		it('should point to a valid URL', function () {
-			assert(url.parse(_.get(packageRepository, 'url')), 'Project repository url does not point to a valid URL');
+			assert(url.parse(packageRepository.url), 'Project repository url does not point to a valid URL');
 		});
 	});
 
 	describe('engine', function () {
 		it('should point to a valid engine', function () {
-			assert(_.get(packageJSON, 'engines.node'), 'Project engine is invalid');
+			assert(packageJSON.engines.node, 'Project engine is invalid');
 		});
 	});
 });

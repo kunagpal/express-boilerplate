@@ -1,17 +1,16 @@
 var fs = require('fs'),
-	_ = require('lodash'),
-	path = require('path'),
 	assert = require('assert'),
-	yaml = require('js-yaml'),
 
-	codeClimatePath = path.join(__dirname, '..', '..', '.codeclimate.yml');
+	_ = require('lodash'),
+	yaml = require('js-yaml');
 
 describe('.travis.yml', function () {
-	var codeClimateYAML;
+	var codeClimateYAML,
+		CODECLIMATE_PATH = '.codeclimate.yml';
 
 	before(function () {
 		try {
-			codeClimateYAML = yaml.safeLoad(fs.readFileSync(codeClimatePath, 'utf-8'));
+			codeClimateYAML = yaml.safeLoad(fs.readFileSync(CODECLIMATE_PATH, 'utf-8'));
 		}
 		catch (err) {
 			throw err;
@@ -19,7 +18,7 @@ describe('.travis.yml', function () {
 	});
 
 	it('should exist', function (done) {
-		fs.stat(codeClimatePath, done);
+		fs.stat(CODECLIMATE_PATH, done);
 	});
 
 	it('should have the csslint engine enabled', function () {

@@ -1,4 +1,7 @@
-var router = require('express').Router();
+var path = require('path'),
+	router = require('express').Router();
+
+require(path.join(__dirname, '..', 'scripts', 'misc', 'passport'));
 
 /* GET home page. */
 router.get('/', function (req, res) {
