@@ -13,8 +13,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "docs": "node node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts app.js",
     "start": "node node_modules/.bin/forever ./bin/www",
     "stop": "node node_modules/.bin/forever stop ./bin/www",
+    "seed": "node scripts/database/seed.js",
+    "purge": "node scripts/database/seed.js",
     "restart": "node node_modules/.bin/forever restart ./bin/www",
     "security": "node node_modules/.bin/nsp check",
     "lint-css": "node node_modules/.bin/csslint public/stylesheets",
@@ -22,7 +25,8 @@
     "lint": "npm run lint-js && npm run lint-css",
     "test-unit": "node node_modules/.bin/mocha --recursive",
     "test-structure": "node node_modules/.bin/mocha test/structure/* --recursive",
-    "postinstall": "npm shrinkwrap --dev && node scripts/postinstall.js"
+    "test": "npm run lint && npm run test-structure && npm run test-unit",
+    "postinstall": "npm shrinkwrap --dev && node scripts/misc/postInstall.js"
   },
   "contributors": [
     {

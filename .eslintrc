@@ -143,7 +143,7 @@ rules:
   no-path-concat: 2
   no-process-exit: 2
   no-restricted-modules: 0
-  no-sync: 2
+  no-sync: 1
 
   # Stylistic Issues
   array-bracket-spacing: 2
@@ -293,7 +293,7 @@ rules:
   mocha/no-exclusive-tests: 2
   mocha/no-global-tests: 2
   mocha/no-hooks-for-single-case: 2
-  mocha/no-hooks: 2
+  mocha/no-hooks: 0
   mocha/no-identical-title: 2
   mocha/no-mocha-arrows: 2
   mocha/no-pending-tests: 2
@@ -327,10 +327,9 @@ rules:
   # Security
   security/detect-unsafe-regex: 2
   security/detect-buffer-noassert: 2
-  security/detect-child-process: 2
+  security/detect-child-process: 1
   security/detect-disable-mustache-escape: 2
   security/detect-eval-with-expression: 2
-  security/detect-no-csrf-before-method-override: 2
   security/detect-non-literal-fs-filename: 1
   security/detect-non-literal-regexp: 2
   security/detect-non-literal-require: 1

@@ -56,7 +56,7 @@ describe('package.json', function () {
 		});
 
 		it('should have a lint script', function () {
-			assert(_.get(packageScripts, 'test-lint'), 'Project lint script missing');
+			assert(_.get(packageScripts, 'lint'), 'Project lint script missing');
 		});
 
 		it('should have a test script', function () {
