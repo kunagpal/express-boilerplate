@@ -19,6 +19,10 @@ describe('singleton configuration files', function () {
 		assert(_.isObject(shrinkwrap), 'npm-shrinkwrap.json appears to be invalid');
 	});
 
+	it('should have a valid .bowerrc', function (done) {
+		fs.stat('.bowerrc', done);
+	});
+
 	it('should have a valid app.js', function (done) {
 		fs.stat('app.js', done);
 	});
