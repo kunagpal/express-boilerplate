@@ -45,6 +45,6 @@ mongodb.connect(process.env.MONGO, function (err, database) {
 		throw err;
 	}
 
-	globals.db = database;
+	global.db = database;
 	server.listen(port);
 });

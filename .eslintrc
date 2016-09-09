@@ -21,7 +21,7 @@ globals:
   db: true
   before: true
   after: true
-  globals: true
+  global: true
   afterEach: true
   beforeEach: true
   testFlag: true

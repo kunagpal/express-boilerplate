@@ -19,7 +19,7 @@ var path = require('path'),
 	errorHandler,
 	app = express();
 
-if (!_.get(process, 'env.NODE_ENV')) {
+if (process.env.NODE_ENV) {
 	require('dotenv').load();
 }
 
@@ -44,8 +44,8 @@ app.use(expressSession({ secret: process.env.SESSION_SECRET || 'session_secret',
 app.use(csurf());
 
 app.use(function (req, res, next) {
-	if (!_.has(req, 'session.flash')) {
-		_.set(req, 'session.flash', []);
+	if (!req.session.flash) {
+		req.session.flash = [];
 	}
 
 	res.flash = function (content) {
@@ -76,7 +76,7 @@ app.use(function (req, res, next) {
 });
 
 // error handlers
-if (_.get(process, 'env.NODE_ENV')) {
+if (process.env.NODE_ENV) {
 	app.use(errorHandler);
 }
 
@@ -92,15 +92,15 @@ app.use(function (err, req, res, next) { // the last argument is necessary
 		res.redirect(req.headers.referer);
 	}
 	else {
-		_.set(error, 'status', status);
+		error.status = status;
 
 		if (process.env.NODE_ENV) {
-			_.set(error, 'stack', '');
-			_.set(error, 'message', '');
+			error.stack = '';
+			error.message = '';
 		}
 		else {
-			_.set(error, 'stack', _.get(err, 'stack'));
-			_.set(error, 'message', _.get(err, 'message'));
+			error.stack = err.stack;
+			error.message = err.message;
 		}
 
 		res.render('error', error);
