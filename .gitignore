@@ -41,3 +41,6 @@ jspm_packages
 
 # Environment configuration files
 .env
+
+# Minified static assets
+public/min

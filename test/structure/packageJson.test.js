@@ -72,6 +72,10 @@ describe('package.json', function () {
 		it('should have a postinstall script', function () {
 			assert(packageScripts.postinstall, 'Project postinstall script missing');
 		});
+
+		it('should have a pack script', function () {
+			assert(packageScripts.pack, 'Project pack script missing');
+		});
 	});
 
 	describe('contributors', function () {

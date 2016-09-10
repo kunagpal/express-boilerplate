@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "docs": "node ./node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts app.js",
-    "start": "node ./node_modules/.bin/forever ./bin/www",
+    "start": "npm run pack && node ./node_modules/.bin/forever ./bin/www",
     "stop": "node ./node_modules/.bin/forever stop ./bin/www",
     "seed": "node ./scripts/database/seed.js",
     "purge": "node ./scripts/database/seed.js",
@@ -26,6 +26,7 @@
     "test-unit": "node ./node_modules/.bin/mocha --recursive",
     "test-structure": "node ./node_modules/.bin/mocha test/structure/* --recursive",
     "test": "npm run lint && npm run test-structure && npm run test-unit",
+    "pack": "node ./scripts/misc/pack.js",
     "postinstall": "npm shrinkwrap --dev && node scripts/misc/postInstall.js"
   },
   "contributors": [
@@ -62,7 +63,7 @@
   "devDependencies": {
     "csslint": "1.0.2",
     "dotenv": "2.0.0",
-    "eslint": "3.4.0",
+    "eslint": "3.5.0",
     "eslint-plugin-jsdoc": "2.3.1",
     "eslint-plugin-lodash": "1.10.3",
     "eslint-plugin-mocha": "4.5.1",
