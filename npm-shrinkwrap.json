@@ -357,9 +357,9 @@
       "resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.2.tgz"
     },
     "emailjs": {
-      "version": "1.0.6",
-      "from": "emailjs@1.0.6",
-      "resolved": "https://registry.npmjs.org/emailjs/-/emailjs-1.0.6.tgz",
+      "version": "1.0.7",
+      "from": "emailjs@1.0.7",
+      "resolved": "https://registry.npmjs.org/emailjs/-/emailjs-1.0.7.tgz",
       "dependencies": {
         "addressparser": {
           "version": "0.3.2",
@@ -394,6 +394,11 @@
           "version": "2.11.2",
           "from": "moment@2.11.2",
           "resolved": "https://registry.npmjs.org/moment/-/moment-2.11.2.tgz"
+        },
+        "starttls": {
+          "version": "1.0.1",
+          "from": "starttls@1.0.1",
+          "resolved": "https://registry.npmjs.org/starttls/-/starttls-1.0.1.tgz"
         },
         "bufferjs": {
           "version": "1.1.0",

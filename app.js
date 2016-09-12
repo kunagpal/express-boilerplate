@@ -16,14 +16,9 @@ var path = require('path'),
 	index = require(path.join(__dirname, 'routes', 'index')),
 	users = require(path.join(__dirname, 'routes', 'users')),
 
-	errorHandler,
+	errorHandler = sentry.errorHandler(process.env.SENTRY_DSN),
 	app = express();
 
-if (process.env.NODE_ENV) {
-	require('dotenv').load();
-}
-
-errorHandler = sentry.errorHandler(process.env.SENTRY_DSN);
 // view engine setup
 app.set('title', 'express-boilerplate');
 app.set('view engine', 'ejs');
