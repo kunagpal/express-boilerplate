@@ -14,6 +14,7 @@ var path = require('path'),
 
 	passportCallback = function (req, token, refresh, profile, done) {
 		process.nextTick(function () {
+			// eslint-disable-next-line lodash/prefer-lodash-method
 			user.find({ _id: req.signedCookies.user }, function (err, doc) {
 				var record;
 
@@ -30,10 +31,10 @@ var path = require('path'),
 				record.dob = new Date();
 				record.profile = profile.id;
 				record.name = profile.displayName;
-				record._id = profile.emails[0].value;
+				record._id = _.head(profile.emails).value; // eslint-disable-line no-underscore-dangle
 				record.authStrategy = profile.provider;
 
-				user.insert(user, done);
+				user.insert(record, done);
 			});
 		});
 	};
@@ -45,7 +46,7 @@ _.forOwn(AUTH_STRATEGIES, function (strategy, name) {
 		clientID: process.env[`${name}_ID`],
 		clientSecret: process.env[`${name}_SECRET`],
 		profileFields: ['id', 'email', 'displayName'],
-		callbackURL: `${req.url}${name.toLowerCase()}/callback`
+		callbackURL: `<>${name.toLowerCase()}/callback`
 	}, passportCallback
 	));
 });

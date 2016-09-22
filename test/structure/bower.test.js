@@ -6,7 +6,7 @@ var url = require('url'),
 
 describe('bower', function () {
 	var rootPath = path.join(__dirname, '..', '..'),
-		bowerJSON = require(path.join(rootPath, 'bower.json'));
+		bowerJSON = require(path.join(rootPath, 'bower.json')); // eslint-disable-line global-require
 
 	describe('glossary', function () {
 		it('should have a name', function () {
@@ -35,7 +35,7 @@ describe('bower', function () {
 		});
 
 		it('should have a non-zero length', function () {
-			assert(bowerContributors.length > 0, 'Project contributors section is empty');
+			assert(!_.isEmpty(bowerContributors), 'Project contributors section is empty');
 		});
 
 		it('should contain valid contributor details', function () {
@@ -46,7 +46,7 @@ describe('bower', function () {
 		});
 	});
 
-	describe.skip('dependencies', function () {
+	describe.skip('dependencies', function () { // eslint-disable-line mocha/no-skipped-tests
 		var bowerDependencies = _.pick(bowerJSON, ['dependencies', 'devDependencies', 'optionalDependencies']);
 
 		it('should exist and be an object', function () {
@@ -67,6 +67,7 @@ describe('bower', function () {
 				bowerDependencies.optionalDependencies, bowerDependencies.peerDependencies);
 
 			_.forEach(dependencies, function (specifiedVersion, dependency) {
+				// eslint-disable-next-line global-require
 				var installedVersion = require(path.join(dependencyPath, dependency, 'package.json')).version;
 
 				assert(specifiedVersion === installedVersion,

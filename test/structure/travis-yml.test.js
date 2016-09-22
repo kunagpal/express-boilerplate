@@ -9,7 +9,7 @@ describe('.travis.yml', function () {
 
 	before(function () {
 		try {
-			travisYAML = yaml.safeLoad(fs.readFileSync(TRAVIS_PATH, 'utf-8'));
+			travisYAML = yaml.safeLoad(fs.readFileSync(TRAVIS_PATH, 'utf-8')); // eslint-disable-line no-sync
 		}
 		catch (err) {
 			throw err;

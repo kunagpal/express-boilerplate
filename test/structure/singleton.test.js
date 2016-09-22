@@ -14,6 +14,7 @@ describe('singleton configuration files', function () {
 	});
 
 	it('should have a npm-shrinkwrap.json', function () {
+		// eslint-disable-next-line global-require
 		var shrinkwrap = require(path.join(__dirname, '..', '..', 'npm-shrinkwrap.json'));
 
 		assert(_.isObject(shrinkwrap), 'npm-shrinkwrap.json appears to be invalid');

@@ -6,7 +6,7 @@ var url = require('url'),
 
 describe('package.json', function () {
 	var rootPath = path.join(__dirname, '..', '..'),
-		packageJSON = require(path.join(rootPath, 'package.json'));
+		packageJSON = require(path.join(rootPath, 'package.json')); // eslint-disable-line global-require
 
 	describe('glossary', function () {
 		it('should have a name', function () {
@@ -86,7 +86,7 @@ describe('package.json', function () {
 		});
 
 		it('should have a non-zero length', function () {
-			assert(packageContributors.length > 0, 'Project contributors section is empty');
+			assert(!_.isEmpty(packageContributors), 'Project contributors section is empty');
 		});
 
 		it('should contain valid contributor details', function () {
@@ -118,6 +118,7 @@ describe('package.json', function () {
 				packageDependencies.optionalDependencies, packageDependencies.peerDependencies);
 
 			_.forEach(dependencies, function (specifiedVersion, dependency) {
+				// eslint-disable-next-line global-require
 				var installedVersion = require(path.join(dependencyPath, dependency, 'package.json')).version;
 
 				assert(specifiedVersion === installedVersion,

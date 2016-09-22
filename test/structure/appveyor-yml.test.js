@@ -10,7 +10,7 @@ describe('appveyor.yml', function () {
 
 	before(function () {
 		try {
-			appveyorYAML = yaml.safeLoad(fs.readFileSync(APPVEYOR_PATH, 'utf-8'));
+			appveyorYAML = yaml.safeLoad(fs.readFileSync(APPVEYOR_PATH, 'utf-8')); // eslint-disable-line no-sync
 		}
 		catch (err) {
 			throw err;
@@ -22,19 +22,20 @@ describe('appveyor.yml', function () {
 	});
 
 	it('should have an init script for git line ending config', function () {
-		assert(appveyorYAML.init[0] === 'git config --global core.autocrlf input', 'Invalid init script');
+		assert(_.head(appveyorYAML.init) === 'git config --global core.autocrlf input', 'Invalid init script');
 	});
 
 	it('should have builds set for Node v4, v5, and v6', function () {
-		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, (arg) => {
-			return arg.nodejs_version;
-		}), ['4', '5', '6'], 'Builds not set on Node v4,5,6 only');
+		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'nodejs_version'), ['4', '5', '6'],
+			'Builds not set on Node v4,5,6 only');
 	});
 
 	it('should have a valid install sequence', function () {
-		assert(appveyorYAML.install[0].ps === 'Install-Product node $env:nodejs_version',
-			'Missing / invalid nodejs install statement');
-		assert(appveyorYAML.install[1] === 'npm install', 'Missing / invalid nodejs install statement');
+		assert.deepStrictEqual(appveyorYAML.install, [
+			{ ps: 'Install-Product node $env:nodejs_version' },
+			'npm install'
+		],
+		'Missing / invalid nodejs install statement');
 	});
 
 	it('should have MSBuild switched off', function () {
@@ -44,8 +45,8 @@ describe('appveyor.yml', function () {
 	it('should have a valid test sequence', function () {
 		var test = appveyorYAML.test_script;
 
-		assert(test[0] === 'node --version && npm --version', 'Missing / invalid version statement');
-		assert(test[1].cmd === 'npm test', 'Missing / invalid test suite statement');
+		assert.deepStrictEqual(test, ['node --version && npm --version', { cmd: 'npm test' }],
+			'Missing / invalid test sequence');
 	});
 
 	it('should have deploy switched off', function () {

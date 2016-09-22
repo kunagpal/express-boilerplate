@@ -44,7 +44,6 @@ else {
 
 port = _.toInteger(process.env.PORT) || 3000;
 
-
 mongodb.connect(process.env.MONGO, function (err, database) {
 	if (err) {
 		throw err;

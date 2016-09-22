@@ -244,6 +244,11 @@
         }
       }
     },
+    "clone": {
+      "version": "1.0.2",
+      "from": "clone@>=1.0.0 <1.1.0",
+      "resolved": "https://registry.npmjs.org/clone/-/clone-1.0.2.tgz"
+    },
     "component-bind": {
       "version": "1.0.0",
       "from": "component-bind@1.0.0",
@@ -350,21 +355,9 @@
       "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.2.tgz"
     },
     "csslint": {
-      "version": "1.0.2",
-      "from": "csslint@latest",
-      "resolved": "https://registry.npmjs.org/csslint/-/csslint-1.0.2.tgz",
-      "dependencies": {
-        "clone": {
-          "version": "1.0.2",
-          "from": "clone@>=1.0.0 <1.1.0",
-          "resolved": "https://registry.npmjs.org/clone/-/clone-1.0.2.tgz"
-        },
-        "parserlib": {
-          "version": "1.0.0",
-          "from": "parserlib@>=1.0.0 <1.1.0",
-          "resolved": "https://registry.npmjs.org/parserlib/-/parserlib-1.0.0.tgz"
-        }
-      }
+      "version": "1.0.3",
+      "from": "csslint@1.0.3",
+      "resolved": "https://registry.npmjs.org/csslint/-/csslint-1.0.3.tgz"
     },
     "csurf": {
       "version": "1.9.0",
@@ -3947,9 +3940,9 @@
       "resolved": "https://registry.npmjs.org/json3/-/json3-3.2.6.tgz"
     },
     "lodash": {
-      "version": "4.16.0",
-      "from": "lodash@4.16.0",
-      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.16.0.tgz"
+      "version": "4.16.1",
+      "from": "lodash@4.16.1",
+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.16.1.tgz"
     },
     "lodash.reduce": {
       "version": "4.5.0",
@@ -6268,6 +6261,11 @@
       "version": "0.0.2",
       "from": "parseqs@0.0.2",
       "resolved": "https://registry.npmjs.org/parseqs/-/parseqs-0.0.2.tgz"
+    },
+    "parserlib": {
+      "version": "1.0.0",
+      "from": "parserlib@>=1.0.0 <1.1.0",
+      "resolved": "https://registry.npmjs.org/parserlib/-/parserlib-1.0.0.tgz"
     },
     "parseuri": {
       "version": "0.0.4",

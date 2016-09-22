@@ -10,7 +10,7 @@ describe('.travis.yml', function () {
 
 	before(function () {
 		try {
-			codeClimateYAML = yaml.safeLoad(fs.readFileSync(CODECLIMATE_PATH, 'utf-8'));
+			codeClimateYAML = yaml.safeLoad(fs.readFileSync(CODECLIMATE_PATH, 'utf-8')); // eslint-disable-line no-sync
 		}
 		catch (err) {
 			throw err;
@@ -29,7 +29,7 @@ describe('.travis.yml', function () {
 		var duplicationEngine = codeClimateYAML.engines.duplication;
 
 		assert(duplicationEngine.enabled, 'Duplication config missing / broken');
-		assert(duplicationEngine.config.languages[0] === 'javascript', 'Possible invalid language setting');
+		assert(_.head(duplicationEngine.config.languages) === 'javascript', 'Possible invalid language setting');
 	});
 
 	it('should have the ESLint engine enabled', function () {

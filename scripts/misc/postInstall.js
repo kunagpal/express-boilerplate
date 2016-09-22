@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	path = require('path'),
-	childProcess = require('child_process'),
+	childProcess = require('child_process'), // eslint-disable-line security/detect-child-process
 
 	bcryptPath = path.join(__dirname, '..', '..', 'node_modules', 'bcrypt');
 

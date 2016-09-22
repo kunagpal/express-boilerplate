@@ -1,4 +1,4 @@
-var router = require('express').Router();
+var router = require('express').Router(); // eslint-disable-line new-cap
 
 /* GET users listing. */
 router.get('/', function (req, res) {

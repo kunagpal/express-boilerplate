@@ -1,5 +1,4 @@
-var path = require('path'),
-	router = require('express').Router();
+var router = require('express').Router(); // eslint-disable-line new-cap
 
 // require(path.join(__dirname, '..', 'scripts', 'misc', 'passport'));
 

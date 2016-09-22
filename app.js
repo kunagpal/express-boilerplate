@@ -17,7 +17,10 @@ var path = require('path'),
 	users = require(path.join(__dirname, 'routes', 'users')),
 
 	errorHandler = sentry.errorHandler(process.env.SENTRY_DSN),
-	app = express();
+	app = express(),
+
+	NOT_FOUND = 404,
+	INTERNAL_SERVER_ERROR = 500;
 
 // view engine setup
 app.set('title', 'express-boilerplate');
@@ -66,7 +69,7 @@ app.use('/users', users);
 app.use(function (req, res, next) {
 	var err = new Error('Not Found');
 
-	err.status = 404;
+	err.status = NOT_FOUND;
 	next(err);
 });
 
@@ -75,9 +78,10 @@ if (process.env.NODE_ENV) {
 	app.use(errorHandler);
 }
 
+// eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
 	var error = {},
-		status = _.get(err, 'status', 500);
+		status = _.get(err, 'status', INTERNAL_SERVER_ERROR);
 
 	res.status(status);
 	res.clearCookie('team', {});

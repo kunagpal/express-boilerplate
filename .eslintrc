@@ -33,7 +33,7 @@ rules:
   # Possible Errors
   comma-dangle: [2, never]
   no-cond-assign: 2
-  # no-console: [2, { "allow": ["warn", "error", "info"] }]
+  no-console: [2, { "allow": ["warn", "error", "info"] }]
   no-constant-condition: 2
   no-control-regex: 2
   no-debugger: 2
@@ -44,7 +44,7 @@ rules:
   no-empty-character-class: 2
   no-ex-assign: 2
   no-extra-boolean-cast: 2
-  # no-extra-parens: [2, all, { "nestedBinaryExpressions": false }]
+  no-extra-parens: [2, all, { "nestedBinaryExpressions": false }]
   no-extra-semi: 2
   no-func-assign: 2
   no-inner-declarations: [2, functions]
@@ -83,14 +83,14 @@ rules:
   no-extra-bind: 2
   no-fallthrough: 2
   no-floating-decimal: 2
-  no-implicit-coercion: 0
+  no-implicit-coercion: 2
   no-implied-eval: 2
   no-invalid-this: 2
   no-iterator: 2
   no-labels: 2
   no-lone-blocks: 2
   no-loop-func: 2
-  no-magic-number: 0
+  no-magic-numbers: 2
   no-multi-spaces: 2
   no-multi-str: 0
   no-native-reassign: 2
@@ -111,7 +111,7 @@ rules:
   no-useless-call: 2
   no-useless-concat: 2
   no-void: 2
-  no-warning-comments: 0
+  no-warning-comments: 2
   no-with: 2
   radix: 2
   vars-on-top: 2
@@ -122,7 +122,7 @@ rules:
   strict: 0
 
   # Variables
-  init-declarations: 1
+  init-declarations: 0
   no-catch-shadow: 2
   no-delete-var: 2
   no-label-var: 2
@@ -155,13 +155,13 @@ rules:
   computed-property-spacing: 2
   consistent-this: 2
   eol-last: 0
-  # func-names: [2, never]
+  func-names: [2, never]
   func-style: [2, expression]
   id-length: 0
   id-match: 0
   indent: [2, tab]
   jsx-quotes: [2, prefer-double]
-  # key-spacing: [2, { "beforeColon": false, "afterColon": true, "mode": strict }]
+  key-spacing: [2, { "beforeColon": false, "afterColon": true, "mode": strict }]
   linebreak-style: 2
   lines-around-comment: 2
   max-depth: 2
@@ -247,17 +247,17 @@ rules:
   require-yield: 0
 
   # JSDoc
-  jsdoc/check-param-names: 1
-  jsdoc/check-tag-names: 1
-  jsdoc/check-types: 1
-  jsdoc/newline-after-description: 1
-  jsdoc/require-description-complete-sentence: 1
-  jsdoc/require-hyphen-before-param-description: 1
-  jsdoc/require-param: 1
-  jsdoc/require-param-description: 1
-  jsdoc/require-param-type: 1
-  jsdoc/require-returns-description: 1
-  jsdoc/require-returns-type: 1
+  jsdoc/check-param-names: 2
+  jsdoc/check-tag-names: 2
+  jsdoc/check-types: 2
+  jsdoc/newline-after-description: 2
+  jsdoc/require-description-complete-sentence: 2
+  jsdoc/require-hyphen-before-param-description: 2
+  jsdoc/require-param: 2
+  jsdoc/require-param-description: 2
+  jsdoc/require-param-type: 2
+  jsdoc/require-returns-description: 2
+  jsdoc/require-returns-type: 2
 
   # Lodash
   lodash/collection-method-value: 2
@@ -330,9 +330,9 @@ rules:
   security/detect-child-process: 1
   security/detect-disable-mustache-escape: 2
   security/detect-eval-with-expression: 2
-  security/detect-non-literal-fs-filename: 1
+  security/detect-non-literal-fs-filename: 0
   security/detect-non-literal-regexp: 2
-  security/detect-non-literal-require: 1
-  security/detect-object-injection: 2
+  security/detect-non-literal-require: 0
+  security/detect-object-injection: 1
   security/detect-possible-timing-attacks: 2
   security/detect-pseudoRandomBytes: 2
