@@ -144,8 +144,12 @@ describe('package.json', function () {
 	});
 
 	describe('engine', function () {
-		it('should point to a valid engine', function () {
+		it('should point to a valid node engine', function () {
 			assert(packageJSON.engines.node, 'Project engine is invalid');
+		});
+
+		it('should point to a valid npm engine', function () {
+			assert(packageJSON.engines.npm, 'Project engine is invalid');
 		});
 	});
 });

@@ -15,11 +15,11 @@
   "scripts": {
     "check": "node ./node_modules/.bin/npm-check -u && npm shrinkwrap --dev",
     "docs": "node ./node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts app.js",
-    "start": "npm run pack && node ./node_modules/.bin/forever ./bin/www",
-    "stop": "node ./node_modules/.bin/forever stop ./bin/www",
+    "start": "npm run pack && node ./node_modules/.bin/pm2 ./bin/www",
+    "stop": "node ./node_modules/.bin/pm2 stop ./bin/www",
     "seed": "node ./scripts/database/seed.js",
     "purge": "node ./scripts/database/seed.js",
-    "restart": "node ./node_modules/.bin/forever restart ./bin/www",
+    "restart": "node ./node_modules/.bin/pm2 restart ./bin/www",
     "security": "node ./node_modules/.bin/nsp check",
     "lint-css": "node ./node_modules/.bin/csslint public/stylesheets",
     "lint-js": "node ./node_modules/.bin/eslint .",
@@ -50,7 +50,6 @@
     "express": "4.14.0",
     "express-session": "1.14.1",
     "express-status-monitor": "0.1.4",
-    "forever": "0.15.2",
     "helmet": "2.2.0",
     "heroku-client": "3.0.0-beta3",
     "lodash": "4.16.2",
@@ -59,6 +58,7 @@
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
     "passport-google-oauth2": "0.1.6",
+    "pm2": "2.0.15",
     "raven": "0.12.1",
     "uglify-js": "2.7.3"
   },
@@ -90,6 +90,7 @@
   },
   "license": "GPL-3.0+",
   "engines": {
-    "node": "6.x"
+    "node": "6.x",
+    "npm": "3.x"
   }
 }
