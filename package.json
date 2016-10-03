@@ -52,7 +52,7 @@
     "express-status-monitor": "0.1.4",
     "helmet": "2.3.0",
     "heroku-client": "3.0.0-beta3",
-    "lodash": "4.16.2",
+    "lodash": "4.16.3",
     "mongodb": "2.2.10",
     "morgan": "1.7.0",
     "passport": "0.3.2",
