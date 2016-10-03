@@ -1,6 +1,5 @@
 var path = require('path'),
 
-	_ = require('lodash'),
 	csurf = require('csurf'),
 	logger = require('morgan'),
 	helmet = require('helmet'),
@@ -12,21 +11,22 @@ var path = require('path'),
 	expressSession = require('express-session'),
 	sentry = require('raven').middleware.express,
 
-	api = require(path.join(__dirname, 'routes', 'api')),
-	index = require(path.join(__dirname, 'routes', 'index')),
-	users = require(path.join(__dirname, 'routes', 'users')),
+	api = require('routes/api'),
+	index = require('routes/index'),
+	users = require('routes/users'),
 
 	errorHandler = sentry.errorHandler(process.env.SENTRY_DSN),
 	app = express(),
 
 	NOT_FOUND = 404,
-	INTERNAL_SERVER_ERROR = 500;
+	INTERNAL_SERVER_ERROR = 500,
+	CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
 
 // view engine setup
 app.set('title', 'express-boilerplate');
 app.set('view engine', 'ejs');
 app.enable('trust proxy');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', 'views');
 
 app.use(helmet());
 app.use(compression());
@@ -80,30 +80,22 @@ if (process.env.NODE_ENV) {
 
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
-	var error = {},
-		status = _.get(err, 'status', INTERNAL_SERVER_ERROR);
+	err.status |= INTERNAL_SERVER_ERROR;
 
-	res.status(status);
-	res.clearCookie('team', {});
-	res.clearCookie('phone', {});
+	res.status(err.status);
 
-	if (err.code === 'EBADCSRFTOKEN') {
-		res.redirect(req.headers.referer);
+	if (err.code === CSRF_TOKEN_ERROR) {
+		return res.redirect(req.headers.referer);
 	}
-	else {
-		error.status = status;
 
-		if (process.env.NODE_ENV) {
-			error.stack = '';
-			error.message = '';
-		}
-		else {
-			error.stack = err.stack;
-			error.message = err.message;
-		}
+	err.status = status;
 
-		res.render('error', error);
+	if (process.env.NODE_ENV) {
+		err.stack = '';
+		err.message = '';
 	}
+
+	res.render('error', err);
 });
 
 module.exports = app;

@@ -15,7 +15,7 @@
   "scripts": {
     "check": "node ./node_modules/.bin/npm-check -u && npm shrinkwrap --dev",
     "docs": "node ./node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts app.js",
-    "start": "npm run pack && node ./node_modules/.bin/pm2 ./bin/www",
+    "start": "npm run pack && node ./node_modules/.bin/pm2 start ./bin/www",
     "stop": "node ./node_modules/.bin/pm2 stop ./bin/www",
     "seed": "node ./scripts/database/seed.js",
     "purge": "node ./scripts/database/seed.js",

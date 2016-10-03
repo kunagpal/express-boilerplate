@@ -142,7 +142,7 @@ rules:
   callback-return: 2
   global-require: 1
   handle-callback-err: 2
-  no-mixed-requires: 2
+  no-mixed-requires: 0
   no-new-require: 2
   no-path-concat: 2
   no-process-exit: 2
@@ -240,7 +240,7 @@ rules:
   no-useless-constructor: 2
   no-useless-rename: 2
   no-var: 0
-  object-shorthand: 2
+  object-shorthand: 0
   prefer-arrow-callback: 0
   prefer-const: 0
   prefer-reflect: 0
