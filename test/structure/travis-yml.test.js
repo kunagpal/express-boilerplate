@@ -24,7 +24,7 @@ describe('.travis.yml', function () {
 		assert(travisYAML.language === 'node_js', 'Travis build language is not set to node_js');
 	});
 
-	it('should have builds set for Node v4, v5, and v6', function () {
-		assert.deepStrictEqual(travisYAML.node_js, ['4', '5', '6'], 'Travis is not set to run builds on Node v4, 5, 6');
+	it('should have builds set for Node v5, and v6', function () {
+		assert.deepStrictEqual(travisYAML.node_js, ['5', '6'], 'Travis is not set to run builds on Node v4, 5, 6');
 	});
 });

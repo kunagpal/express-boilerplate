@@ -25,14 +25,14 @@ describe('appveyor.yml', function () {
 		assert(_.head(appveyorYAML.init) === 'git config --global core.autocrlf input', 'Invalid init script');
 	});
 
-	it('should have builds set for Node v4, v5, and v6', function () {
-		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'nodejs_version'), ['4', '5', '6'],
-			'Builds not set on Node v4,5,6 only');
+	it('should have builds set for Node v5, and v6', function () {
+		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'node'), ['5', '6'],
+			'Builds not set on Node v5,6 only');
 	});
 
 	it('should have a valid install sequence', function () {
 		assert.deepStrictEqual(appveyorYAML.install, [
-			{ ps: 'Install-Product node $env:nodejs_version' },
+			{ ps: 'Install-Product node $env:node' },
 			'npm install'
 		],
 		'Missing / invalid nodejs install statement');
