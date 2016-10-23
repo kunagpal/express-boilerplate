@@ -60,7 +60,7 @@
     "passport-google-oauth2": "0.1.6",
     "pm2": "2.0.18",
     "raven": "0.12.1",
-    "uglify-js": "2.7.3"
+    "uglify-js": "2.7.4"
   },
   "devDependencies": {
     "csslint": "1.0.3",
