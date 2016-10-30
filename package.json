@@ -24,11 +24,12 @@
     "lint-css": "node ./node_modules/csslint/dist/cli.js public/stylesheets",
     "lint-js": "node ./node_modules/eslint/bin/eslint.js .",
     "lint": "npm run lint-js && npm run lint-css",
-    "test-unit": "node ./node_modules/istanbul/index.js cover ./node_modules/.bin/_mocha",
-    "test-structure": "node ./node_modules/mocha/mocha.js test/structure/* --recursive",
+    "test-unit": "node ./node_modules/istanbul/index.js cover ./node_modules/mocha/bin/_mocha -- test/unit",
+    "test-e2e": "node ./node_modules/mocha/bin/mocha test/e2e",
+    "test-structure": "node ./node_modules/mocha/bin/mocha test/structure",
     "test": "npm run lint && npm run test-structure && npm run test-unit",
     "pack": "node ./scripts/misc/pack.js",
-    "postinstall": "npm shrinkwrap --dev && node scripts/misc/postInstall.js"
+    "postinstall": "node scripts/misc/postInstall.js"
   },
   "contributors": [
     {
@@ -91,6 +92,6 @@
   "license": "GPL-3.0+",
   "engines": {
     "node": "6.x",
-    "npm": "3.x"
+    "npm": "4.x"
   }
 }

@@ -1,8 +1,4 @@
-var fs = require('fs'),
-	path = require('path'),
-	assert = require('assert'),
-
-	_ = require('lodash');
+var fs = require('fs');
 
 describe('singleton configuration files', function () {
 	it('should have a README.md', function (done) {
@@ -11,13 +7,6 @@ describe('singleton configuration files', function () {
 
 	it('should have a valid Procfile', function (done) {
 		fs.stat('Procfile', done);
-	});
-
-	it('should have a npm-shrinkwrap.json', function () {
-		// eslint-disable-next-line global-require
-		var shrinkwrap = require(path.join(__dirname, '..', '..', 'npm-shrinkwrap.json'));
-
-		assert(_.isObject(shrinkwrap), 'npm-shrinkwrap.json appears to be invalid');
 	});
 
 	it('should have a valid .bowerrc', function (done) {

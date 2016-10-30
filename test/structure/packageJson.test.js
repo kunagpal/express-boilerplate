@@ -115,14 +115,17 @@ describe('package.json', function () {
 		it('should have the same versions across package.json and node_modules', function () {
 			var dependencyPath = path.join(rootPath, 'node_modules'),
 				dependencies = _.merge({}, packageDependencies.dependencies, packageDependencies.devDependencies,
-				packageDependencies.optionalDependencies, packageDependencies.peerDependencies);
+					packageDependencies.optionalDependencies, packageDependencies.peerDependencies,
+					packageDependencies.bundledDependencies);
 
 			_.forEach(dependencies, function (specifiedVersion, dependency) {
-				// eslint-disable-next-line global-require
-				var installedVersion = require(path.join(dependencyPath, dependency, 'package.json')).version;
+				if (dependency !== 'bcrypt') {
+					// eslint-disable-next-line global-require
+					var installedVersion = require(path.join(dependencyPath, dependency, 'package.json')).version;
 
-				assert(specifiedVersion === installedVersion,
-					`${dependency} is specified as ${specifiedVersion}, but installed as ${installedVersion}`);
+					assert(specifiedVersion === installedVersion,
+						`${dependency} is specified as ${specifiedVersion}, but installed as ${installedVersion}`);
+				}
 			});
 		});
 	});
@@ -145,11 +148,11 @@ describe('package.json', function () {
 
 	describe('engine', function () {
 		it('should point to a valid node engine', function () {
-			assert(packageJSON.engines.node, 'Project engine is invalid');
+			assert(packageJSON.engines.node === '6.x', 'Project engine is invalid');
 		});
 
 		it('should point to a valid npm engine', function () {
-			assert(packageJSON.engines.npm, 'Project engine is invalid');
+			assert(packageJSON.engines.npm === '4.x', 'Project engine is invalid');
 		});
 	});
 });

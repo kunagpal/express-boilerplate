@@ -135,7 +135,7 @@ rules:
   no-undef-init: 2
   no-undef: 1
   no-undefined: 2
-  no-unused-vars: 1
+  no-unused-vars: 2
   no-use-before-define: 2
 
   # Node.js and CommonJS
@@ -266,9 +266,9 @@ rules:
   # Lodash
   lodash/collection-method-value: 2
   lodash/no-extra-args: 2
-  lodash/chain-style: 2
+  lodash/chain-style: [2, "as-needed"]
   lodash/path-style: 2
-  lodash/prefer-chain: 2
+  lodash/chaining: [2, always, 3]
   lodash/prefer-compact: 2
   lodash/prefer-filter: 2
   lodash/prefer-flat-map: 2

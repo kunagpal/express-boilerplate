@@ -4,12 +4,15 @@ init:
 
 environment:
   matrix:
+    - node: "4"
     - node: "5"
     - node: "6"
+    - node: "7"
 
 install:
   - ps: Install-Product node $env:node
-  - npm install
+  - npm cache clean
+  - appveyor-retry npm install
 
 build: off # Disable MSBuilds, not related to the regular build process
 
