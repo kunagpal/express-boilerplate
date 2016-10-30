@@ -1,9 +1,9 @@
-describe('JSDoc configuration', function () {
-	var fs = require('fs'),
-		_ = require('lodash'),
-		assert = require('assert'),
+var fs = require('fs'),
+	_ = require('lodash'),
+	assert = require('assert');
 
-		json,
+describe('JSDoc configuration', function () {
+	var json,
 		content,
 		jsdocConfigPath = './.jsdocrc';
 

@@ -1,18 +1,13 @@
 var fs = require('fs'),
+	path = require('path'),
 	assert = require('assert'),
 
-	yaml = require('js-yaml');
+	utils = require(path.join(__dirname, '..', '..', 'scripts', 'test')),
 
-describe('.travis.yml', function () {
-	var travisYAML,
-		TRAVIS_PATH = '.travis.yml';
+	TRAVIS_PATH = '.travis.yml';
 
-	try {
-		travisYAML = yaml.safeLoad(fs.readFileSync(TRAVIS_PATH, 'utf-8')); // eslint-disable-line no-sync
-	}
-	catch (err) {
-		throw err;
-	}
+describe(TRAVIS_PATH, function () {
+	var travisYAML = utils.ymlToJson(TRAVIS_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(TRAVIS_PATH, done);

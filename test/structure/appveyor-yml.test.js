@@ -1,21 +1,14 @@
 var fs = require('fs'),
+	path = require('path'),
 	assert = require('assert'),
 
 	_ = require('lodash'),
-	yaml = require('js-yaml');
+	utils = require(path.join(__dirname, '..', '..', 'scripts', 'test')),
 
-describe('appveyor.yml', function () {
-	var appveyorYAML,
-		APPVEYOR_PATH = 'appveyor.yml';
+	APPVEYOR_PATH = 'appveyor.yml';
 
-	before(function () {
-		try {
-			appveyorYAML = yaml.safeLoad(fs.readFileSync(APPVEYOR_PATH, 'utf-8')); // eslint-disable-line no-sync
-		}
-		catch (err) {
-			throw err;
-		}
-	});
+describe(APPVEYOR_PATH, function () {
+	var appveyorYAML = utils.ymlToJson(APPVEYOR_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(APPVEYOR_PATH, done);

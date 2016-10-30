@@ -1,21 +1,14 @@
 var fs = require('fs'),
+	path = require('path'),
 	assert = require('assert'),
 
 	_ = require('lodash'),
-	yaml = require('js-yaml');
+	utils = require(path.join(__dirname, '..', '..', 'scripts', 'test')),
 
-describe('.codeclimate.yml', function () {
-	var codeClimateYAML,
-		CODECLIMATE_PATH = '.codeclimate.yml';
+	CODECLIMATE_PATH = '.codeclimate.yml';
 
-	before(function () {
-		try {
-			codeClimateYAML = yaml.safeLoad(fs.readFileSync(CODECLIMATE_PATH, 'utf-8')); // eslint-disable-line no-sync
-		}
-		catch (err) {
-			throw err;
-		}
-	});
+describe(CODECLIMATE_PATH, function () {
+	var codeClimateYAML = utils.ymlToJson(CODECLIMATE_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(CODECLIMATE_PATH, done);
