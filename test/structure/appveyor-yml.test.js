@@ -26,14 +26,15 @@ describe('appveyor.yml', function () {
 	});
 
 	it('should have builds set for Node v5, and v6', function () {
-		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'node'), ['5', '6'],
-			'Builds not set on Node v5,6 only');
+		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'node'), ['4', '5', '6', '7'],
+			'Builds might not be set on Node v4-7 only');
 	});
 
 	it('should have a valid install sequence', function () {
 		assert.deepStrictEqual(appveyorYAML.install, [
 			{ ps: 'Install-Product node $env:node' },
-			'npm install'
+			'npm cache clean',
+			'appveyor-retry npm install'
 		],
 		'Missing / invalid nodejs install statement');
 	});
