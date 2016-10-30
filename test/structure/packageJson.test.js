@@ -65,10 +65,6 @@ describe('package.json', function () {
 			assert(packageScripts.test, 'Project test script missing');
 		});
 
-		it('should have a security check script', function () {
-			assert(packageScripts.security, 'Project security script missing');
-		});
-
 		it('should have a postinstall script', function () {
 			assert(packageScripts.postinstall, 'Project postinstall script missing');
 		});

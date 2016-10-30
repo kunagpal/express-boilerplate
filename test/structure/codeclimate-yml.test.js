@@ -4,7 +4,7 @@ var fs = require('fs'),
 	_ = require('lodash'),
 	yaml = require('js-yaml');
 
-describe('.travis.yml', function () {
+describe('.codeclimate.yml', function () {
 	var codeClimateYAML,
 		CODECLIMATE_PATH = '.codeclimate.yml';
 
@@ -42,10 +42,6 @@ describe('.travis.yml', function () {
 
 	it('should have the MarkdownLint engine enabled', function () {
 		assert(codeClimateYAML.engines.markdownlint.enabled, 'MarkdownLint config missing / broken');
-	});
-
-	it('should have the NSP engine enabled', function () {
-		assert(codeClimateYAML.engines.nodesecurity.enabled, 'NSP config missing / broken');
 	});
 
 	it('should have a valid ratings structure', function () {
