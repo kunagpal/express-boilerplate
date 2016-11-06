@@ -23,6 +23,11 @@ describe(APPVEYOR_PATH, function () {
 			'Builds might not be set on Node v4-7 only');
 	});
 
+	it('should have mongodb in the list of enabled services', function () {
+		assert(_.includes(appveyorYAML.services, 'mongodb'),
+			'MongoDB might not be installed while building!');
+	});
+
 	it('should have a valid install sequence', function () {
 		assert.deepStrictEqual(appveyorYAML.install, [
 			{ ps: 'Install-Product node $env:node' },

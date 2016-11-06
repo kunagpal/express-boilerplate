@@ -4,7 +4,7 @@ var fs = require('fs'),
 
 	bcryptPath = path.join(__dirname, '..', '..', 'node_modules', 'bcrypt');
 
-if (process.platform === 'win32') { // the bcrypt issue is only prevalent on Microsoft Windows
+if (process.platform === 'win32' && !process.env.APPVEYOR) { // the bcrypt issue is only prevalent on Microsoft Windows
 	console.info('Running on a Windows platform, installing bcryptjs instead of bcrypt');
 	childProcess.exec('npm i bcryptjs', function () {
 		fs.rename(`${bcryptPath}s`, bcryptPath, function () {

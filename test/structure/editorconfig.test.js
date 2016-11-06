@@ -1,9 +1,10 @@
 var assert = require('assert'),
 	editorconfig = require('editorconfig'),
 
-	TAB_WIDTH = 4;
+	TAB_WIDTH = 4,
+	MAX_LINE_LENGTH = 120;
 
-describe('.ignore files', function () {
+describe('.editorconfig', function () {
 	var config = editorconfig.parseSync('.editorconfig'); // eslint-disable-line no-sync
 
 	it('should have a tab_width of 4', function () {
@@ -16,6 +17,10 @@ describe('.ignore files', function () {
 
 	it('should have an indent_size of 4', function () {
 		assert(config.indent_size === TAB_WIDTH, 'Indent size set to non 4 value!');
+	});
+
+	it('should have a max_line_length of 120', function () {
+		assert(config.max_line_length === MAX_LINE_LENGTH, 'Line length set to non 120 value!');
 	});
 
 	it('should have an indent_style of 4', function () {

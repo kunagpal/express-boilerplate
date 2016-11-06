@@ -9,6 +9,9 @@ environment:
     - node: "6"
     - node: "7"
 
+services:
+  - mongodb
+
 install:
   - ps: Install-Product node $env:node
   - npm cache clean
