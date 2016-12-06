@@ -64,7 +64,7 @@
     "uglify-js": "2.7.5"
   },
   "devDependencies": {
-    "csslint": "1.0.4",
+    "csslint": "1.0.5",
     "dotenv": "2.0.0",
     "editorconfig": "0.13.2",
     "eslint": "3.11.1",
