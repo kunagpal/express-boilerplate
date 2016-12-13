@@ -41,34 +41,34 @@ catch (err) {
 	console.warn(`${TARGET_DIR} already exists`);
 }
 
-async.parallel({
-	js: function (done) {
-		fs.readdir(path.join(ASSET_PATH, 'javascripts'), function (err, scripts) {
-			if (err) {
-				return done(err);
-			}
+module.exports = function (next) {
+	async.parallel({
+		js: function (done) {
+			fs.readdir(path.join(ASSET_PATH, 'javascripts'), function (err, scripts) {
+				if (err) {
+					return done(err);
+				}
 
-			async.each(scripts, function (script, callback) {
-				// eslint-disable-next-line max-len
-				fs.writeFile(path.join(TARGET_DIR, script), uglifyJs.minify(path.join(SCRIPTS, script), JS_OPTIONS).code,
-				callback);
-			}, done);
-		});
-	},
-	css: function (done) {
-		fs.readdir(path.join(ASSET_PATH, 'stylesheets'), function (err, styles) {
-			if (err) {
-				return done(err);
-			}
+				async.each(scripts, function (script, callback) {
+					// eslint-disable-next-line max-len
+					fs.writeFile(path.join(TARGET_DIR, script), uglifyJs.minify(path.join(SCRIPTS, script), JS_OPTIONS).code,
+						callback);
+				}, done);
+			});
+		},
+		css: function (done) {
+			fs.readdir(path.join(ASSET_PATH, 'stylesheets'), function (err, styles) {
+				if (err) {
+					return done(err);
+				}
 
-			async.each(styles, function (style, callback) {
-				// eslint-disable-next-line max-len
-				fs.writeFile(path.join(TARGET_DIR, style), cleanCss.minify([path.join(STYLES, style)]).styles, callback);
-			}, done);
-		});
-	}
-}, function (err) {
-	if (err) {
-		throw err;
-	}
-});
+				async.each(styles, function (style, callback) {
+					// eslint-disable-next-line max-len
+					fs.writeFile(path.join(TARGET_DIR, style), cleanCss.minify([path.join(STYLES, style)]).styles, callback);
+				}, done);
+			});
+		}
+	}, next);
+};
+
+!module.parent && module.exports(process.exit);
