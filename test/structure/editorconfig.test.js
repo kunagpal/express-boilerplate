@@ -28,10 +28,10 @@ describe('.editorconfig', function () {
 	});
 
 	it('should have a falsy insert_final_newline value', function () {
-		assert(config.insert_final_newline === false, 'Tab width set to non truthy value!');
+		assert(config.insert_final_newline === true, 'Insert final newline set to non truthy value!');
 	});
 
 	it('should have a truthy trim_trailing_whitespace', function () {
-		assert(config.trim_trailing_whitespace === true, 'Tab width set to falsy value!');
+		assert(config.trim_trailing_whitespace === true, 'Trim trailing whitespace set to falsy value!');
 	});
 });
