@@ -48,7 +48,8 @@ describe('singleton configuration files', function () {
 
 	it('should have a valid .github directory', function () {
 		assert.deepStrictEqual(fs.readdirSync('.github'), // eslint-disable-line no-sync
-			['CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'ISSUE_TEMPLATE.md'], '.github files may be out of order');
+			['CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'ISSUE_TEMPLATE.md', 'PULL_REQUEST_TEMPLATE.md'],
+			'.github files may be out of order');
 	});
 
 	it('should have a valid views directory', function (done) {
