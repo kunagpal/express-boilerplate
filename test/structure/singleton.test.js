@@ -21,7 +21,7 @@ describe('singleton configuration files', function () {
 		fs.stat('.jsdocrc', done);
 	});
 
-	it('should have a valid gitginore', function (done) {
+	it('should have a valid gitignore', function (done) {
 		fs.stat('.gitignore', done);
 	});
 

@@ -29,7 +29,7 @@
     "test-structure": "node ./node_modules/mocha/bin/mocha test/structure",
     "test": "npm run lint && npm run test-structure && npm run test-unit",
     "pack": "node ./scripts/misc/pack.js",
-    "postinstall": "npm shrinkwrap --dev && node scripts/misc/postInstall.js"
+    "postinstall": "node scripts/misc/postInstall.js"
   },
   "contributors": [
     {

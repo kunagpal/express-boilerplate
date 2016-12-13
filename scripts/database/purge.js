@@ -13,6 +13,6 @@ mongodb.connect(process.env.MONGO, function (err, db) {
 			throw error;
 		}
 
-		console.info(`Sucessfully purged database at ${process.env.MONGO}`);
+		console.info(`Successfully purged database at ${process.env.MONGO}`);
 	});
 });
