@@ -53,6 +53,10 @@ describe('singleton configuration files', function () {
 		fs.stat('test', done);
 	});
 
+	it('should have a valid utils directory', function (done) {
+		fs.stat('utils', done);
+	});
+
 	it('should have a valid scripts directory', function (done) {
 		fs.stat('scripts', done);
 	});

@@ -5,7 +5,7 @@ var path = require('path'),
 	facebook = require('passport-facebook').Strategy,
 	google = require('passport-google-oauth2').Strategy,
 
-	user = require(path.join(__dirname, '..', 'controllers', 'user')),
+	user = require(path.join(__dirname, '..', 'database', 'user')),
 
 	AUTH_STRATEGIES = {
 		GOOGLE: google,

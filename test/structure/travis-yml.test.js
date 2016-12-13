@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	assert = require('assert'),
 
-	utils = require(path.join(__dirname, '..', '..', 'scripts', 'test')),
+	utils = require(path.join(__dirname, '..', '..', 'utils', 'test')),
 
 	TRAVIS_PATH = '.travis.yml';
 

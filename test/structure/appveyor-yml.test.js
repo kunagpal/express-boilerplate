@@ -3,7 +3,7 @@ var fs = require('fs'),
 	assert = require('assert'),
 
 	_ = require('lodash'),
-	utils = require(path.join(__dirname, '..', '..', 'scripts', 'test')),
+	utils = require(path.join(__dirname, '..', '..', 'utils', 'test')),
 
 	APPVEYOR_PATH = 'appveyor.yml';
 
