@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs = require('fs'),
+	assert = require('assert');
 
 describe('singleton configuration files', function () {
 	it('should have a README.md', function (done) {
@@ -45,8 +46,13 @@ describe('singleton configuration files', function () {
 		fs.stat('.csslintrc', done);
 	});
 
+	it('should have a valid .github directory', function () {
+		assert.deepStrictEqual(fs.readdirSync('.github'), // eslint-disable-line no-sync
+			['CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'ISSUE_TEMPLATE.md'], '.github files may be out of order');
+	});
+
 	it('should have a valid views directory', function (done) {
-		fs.stat('app.js', done);
+		fs.stat('views', done);
 	});
 
 	it('should have a valid test directory', function (done) {
@@ -66,7 +72,7 @@ describe('singleton configuration files', function () {
 	});
 
 	it('should have a valid public directory', function (done) {
-		fs.stat('app.js', done);
+		fs.stat('public', done);
 	});
 
 	it('should have a valid node_modules directory', function (done) {
