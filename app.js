@@ -11,9 +11,9 @@ var path = require('path'),
 	expressSession = require('express-session'),
 	sentry = require('raven').middleware.express,
 
-	api = require('routes/api'),
-	index = require('routes/index'),
-	users = require('routes/users'),
+	api = require(path.join(__dirname, 'routes', 'api')),
+	index = require(path.join(__dirname, 'routes', 'index')),
+	users = require(path.join(__dirname, 'routes', 'users')),
 
 	errorHandler = sentry.errorHandler(process.env.SENTRY_DSN),
 	app = express(),
@@ -80,19 +80,16 @@ if (process.env.NODE_ENV) {
 
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
-	err.status |= INTERNAL_SERVER_ERROR;
-
+	err.status = err.status || INTERNAL_SERVER_ERROR;
 	res.status(err.status);
 
 	if (err.code === CSRF_TOKEN_ERROR) {
 		return res.redirect(req.headers.referer);
 	}
 
-	err.status = status;
-
 	if (process.env.NODE_ENV) {
-		err.stack = '';
-		err.message = '';
+		delete err.stack;
+		delete err.message;
 	}
 
 	res.render('error', err);
