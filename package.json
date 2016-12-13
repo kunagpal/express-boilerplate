@@ -60,7 +60,7 @@
     "passport-facebook": "2.1.1",
     "passport-google-oauth2": "0.1.6",
     "pm2": "2.1.6",
-    "raven": "0.12.3",
+    "raven": "1.0.0",
     "uglify-js": "2.7.5"
   },
   "devDependencies": {
