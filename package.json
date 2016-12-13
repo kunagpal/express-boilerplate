@@ -13,7 +13,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "check": "node ./node_modules/.bin/npm-check -u && npm shrinkwrap --dev",
+    "check": "node ./node_modules/.bin/npm-check -u",
     "docs": "node ./node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts app.js",
     "start": "npm run pack && node ./node_modules/.bin/pm2 start ./bin/www",
     "stop": "node ./node_modules/.bin/pm2 stop ./bin/www",
@@ -27,7 +27,7 @@
     "test-unit": "node ./node_modules/istanbul/index.js cover ./node_modules/mocha/bin/_mocha -- test/unit",
     "test-e2e": "node ./node_modules/mocha/bin/mocha test/e2e",
     "test-structure": "node ./node_modules/mocha/bin/mocha test/structure",
-    "test": "npm run lint && npm run test-structure && npm run test-unit",
+    "test": "npm run lint && npm run test-structure && npm run test-unit && npm run security",
     "pack": "node ./scripts/misc/pack.js",
     "postinstall": "node scripts/misc/postInstall.js"
   },
