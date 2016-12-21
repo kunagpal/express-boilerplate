@@ -6,6 +6,7 @@
 [![devDependencies](https://david-dm.org/kunagpal/express-boilerplate/dev-status.svg)](https://david-dm.org/kunagpal/express-boilerplate#info=devDependencies)
 [![Linux build](https://travis-ci.org/kunagpal/express-boilerplate.svg?branch=master)](https://travis-ci.org/kunagpal/express-boilerplate)
 [![Windows build](https://ci.appveyor.com/api/projects/status/9dr0pa7wdotlopnu/branch/master?svg=true)](https://ci.appveyor.com/project/kunagpal/express-boilerplate/branch/master)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/352/badge)](https://bestpractices.coreinfrastructure.org/projects/352)
 
 # express-boilerplate
 
