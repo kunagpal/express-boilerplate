@@ -20,7 +20,7 @@
     "seed": "node ./scripts/database/seed.js",
     "purge": "node ./scripts/database/seed.js",
     "restart": "node ./node_modules/.bin/pm2 restart ./bin/www",
-    "security": "node ./node_modules/.bin/nsp check",
+    "security": "node ./node_modules/nsp/bin/nsp check",
     "lint-css": "node ./node_modules/csslint/dist/cli.js public/stylesheets",
     "lint-js": "node ./node_modules/eslint/bin/eslint.js .",
     "lint": "npm run lint-js && npm run lint-css",
