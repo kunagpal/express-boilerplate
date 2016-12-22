@@ -2,10 +2,6 @@ sudo: required
 
 language: node_js
 
-os:
-  - linux
-  - osx
-
 compiler:
   - gcc
   - clang
