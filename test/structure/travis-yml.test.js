@@ -14,15 +14,27 @@ describe(TRAVIS_PATH, function () {
 	});
 
 	it('should have sudo required', function () {
-		assert(travisYAML.sudo === 'required', 'Travis build configuration may not have sudo required');
+		assert.strictEqual(travisYAML.sudo, 'required', 'Travis build configuration may not have sudo required');
+	});
+
+	it('should run builds on linux and osx', function () {
+		assert.deepStrictEqual(travisYAML.os, ['linux', 'osx'], 'Travis builds are not set to linux and osx');
+	});
+
+	it('should use gcc and clang compilers respectively', function () {
+		assert.deepStrictEqual(travisYAML.compiler, ['gcc', 'clang'], 'Travis build compilers not set to gcc, clang');
 	});
 
 	it('should have a language field with value node_js', function () {
-		assert(travisYAML.language === 'node_js', 'Travis build language is not set to node_js');
+		assert.strictEqual(travisYAML.language, 'node_js', 'Travis build language is not set to node_js');
 	});
 
 	it('should have builds set for Node v4-7', function () {
 		assert.deepStrictEqual(travisYAML.node_js, ['4', '5', '6', '7'], 'Travis is not set for builds on Node v4-7');
+	});
+
+	it('should run on master and develop only', function () {
+		assert.deepStrictEqual(travisYAML.branches.only, ['master', 'develop'], 'Non master/develop branches included');
 	});
 
 	describe('addons', function () {
@@ -41,7 +53,11 @@ describe(TRAVIS_PATH, function () {
 		});
 	});
 
-	it('should clean the npm cache before installing', function () {
-		assert.deepStrictEqual(travisYAML.before_install, ['npm cache clean'], 'Cache may have been left intact');
+	it('should use mongodb as a service', function () {
+		assert.deepStrictEqual(travisYAML.services, ['mongodb'], 'MongoDB may not be used');
+	});
+
+	it('should cache the node_modules', function () {
+		assert.deepStrictEqual(travisYAML.cache.directories, ['node_modules'], 'Caching may be invalid');
 	});
 });
