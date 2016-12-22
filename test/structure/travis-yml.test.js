@@ -26,14 +26,18 @@ describe(TRAVIS_PATH, function () {
 	});
 
 	describe('addons', function () {
-		var addons = travisYAML.addons.apt;
+		var addons = travisYAML.addons;
 
 		it('should have the correct ubuntu toolchain as in sources', function () {
-			assert.deepStrictEqual(addons.sources, ['ubuntu-toolchain-r-test'], 'Incorrect build toolchain specified');
+			assert.deepStrictEqual(addons.apt.sources, ['ubuntu-toolchain-r-test'], 'Incorrect build toolchain');
 		});
 
 		it('should have the g++ 4.8 listed as a package', function () {
-			assert.deepStrictEqual(addons.packages, ['g++-4.8'], 'Incorrect build package specified');
+			assert.deepStrictEqual(addons.apt.packages, ['g++-4.8'], 'Incorrect build package specified');
+		});
+
+		it('should have a secured codeclimate repository token', function () {
+			assert(/^.+$/.test(addons.code_climate.repo_token.secure), 'Invalid codeclimate repo token');
 		});
 	});
 
