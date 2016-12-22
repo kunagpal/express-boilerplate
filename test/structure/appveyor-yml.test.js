@@ -15,7 +15,8 @@ describe(APPVEYOR_PATH, function () {
 	});
 
 	it('should have an init script for git line ending config', function () {
-		assert(_.head(appveyorYAML.init) === 'git config --global core.autocrlf input', 'Invalid init script');
+		assert.deepStrictEqual(appveyorYAML.init, ['git config --global core.autocrlf input',
+			'git config --global core.eol lf'], 'Invalid init script');
 	});
 
 	it('should have builds set for Node v5, and v6', function () {
@@ -28,17 +29,20 @@ describe(APPVEYOR_PATH, function () {
 			'MongoDB might not be installed while building!');
 	});
 
+	it('should cache node_modules corectly', function () {
+		assert(_.includes(appveyorYAML.cache, 'node_modules -> package.json'), 'node_modules might not be cached');
+	});
+
 	it('should have a valid install sequence', function () {
 		assert.deepStrictEqual(appveyorYAML.install, [
 			{ ps: 'Install-Product node $env:node' },
-			'npm cache clean',
 			'appveyor-retry npm install'
 		],
 		'Missing / invalid nodejs install statement');
 	});
 
 	it('should have MSBuild switched off', function () {
-		assert(appveyorYAML.build === 'off', 'Build option has been left on');
+		assert.strictEqual(appveyorYAML.build, 'off', 'Build option has been left on');
 	});
 
 	it('should have a valid test sequence', function () {
@@ -49,6 +53,6 @@ describe(APPVEYOR_PATH, function () {
 	});
 
 	it('should have deploy switched off', function () {
-		assert(appveyorYAML.deploy === 'off', 'Deploy option has been left on');
+		assert.strictEqual(appveyorYAML.deploy, 'off', 'Deploy option has been left on');
 	});
 });
