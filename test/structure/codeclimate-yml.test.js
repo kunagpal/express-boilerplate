@@ -43,6 +43,7 @@ describe(CODECLIMATE_PATH, function () {
 	});
 
 	it('should have a field ratings, as an array', function () {
-		assert(_.isArray(codeClimateYAML.exclude_paths), 'Exclude paths is either missing or is in invalid format');
+		assert.deepStrictEqual(codeClimateYAML.exclude_paths, ['Procfile', 'LICENSE', '**.ejs', '**.yml', '**.opts'],
+			'Exclude paths is either missing or is in invalid format');
 	});
 });
