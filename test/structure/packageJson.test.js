@@ -88,7 +88,7 @@ describe('package.json', function () {
 		});
 
 		it('should have a type git', function () {
-			assert(packageRepository.type === 'git', 'Project repository is of a non-git type');
+			assert.strictEqual(packageRepository.type, 'git', 'Project repository is of a non-git type');
 		});
 
 		it('should point to a valid URL', function () {
@@ -98,11 +98,11 @@ describe('package.json', function () {
 
 	describe('engine', function () {
 		it('should point to a valid node engine', function () {
-			assert(packageJSON.engines.node === '6.x', 'Project engine is invalid');
+			assert.strictEqual(packageJSON.engines.node, '6.x', 'Project engine is invalid');
 		});
 
 		it('should point to a valid npm engine', function () {
-			assert(packageJSON.engines.npm === '4.x', 'Project engine is invalid');
+			assert.strictEqual(packageJSON.engines.npm, '4.x', 'Project engine is invalid');
 		});
 	});
 });

@@ -22,7 +22,7 @@ describe(CODECLIMATE_PATH, function () {
 		var duplicationEngine = codeClimateYAML.engines.duplication;
 
 		assert(duplicationEngine.enabled, 'Duplication config missing / broken');
-		assert(_.head(duplicationEngine.config.languages) === 'javascript', 'Possible invalid language setting');
+		assert.strictEqual(_.head(duplicationEngine.config.languages), 'javascript', 'Invalid language setting');
 	});
 
 	it('should have the ESLint engine enabled', function () {
