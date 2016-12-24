@@ -20,4 +20,9 @@ ratings:
   - "**.js"
   - "**.md"
   - "bin/**/*"
-exclude_paths: []
+exclude_paths:
+  - Procfile
+  - LICENSE
+  - "**.ejs"
+  - "**.yml"
+  - "**.opts"
