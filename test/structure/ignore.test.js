@@ -8,48 +8,17 @@ describe('.ignore files', function () {
 	var gitignorePath = '.gitignore';
 
 	describe(gitignorePath, function () {
-		var gitignore = parseIgnore(gitignorePath);
+		var gitignore = parseIgnore(gitignorePath),
+			ignored = ['*.log', '*.pid', '*.seed', '.env', '.grunt', '.idea/**', '.lock-wscript', '.node_repl_history',
+				'.npm', '.nyc_output', 'build/Release', 'coverage', 'lib-cov', 'logs', 'node_modules', 'npm-debug.log*',
+				'pids', 'public/bower', 'public/min'];
 
 		it('should exist', function (done) {
 			fs.stat(gitignorePath, done);
 		});
 
-		it('should ignore log files', function () {
-			assert(_.includes(gitignore, '*.log'), 'Log files might be added to commits!');
-			assert(_.includes(gitignore, 'logs'), 'Log files might be added to commits!');
-			assert(_.includes(gitignore, 'logs/**'), 'Log files might be added to commits!');
-			assert(_.includes(gitignore, 'npm-debug.log*'), 'npm debug logs might be added to commits!');
-		});
-
-		it('should ignore environment specific configuration', function () {
-			assert(_.includes(gitignore, '.env'), '.env might be added to commits!');
-			assert(_.includes(gitignore, '.env/**'), '.env might be added to commits!');
-		});
-
-		it('should ignore installed dependencies', function () {
-			assert(_.includes(gitignore, 'node_modules'), 'node_modules might be added to commits!');
-			assert(_.includes(gitignore, 'node_modules/**'), 'node_modules might be added to commits!');
-			assert(_.includes(gitignore, 'public/bower'), 'Bower components might be added to commits!');
-			assert(_.includes(gitignore, 'public/bower/**'), 'Bower components might be added to commits!');
-		});
-
-		it('should ignore unit test coverage information', function () {
-			assert(_.includes(gitignore, 'coverage'), 'test coverage might be added to commits!');
-			assert(_.includes(gitignore, 'coverage/**'), 'test coverage might be added to commits!');
-		});
-
-		it('should ignore grunt related entities', function () {
-			assert(_.includes(gitignore, '.grunt'), 'grunts might be added to commits!');
-			assert(_.includes(gitignore, '.grunt/**'), 'grunts coverage might be added to commits!');
-		});
-
-		it('should ignore minified static assets', function () {
-			assert(_.includes(gitignore, 'public/min'), 'minified assets might be added to commits!');
-			assert(_.includes(gitignore, 'public/min/**'), 'minified assets might be added to commits!');
-		});
-
-		it('should ignore IDE project metadata manifiests', function () {
-			assert(_.includes(gitignore, '.idea/**'), '.idea might be added to commits!');
+		it('should ignore all basic entities', function () {
+			assert.deepStrictEqual(_.intersection(gitignore, ignored), ignored, 'Invalid .gitignore!');
 		});
 	});
 });
