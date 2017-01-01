@@ -51,7 +51,7 @@
     "express": "4.14.0",
     "express-session": "1.14.2",
     "express-status-monitor": "0.1.6",
-    "helmet": "3.2.0",
+    "helmet": "3.3.0",
     "heroku-client": "3.0.0-beta3",
     "lodash": "4.17.4",
     "mongodb": "2.2.16",
