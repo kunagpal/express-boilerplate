@@ -66,7 +66,7 @@
   "devDependencies": {
     "codeclimate-test-reporter": "0.4.0",
     "csslint": "1.0.5",
-    "dotenv": "2.0.0",
+    "dotenv": "3.0.0",
     "editorconfig": "0.13.2",
     "eslint": "3.13.0",
     "eslint-plugin-jsdoc": "2.4.0",
