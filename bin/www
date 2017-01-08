@@ -4,6 +4,7 @@ var path = require('path'),
 	_ = require('lodash'),
 	mongodb = require('mongodb').MongoClient,
 	debug = require('debug')('express-boilerplate:server'),
+	utils = require(path.join(__dirname, '..', 'utils', 'misc')),
 
 	port,
 	app,
@@ -36,7 +37,7 @@ var path = require('path'),
 	};
 
 if (process.env.NODE_ENV) {
-// add production environment checks
+	utils.checkVars();
 }
 else {
 	require('dotenv').load();
@@ -44,7 +45,7 @@ else {
 
 port = _.toInteger(process.env.PORT) || 3000;
 
-mongodb.connect(process.env.MONGO, function (err, database) {
+mongodb.connect(process.env.MONGO_URI, function (err, database) {
 	if (err) {
 		throw err;
 	}
