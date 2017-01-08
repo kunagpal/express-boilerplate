@@ -9,13 +9,12 @@ var path = require('path'),
 	compression = require('compression'),
 	cookieParser = require('cookie-parser'),
 	expressSession = require('express-session'),
-	sentry = require('raven').middleware.express,
 
 	api = require(path.join(__dirname, 'routes', 'api')),
 	index = require(path.join(__dirname, 'routes', 'index')),
 	users = require(path.join(__dirname, 'routes', 'users')),
 
-	errorHandler = sentry.errorHandler(process.env.SENTRY_DSN),
+	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
 	app = express(),
 
 	NOT_FOUND = 404,
@@ -75,7 +74,7 @@ app.use(function (req, res, next) {
 
 // error handlers
 if (process.env.NODE_ENV) {
-	app.use(errorHandler);
+	app.use(onError);
 }
 
 // eslint-disable-next-line no-unused-vars
