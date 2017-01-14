@@ -1,11 +1,16 @@
+/* globals it */
 var fs = require('fs'),
 	path = require('path'),
 	assert = require('assert'),
 
 	_ = require('lodash'),
+	async = require('async'),
+	Mocha = require('mocha'),
 	yaml = require('js-yaml'),
+	readDir = require('recursive-readdir'),
 
 	ENCODING = 'utf-8',
+	TEST_FILE_PATTERN = '.test.js',
 	YAML_LOAD_ERROR = 'The specified file does not exist, or is invalid YAML',
 	PACKAGES = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies'];
 
@@ -75,4 +80,35 @@ exports.checkDependencies = function (package, mode) {
 			});
 		});
 	};
+};
+
+exports.runTests = function (testDir, done) {
+	async.waterfall([
+		function (next) {
+			readDir(testDir, next);
+		},
+		function (files, next) {
+			next(null, _.filter(files, function (file) {
+				return _.endsWith(file, TEST_FILE_PATTERN);
+			}));
+		},
+		function (tests, next) {
+			var mocha = new Mocha();
+
+			_.forEach(tests, mocha.addFile.bind(mocha));
+
+			next(null, mocha);
+		},
+		function (mocha, next) {
+			_.merge(global, {
+				_: _,
+				fs: fs,
+				path: path,
+				assert: assert,
+				utils: exports
+			});
+
+			mocha.run(next);
+		}
+	], done);
 };

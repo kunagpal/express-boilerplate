@@ -1,8 +1,4 @@
-var fs = require('fs'),
-	assert = require('assert'),
-
-	_ = require('lodash'),
-	parseIgnore = require('parse-gitignore');
+var parseIgnore = require('parse-gitignore');
 
 describe('.ignore files', function () {
 	var gitignorePath = '.gitignore';

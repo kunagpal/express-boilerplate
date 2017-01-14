@@ -1,11 +1,4 @@
-var fs = require('fs'),
-	path = require('path'),
-	assert = require('assert'),
-
-	_ = require('lodash'),
-	utils = require(path.join(__dirname, '..', '..', 'utils', 'test')),
-
-	CODECLIMATE_PATH = '.codeclimate.yml';
+var CODECLIMATE_PATH = '.codeclimate.yml';
 
 describe(CODECLIMATE_PATH, function () {
 	var codeClimateYAML = utils.ymlToJson(CODECLIMATE_PATH);

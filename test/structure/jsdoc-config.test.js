@@ -1,7 +1,3 @@
-var fs = require('fs'),
-	_ = require('lodash'),
-	assert = require('assert');
-
 describe('JSDoc configuration', function () {
 	var json,
 		content,
@@ -86,7 +82,7 @@ describe('JSDoc configuration', function () {
 			assert.strictEqual(json.markdown.parser, 'gfm', 'GitHub flavoured markdown not set!');
 		});
 
-		it('should have jsdoc and closure dictionaries', function () {
+		it('should not use hardwrap', function () {
 			assert(!json.markdown.hardwrap, 'Hardwrap might be enabled!');
 		});
 	});

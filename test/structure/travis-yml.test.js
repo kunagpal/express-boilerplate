@@ -1,10 +1,4 @@
-var fs = require('fs'),
-	path = require('path'),
-	assert = require('assert'),
-
-	utils = require(path.join(__dirname, '..', '..', 'utils', 'test')),
-
-	TRAVIS_PATH = '.travis.yml';
+var TRAVIS_PATH = '.travis.yml';
 
 describe(TRAVIS_PATH, function () {
 	var travisYAML = utils.ymlToJson(TRAVIS_PATH);
