@@ -50,7 +50,7 @@
     "emailjs": "1.0.8",
     "express": "4.14.0",
     "express-session": "1.14.2",
-    "express-status-monitor": "0.1.6",
+    "express-status-monitor": "0.1.9",
     "helmet": "3.4.0",
     "heroku-client": "3.0.0-beta3",
     "lodash": "4.17.4",
