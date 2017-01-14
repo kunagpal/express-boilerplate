@@ -1,3 +1,6 @@
+---
+root: true
+
 plugins:
   - mocha
   - mongodb
@@ -20,16 +23,10 @@ extensions:
   js: true
 
 globals:
-  it: true
   db: true
-  before: true
-  after: true
   global: true
-  afterEach: true
-  beforeEach: true
   testFlag: true
   testDb: true
-  describe: true
 
 # http://eslint.org/docs/rules/
 rules:
@@ -291,23 +288,6 @@ rules:
   lodash/prefer-over-quantifier: 2
   lodash/prefer-startswith: 2
   lodash/prefer-times: 2
-
-  # Mocha
-  mocha/handle-done-callback: 2
-  mocha/no-exclusive-tests: 2
-  mocha/no-global-tests: 2
-  mocha/no-hooks-for-single-case: 2
-  mocha/no-hooks: 0
-  mocha/no-identical-title: 2
-  mocha/no-mocha-arrows: 2
-  mocha/no-pending-tests: 2
-  mocha/no-return-and-callback: 2
-  mocha/no-sibling-hooks: 2
-  mocha/no-skipped-tests: 2
-  mocha/no-synchronous-tests: 0
-  mocha/no-top-level-hooks: 0
-  mocha/valid-suite-description: 2
-  mocha/valid-test-description: 2
 
   # MongoDB
   mongodb/check-insert-calls: 2
