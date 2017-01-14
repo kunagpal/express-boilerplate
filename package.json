@@ -24,7 +24,7 @@
     "lint-css": "node ./node_modules/csslint/dist/cli.js public/stylesheets",
     "lint-js": "node ./node_modules/eslint/bin/eslint.js .",
     "lint": "npm run lint-js && npm run lint-css",
-    "test-unit": "node node_modules/.bin/istanbul cover scripts/test/unit.js",
+    "test-unit": "node node_modules/istanbul/index.js cover scripts/test/unit.js",
     "test-e2e": "node ./scripts/test/e2e.js",
     "test-structure": "node ./scripts/test/structure.js",
     "test": "npm run lint && npm run test-structure && npm run test-unit && npm run security",
