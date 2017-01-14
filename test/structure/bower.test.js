@@ -1,10 +1,4 @@
-var url = require('url'),
-	path = require('path'),
-	assert = require('assert'),
-
-	_ = require('lodash'),
-
-	utils = require(path.join(__dirname, '..', '..', 'utils', 'test'));
+var url = require('url');
 
 describe('bower', function () {
 	var rootPath = path.join(__dirname, '..', '..'),
@@ -24,8 +18,7 @@ describe('bower', function () {
 		});
 
 		it('should have a non empty list of keywords', function () {
-			assert(_.isArray(bowerJSON.keywords) && !_.isEmpty(bowerJSON.keywords),
-                'Project may have been public to the npm registry');
+			assert(_.isArray(bowerJSON.keywords) && !_.isEmpty(bowerJSON.keywords), 'Keywords may be invalid!');
 		});
 	});
 
