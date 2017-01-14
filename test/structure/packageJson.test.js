@@ -1,10 +1,4 @@
-var url = require('url'),
-	path = require('path'),
-	assert = require('assert'),
-
-	_ = require('lodash'),
-
-	utils = require(path.join(__dirname, '..', '..', 'utils', 'test'));
+var url = require('url');
 
 describe('package.json', function () {
 	var rootPath = path.join(__dirname, '..', '..'),

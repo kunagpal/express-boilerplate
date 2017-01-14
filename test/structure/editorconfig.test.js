@@ -1,5 +1,4 @@
-var assert = require('assert'),
-	editorconfig = require('editorconfig'),
+var editorconfig = require('editorconfig'),
 
 	TAB_WIDTH = 4,
 	MAX_LINE_LENGTH = 120;
