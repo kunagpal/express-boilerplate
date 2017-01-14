@@ -1,5 +1,3 @@
-sudo: required
-
 language: node_js
 
 compiler:
@@ -35,4 +33,6 @@ cache:
   directories:
     - node_modules
 
-after_script: node node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info
+after_script:
+  - npm install codeclimate-test-reporter
+  - node node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info
