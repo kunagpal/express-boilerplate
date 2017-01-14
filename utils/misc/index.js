@@ -4,7 +4,8 @@ var _ = require('lodash'),
 		'SENTRY_DSN', 'MONGO_URI'];
 
 exports.checkVars = function () {
-	var missingVars = _(process.env).keys().intersection(REQUIRED_VARS).difference(REQUIRED_VARS).value().toString();
+	var subset = _(process.env).pick(REQUIRED_VARS).keys().value(),
+		missingVars = _.difference(REQUIRED_VARS, subset).toString();
 
 	if (!_.isEmpty(missingVars)) {
 		throw new Error(`${missingVars.toString()} environment variables are missing!`);
