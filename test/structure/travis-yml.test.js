@@ -7,10 +7,6 @@ describe(TRAVIS_PATH, function () {
 		fs.stat(TRAVIS_PATH, done);
 	});
 
-	it('should have sudo required', function () {
-		assert.strictEqual(travisYAML.sudo, 'required', 'Travis build configuration may not have sudo required');
-	});
-
 	it.skip('should run builds on linux and osx', function () { // eslint-disable-line mocha/no-skipped-tests
 		assert.deepStrictEqual(travisYAML.os, ['linux', 'osx'], 'Travis builds are not set to linux and osx');
 	});
