@@ -108,7 +108,7 @@ rules:
   no-sequences: 2
   no-throw-literal: 2
   no-unmodified-loop-condition: 2
-  no-unused-expressions: 1
+  no-unused-expressions: [2, { "allowShortCircuit": true, "allowTernary": true }]
   no-useless-call: 2
   no-useless-concat: 2
   no-void: 2
@@ -130,14 +130,14 @@ rules:
   no-shadow-restricted-names: 2
   no-shadow: 2
   no-undef-init: 2
-  no-undef: 1
+  no-undef: [2, { "typeof": true }]
   no-undefined: 2
   no-unused-vars: 2
   no-use-before-define: 2
 
   # Node.js and CommonJS
   callback-return: 2
-  global-require: 1
+  global-require: 2
   handle-callback-err: 2
   no-mixed-requires: 0
   no-new-require: 2
@@ -196,7 +196,7 @@ rules:
   object-curly-spacing: [2, always]
   object-property-newline: 0
   one-var: [2, always]
-  operator-assignment: [1, always]
+  operator-assignment: [2, always]
   operator-linebreak: 2
   padded-blocks: [2, never]
   quote-props: [2, as-needed]
