@@ -46,12 +46,7 @@ app.use(function (req, res, next) {
 	}
 
 	res.flash = function (content) {
-		if (content) {
-			req.session.flash.push(content);
-		}
-		else {
-			return req.session.flash.pop();
-		}
+		return content ? req.session.flash.push(content) : req.session.flash.pop();
 	};
 
 	next();

@@ -5,12 +5,12 @@ if (process.env.NODE_ENV) {
 }
 
 module.exports = function (done) {
-	mongodb.connect(process.env.MONGO, function (err, db) {
+	return mongodb.connect(process.env.MONGO, function (err, db) {
 		if (err) {
 			return done(err);
 		}
 
-		db.dropDatabase(function (error) {
+		return db.dropDatabase(function (error) {
 			if (error) {
 				return done(error);
 			}
