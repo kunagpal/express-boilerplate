@@ -44,7 +44,7 @@ catch (err) {
 module.exports = function (next) {
 	async.parallel({
 		js: function (done) {
-			fs.readdir(path.join(ASSET_PATH, 'javascripts'), function (err, scripts) {
+			return fs.readdir(path.join(ASSET_PATH, 'javascripts'), function (err, scripts) {
 				if (err) {
 					return done(err);
 				}
@@ -57,7 +57,7 @@ module.exports = function (next) {
 			});
 		},
 		css: function (done) {
-			fs.readdir(path.join(ASSET_PATH, 'stylesheets'), function (err, styles) {
+			return fs.readdir(path.join(ASSET_PATH, 'stylesheets'), function (err, styles) {
 				if (err) {
 					return done(err);
 				}

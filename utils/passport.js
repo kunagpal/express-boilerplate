@@ -15,7 +15,7 @@ var path = require('path'),
 	passportCallback = function (req, token, refresh, profile, done) {
 		process.nextTick(function () {
 			// eslint-disable-next-line lodash/prefer-lodash-method
-			user.find({ _id: req.signedCookies.user }, function (err, doc) {
+			return user.find({ _id: req.signedCookies.user }, function (err, doc) {
 				var record;
 
 				if (err) {
