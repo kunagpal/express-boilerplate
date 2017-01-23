@@ -10,6 +10,8 @@
 
 # express-boilerplate
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kunagpal/express-boilerplate.svg)](https://greenkeeper.io/)
+
 ## A project scaffold intended for use with Express.js
 
 ### This project is hosted: markdown-style-project-link
