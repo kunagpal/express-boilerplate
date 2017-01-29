@@ -22,9 +22,7 @@ var path = require('path'),
 	 * @param {Error} error - An error instance with details on failed app starts.
 	 */
 	onError = function (error) {
-		if (error.syscall !== 'listen') {
-			throw error;
-		}
+		if (error.syscall !== 'listen') { throw error; }
 
 		var bind = _.isString(port) ? `Pipe ${port}` : `Port ${port}`;
 
@@ -54,7 +52,7 @@ var path = require('path'),
 	 */
 	onSigint = function () {
 		db.close();
-		process.exit(0);
+		process.exit(0); // eslint-disable-line
 	};
 
 process.env.NODE_ENV ? utils.checkVars() : require('dotenv').load();
@@ -69,13 +67,11 @@ port = _.toInteger(process.env.PORT);
  */
 module.exports = function (done) {
 	mongodb.connect(process.env.MONGO_URI, function (err, database) {
-		if (err) {
-			throw err;
-		}
+		if (err) { throw err; }
 
 		global.db = database;
 
-		app = require(path.join(__dirname, '..', 'app'));
+		app = require(path.join(__dirname, '..', 'app')); // eslint-disable-line global-require
 		app.set('port', port);
 
 		server = http.createServer(app);

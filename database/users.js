@@ -9,7 +9,7 @@ var _ = require('lodash'),
 	 * Creates a new instance for the users collection.
 	 *
 	 * @param {Object} data - A set of user details.
-	 * @returns {{email, passwordHash: *, authStrategy: *, editedAt: string, settings: {}}} A users collection compliant
+	 * @returns {{email, passwordHash: *, authStrategy: *, editedAt: String, settings: {}}} A users collection compliant
 	 * object.
 	 */
 	user = function (data) {

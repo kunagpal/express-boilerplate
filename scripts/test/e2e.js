@@ -3,6 +3,8 @@
  */
 
 var path = require('path'),
+	chalk = require('chalk'),
+
 	run = require(path.join(__dirname, '..', '..', 'utils', 'test')).runTests;
 
 /**
@@ -11,6 +13,7 @@ var path = require('path'),
  * @param {Function} done - The callback that marks the end of the e2e test routine.
  */
 module.exports = function (done) {
+	console.info(chalk.blue.bold('Running end to end tests'));
 	run('test/e2e', done);
 };
 

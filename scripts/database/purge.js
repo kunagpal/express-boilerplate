@@ -2,7 +2,8 @@
  * @file Purges the database at process.env.MONGO_URI.
  */
 
-var mongodb = require('mongodb').MongoClient;
+var chalk = require('chalk'),
+	mongodb = require('mongodb').MongoClient;
 
 if (process.env.NODE_ENV && process.env.NODE_ENV !== 'test') {
 	throw new Error('Database purge will not occur on non-test environments');
@@ -16,18 +17,15 @@ if (process.env.NODE_ENV && process.env.NODE_ENV !== 'test') {
  */
 module.exports = function (done) {
 	return mongodb.connect(process.env.MONGO_URI, function (err, db) {
-		if (err) {
-			return done(err);
-		}
+		if (err) { return done(err); }
 
 		return db.dropDatabase(function (error) {
-			if (error) {
-				return done(error);
-			}
+			if (error) { return done(error); }
 
 			db.close();
-			console.info(`Successfully purged database at ${process.env.MONGO}`);
-			done();
+			console.info(chalk.green(`Successfully purged database at ${process.env.MONGO}`));
+
+			return done();
 		});
 	});
 };

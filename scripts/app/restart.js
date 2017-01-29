@@ -24,7 +24,7 @@ module.exports = function (done) {
 		 * @param {Function} next - The callback invoked to mark the end of the graceful reload process.
 		 */
 		function (next) {
-			pm2.gracefulReload('bin/www', { updateEnv: true }, next);
+			pm2.gracefulReload('bin/www.js', { updateEnv: true }, next);
 		}
 	],
 

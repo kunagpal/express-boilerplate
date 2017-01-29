@@ -31,9 +31,7 @@ var path = require('path'),
 			return user.find({ _id: req.signedCookies.user }, function (err, doc) {
 				var record;
 
-				if (err) {
-					return done(err);
-				}
+				if (err) { return done(err); }
 				if (doc && doc.authStrategy === profile.provider && profile.id === doc.profile) {
 					return done(null, doc); // user found, return that user
 				}
@@ -47,7 +45,7 @@ var path = require('path'),
 				record._id = _.head(profile.emails).value; // eslint-disable-line no-underscore-dangle
 				record.authStrategy = profile.provider;
 
-				user.insert(record, done);
+				return user.insert(record, done);
 			});
 		});
 	};

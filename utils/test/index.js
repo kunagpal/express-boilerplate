@@ -21,8 +21,8 @@ var fs = require('fs'),
 /**
  * Converts YAMl to JSON.
  *
- * @param {?String} yamlPath - The path of the file to parse YAMl from.
- * @returns {Object={}} The JSON representation of the provided YAML file.
+ * @param {String} yamlPath - The path of the file to parse YAMl from.
+ * @returns {Object} The JSON representation of the provided YAML file.
  */
 exports.ymlToJson = function (yamlPath) {
 	var json = {};
