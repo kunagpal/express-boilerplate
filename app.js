@@ -1,5 +1,6 @@
 var path = require('path'),
 
+	cors = require('cors'),
 	csurf = require('csurf'),
 	logger = require('morgan'),
 	helmet = require('helmet'),
@@ -29,6 +30,7 @@ app.set('views', 'views');
 
 app.use(helmet());
 app.use(compression());
+app.use('/api', cors({ origin: false }));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
