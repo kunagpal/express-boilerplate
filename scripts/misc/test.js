@@ -6,7 +6,7 @@ var path = require('path'),
 	istanbul = require(path.join(rootPath, 'node_modules', 'istanbul', 'lib', 'cli'));
 
 module.exports = function (done) {
-	istanbul.runToCompletion(['cover', unitTestScript], done);
+	istanbul.runToCompletion(['cover', unitTestScript, '--print', 'both'], done);
 };
 
 !module.parent && module.exports(process.exit);
