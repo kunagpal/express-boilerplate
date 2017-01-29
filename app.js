@@ -91,7 +91,7 @@ app.use(function (err, req, res, next) { // the last argument is necessary
 		delete err.message;
 	}
 
-	res.render('error', err);
+	return res.render('error', err);
 });
 
 module.exports = app;
