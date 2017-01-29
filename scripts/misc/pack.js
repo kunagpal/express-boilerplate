@@ -1,3 +1,7 @@
+/**
+ * @file Minifies static assets in the public folder.
+ */
+
 var fs = require('fs'),
 	path = require('path'),
 
@@ -41,10 +45,21 @@ catch (err) {
 	console.warn(`${TARGET_DIR} already exists`);
 }
 
+/**
+ * Parallely minifies javascript and stylesheets in SCRIPTS and STYLES respectively.
+ *
+ * @param {Function} next - The callback whose invocation marks the end of the minifacation routine.
+ */
 module.exports = function (next) {
 	async.parallel({
+
+		/**
+		 * Handles the minification of front end javascript in SCRIPTS.
+		 *
+		 * @param {Function} done - The callback that marks the completion of the JS minification routine.
+		 */
 		js: function (done) {
-			return fs.readdir(path.join(ASSET_PATH, 'javascripts'), function (err, scripts) {
+			return fs.readdir(SCRIPTS, function (err, scripts) {
 				if (err) {
 					return done(err);
 				}
@@ -56,8 +71,14 @@ module.exports = function (next) {
 				}, done);
 			});
 		},
+
+		/**
+		 * Minifies stylesheets in the STYLES directory.
+		 *
+		 * @param {Function} done - The callback that marks the end of the stylesheet minification routine.
+		 */
 		css: function (done) {
-			return fs.readdir(path.join(ASSET_PATH, 'stylesheets'), function (err, styles) {
+			return fs.readdir(STYLES, function (err, styles) {
 				if (err) {
 					return done(err);
 				}
@@ -71,4 +92,4 @@ module.exports = function (next) {
 	}, next);
 };
 
-!module.parent && module.exports(process.exit);
+!module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
