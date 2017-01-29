@@ -1,8 +1,7 @@
-var router = require('express').Router(); // eslint-disable-line new-cap
+/**
+ * @file Houses route definitions for all API routes, prefixed with /api
+ */
 
-/* GET users listing. */
-router.get('/', function (req, res) {
-	res.send('respond with a resource');
-});
+var router = require('express').Router(); // eslint-disable-line new-cap
 
 module.exports = router;
