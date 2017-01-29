@@ -3,9 +3,11 @@
  */
 
 var path = require('path'),
-	nsp = require('nsp'),
 
-	packageJson = path.join(__dirname, 'package.json');
+	nsp = require('nsp'),
+	chalk = require('chalk'),
+
+	packageJson = path.join(__dirname, '..', '..', 'package.json');
 
 /**
  * Runs NSP checks against dependencies in package.json.
@@ -13,6 +15,7 @@ var path = require('path'),
  * @param {Function} done - The callback that marks the end of the NSP check.
  */
 module.exports = function (done) {
+	console.info(chalk.blue.bold('Running security checks with NSP'));
 	nsp.check({ offline: false, package: packageJson }, done);
 };
 

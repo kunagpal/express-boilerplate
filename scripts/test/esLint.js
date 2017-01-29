@@ -2,7 +2,8 @@
  * @file Houses require friendly logic for lint tests.
  */
 
-var async = require('async'),
+var chalk = require('chalk'),
+	async = require('async'),
 	ESLint = require('eslint').CLIEngine,
 
 	LINT_SCOPE = ['bin', 'database', 'public/javascripts', 'routes', 'scripts', 'test', 'utils', 'app.js'];
@@ -13,10 +14,25 @@ var async = require('async'),
  * @param {Function} done - The callback that marks the end of the lint routine.
  */
 module.exports = function (done) {
+	console.info(chalk.blue.bold('Running code style tests'));
+
 	async.waterfall([
+
+		/**
+		 * Runs lint checks on the scope outline in LINT_SCOPE.
+		 *
+		 * @param {Function} next - The callback that marks the end of the linting process.
+		 */
 		function (next) {
 			next(null, new ESLint().executeOnFiles(LINT_SCOPE));
 		},
+
+		/**
+		 * Process lint check reports from the previous step in this pipeline.
+		 *
+		 * @param {Object} report - The result from the lint tests.
+		 * @param {Function} next - The callback that marks the end of the post lint check.
+		 */
 		function (report, next) {
 			var errorReport = ESLint.getErrorResults(report.results);
 
