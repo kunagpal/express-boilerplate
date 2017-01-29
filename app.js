@@ -1,3 +1,7 @@
+/**
+ * @file The application bootstrapper.
+ */
+
 var path = require('path'),
 
 	cors = require('cors'),
