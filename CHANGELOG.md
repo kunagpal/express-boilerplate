@@ -1,4 +1,4 @@
-Express Boilerplate Changelog
+# Express Boilerplate Changelog
 
 #### v0.0.0 (January 2017)
 * CORS configuration
