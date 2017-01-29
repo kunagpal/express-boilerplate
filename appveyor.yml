@@ -19,6 +19,10 @@ environment:
 services:
   - mongodb
 
+matrix:
+  allow_failures:
+    - node: "5"
+
 cache:
   - node_modules -> package.json
 
