@@ -7,10 +7,9 @@
 [![Linux build](https://travis-ci.org/kunagpal/express-boilerplate.svg?branch=master)](https://travis-ci.org/kunagpal/express-boilerplate)
 [![Windows build](https://ci.appveyor.com/api/projects/status/9dr0pa7wdotlopnu/branch/master?svg=true)](https://ci.appveyor.com/project/kunagpal/express-boilerplate/branch/master)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/352/badge)](https://bestpractices.coreinfrastructure.org/projects/352)
+[![Greenkeeper badge](https://badges.greenkeeper.io/kunagpal/express-boilerplate.svg)](https://greenkeeper.io/)
 
 # express-boilerplate
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/kunagpal/express-boilerplate.svg)](https://greenkeeper.io/)
 
 ## A project scaffold intended for use with Express.js
 
