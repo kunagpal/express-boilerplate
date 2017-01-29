@@ -15,15 +15,16 @@ var path = require('path'),
 	index = require(path.join(__dirname, 'routes', 'index')),
 	users = require(path.join(__dirname, 'routes', 'users')),
 
-	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
 	app = express(),
+	name = require('./package').name,
+	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
 
 	NOT_FOUND = 404,
 	INTERNAL_SERVER_ERROR = 500,
 	CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
 
 // view engine setup
-app.set('title', 'express-boilerplate');
+app.set('title', name);
 app.set('view engine', 'ejs');
 app.enable('trust proxy');
 app.set('views', 'views');
@@ -39,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET || 'cookie_secret', { signed: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(expressSession({ secret: process.env.SESSION_SECRET || 'session_secret', resave: '', saveUninitialized: '' }));
+app.use(expressSession({ secret: process.env.SESSION_SECRET }));
 app.use(csurf());
 
 app.use(function (req, res, next) {
@@ -70,9 +71,7 @@ app.use(function (req, res, next) {
 });
 
 // error handlers
-if (process.env.NODE_ENV) {
-	app.use(onError);
-}
+process.env.NODE_ENV && app.use(onError);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
