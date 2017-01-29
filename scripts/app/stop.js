@@ -20,7 +20,7 @@ module.exports = function (done) {
 		 * @param {Function} next The callback invoked to indicate the app has been stopped.
 		 */
 		function (next) {
-			pm2.stop('bin/www', next);
+			pm2.stop('bin/www.js', next);
 		}
 	],
 

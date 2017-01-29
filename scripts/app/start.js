@@ -24,7 +24,7 @@ module.exports = function (done) {
 		 * @param {Function} next - The callback invoked to mark the end of the app start routine.
 		 */
 		function (next) {
-			pm2.start({	script: 'bin/www' }, next);
+			pm2.start({	script: 'bin/www.js' }, next);
 		}
 	],
 
