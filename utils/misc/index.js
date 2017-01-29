@@ -1,7 +1,7 @@
 var _ = require('lodash'),
 
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
-		'SENTRY_DSN', 'MONGO_URI'];
+		'SENTRY_DSN', 'MONGO_URI', 'PORT'];
 
 exports.checkVars = function () {
 	var subset = _(process.env).pick(REQUIRED_VARS).keys().value(),

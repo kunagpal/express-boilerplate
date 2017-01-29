@@ -46,9 +46,9 @@ exports.checkContributors = function (contributors) {
 	};
 };
 
-exports.checkDependencies = function (package, mode) {
+exports.checkDependencies = function (packageJson, mode) {
 	mode = mode || 'package';
-	var packageDependencies = _.pick(package, PACKAGES);
+	var packageDependencies = _.pick(packageJson, PACKAGES);
 
 	return function () {
 		it('should exist and be an object', function () {

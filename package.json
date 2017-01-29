@@ -15,19 +15,19 @@
   "scripts": {
     "check": "node node_modules/.bin/npm-check -u",
     "docs": "node node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts utils app.js",
-    "start": "npm run pack && node node_modules/.bin/pm2 start bin/www",
-    "stop": "node node_modules/.bin/pm2 stop bin/www",
+    "start": "node scripts/app/start.js",
+    "restart": "node scripts/app/restart.js",
+    "stop": "node scripts/app/stop.js",
     "seed": "node scripts/database/seed.js",
     "purge": "node scripts/database/purge.js",
-    "restart": "node node_modules/.bin/pm2 restart bin/www",
-    "security": "node node_modules/nsp/bin/nsp check",
+    "security": "node scripts/test/security.js",
     "csslint": "node node_modules/csslint/dist/cli.js public/stylesheets",
     "eslint": "node scripts/test/esLint.js",
     "lint": "npm run eslint && npm run csslint",
     "unit": "node scripts/misc/test.js",
     "e2e": "node scripts/test/e2e.js",
     "structure": "node scripts/test/structure.js",
-    "test": "npm run csslint && node scripts/test && npm run security",
+    "test": "npm run csslint && node scripts/test",
     "pack": "node scripts/misc/pack.js",
     "postinstall": "node scripts/misc/postInstall.js"
   },
@@ -96,7 +96,7 @@
   },
   "license": "GPL-3.0+",
   "engines": {
-    "node": "6.x",
-    "npm": "4.x"
+    "node": ">=4.0.0",
+    "npm": ">=2.0.0"
   }
 }

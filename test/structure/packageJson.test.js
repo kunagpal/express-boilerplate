@@ -92,11 +92,11 @@ describe('package.json', function () {
 
 	describe('engine', function () {
 		it('should point to a valid node engine', function () {
-			assert.strictEqual(packageJSON.engines.node, '6.x', 'Project engine is invalid');
+			assert.strictEqual(packageJSON.engines.node, '>=4.0.0', 'Project engine is invalid');
 		});
 
 		it('should point to a valid npm engine', function () {
-			assert.strictEqual(packageJSON.engines.npm, '4.x', 'Project engine is invalid');
+			assert.strictEqual(packageJSON.engines.npm, '>=2.0.0', 'Project engine is invalid');
 		});
 	});
 });

@@ -45,3 +45,6 @@ public/bower
 
 # Minified static assets
 public/min
+
+# Generated documentation
+out

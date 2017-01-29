@@ -7,7 +7,7 @@ describe('.ignore files', function () {
 		var gitignore = parseIgnore(gitignorePath),
 			ignored = ['*.log', '*.pid', '*.seed', '.env', '.grunt', '.idea/**', '.lock-wscript', '.node_repl_history',
 				'.npm', '.nyc_output', 'build/Release', 'coverage', 'lib-cov', 'logs', 'node_modules', 'npm-debug.log*',
-				'pids', 'public/bower', 'public/min'];
+				'out', 'pids', 'public/bower', 'public/min'];
 
 		it('should exist', function (done) {
 			fs.stat(gitignorePath, done);
