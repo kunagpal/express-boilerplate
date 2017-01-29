@@ -57,7 +57,11 @@ rules:
   no-unexpected-multiline: 2
   no-unreachable: 2
   use-isnan: 2
-  valid-jsdoc: 1
+  valid-jsdoc: [2, { "requireReturn": false, "preferType": {
+  	"object": "Object", "string": "String", "number": "Number", "buffer": "Buffer", "array": "Array"
+    },
+    "prefer": { "arg": "param", "argument": "param", "return": "returns", "class": "constructor" }
+  }]
   valid-typeof: 2
 
   # Best Practices
@@ -149,7 +153,7 @@ rules:
   # Stylistic Issues
   array-bracket-spacing: 2
   block-spacing: 2
-  brace-style: [2, stroustrup]
+  brace-style: [2, stroustrup, { "allowSingleLine": true }]
   camelcase: 2
   comma-spacing: 2
   comma-style: 2
@@ -250,7 +254,7 @@ rules:
   # JSDoc
   jsdoc/check-param-names: 2
   jsdoc/check-tag-names: 2
-  jsdoc/check-types: 2
+  jsdoc/check-types: 0
   jsdoc/newline-after-description: 2
   jsdoc/require-description-complete-sentence: 2
   jsdoc/require-hyphen-before-param-description: 2
