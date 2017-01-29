@@ -2,22 +2,22 @@ var path = require('path'),
 	http = require('http'),
 
 	_ = require('lodash'),
+	debug = require('debug'),
 	mongodb = require('mongodb').MongoClient,
-	debug = require('debug')('express-boilerplate:server'),
 	utils = require(path.join(__dirname, '..', 'utils', 'misc')),
 
 	port,
 	app,
 	server,
+	name = require(path.join(__dirname, '..', 'package')).name,
+	bugger = debug(`${name}:server`),
 
 	onError = function (error) {
-		var bind;
-
 		if (error.syscall !== 'listen') {
 			throw error;
 		}
 
-		bind = _.isString(port) ? `Pipe ${port}` : `Port ${port}`;
+		var bind = _.isString(port) ? `Pipe ${port}` : `Port ${port}`;
 
 		// handle specific listen errors with friendly messages
 		switch (error.code) {
@@ -30,34 +30,39 @@ var path = require('path'),
 		}
 	},
 	onListening = function () {
-		var addr = server.address(),
-			bind = _.isString(addr) ? `pipe ${addr}` : `port ${addr.port}`;
+		var address = server.address(),
+			bind = _.isString(address) ? `pipe ${address}` : `port ${address.port}`;
 
-		debug(`Listening on ${bind}`);
+		bugger(`Listening on ${bind}`);
+	},
+	onSigint = function () {
+		db.close();
+		process.exit(0);
 	};
 
-if (process.env.NODE_ENV) {
-	utils.checkVars();
-}
-else {
-	require('dotenv').load();
-}
+process.env.NODE_ENV ? utils.checkVars() : require('dotenv').load();
 
-port = _.toInteger(process.env.PORT) || 3000;
+process.on('SIGINT', onSigint);
+port = _.toInteger(process.env.PORT);
 
-mongodb.connect(process.env.MONGO_URI, function (err, database) {
-	if (err) {
-		throw err;
-	}
+module.exports = function (done) {
+	mongodb.connect(process.env.MONGO_URI, function (err, database) {
+		if (err) {
+			throw err;
+		}
 
-	global.db = database;
+		global.db = database;
 
-	app = require(path.join(__dirname, '..', 'app'));
-	app.set('port', port);
+		app = require(path.join(__dirname, '..', 'app'));
+		app.set('port', port);
 
-	server = http.createServer(app);
-	server.on('error', onError);
-	server.on('listening', onListening);
+		server = http.createServer(app);
+		server.on('error', onError);
+		server.on('listening', onListening);
 
-	server.listen(port);
-});
+		server.listen(port);
+		done();
+	});
+};
+
+!module.parent && module.exports(_.noop);
