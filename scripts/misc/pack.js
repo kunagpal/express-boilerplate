@@ -59,12 +59,10 @@ module.exports = function (next) {
 		 * @param {Function} done - The callback that marks the completion of the JS minification routine.
 		 */
 		js: function (done) {
-			return fs.readdir(SCRIPTS, function (err, scripts) {
-				if (err) {
-					return done(err);
-				}
+			fs.readdir(SCRIPTS, function (err, scripts) {
+				if (err) { return done(err); }
 
-				async.each(scripts, function (script, callback) {
+				return async.each(scripts, function (script, callback) {
 					// eslint-disable-next-line max-len
 					fs.writeFile(path.join(TARGET_DIR, script), uglifyJs.minify(path.join(SCRIPTS, script), JS_OPTIONS).code,
 						callback);
@@ -78,12 +76,10 @@ module.exports = function (next) {
 		 * @param {Function} done - The callback that marks the end of the stylesheet minification routine.
 		 */
 		css: function (done) {
-			return fs.readdir(STYLES, function (err, styles) {
-				if (err) {
-					return done(err);
-				}
+			fs.readdir(STYLES, function (err, styles) {
+				if (err) { return done(err); }
 
-				async.each(styles, function (style, callback) {
+				return async.each(styles, function (style, callback) {
 					// eslint-disable-next-line max-len
 					fs.writeFile(path.join(TARGET_DIR, style), cleanCss.minify([path.join(STYLES, style)]).styles, callback);
 				}, done);
