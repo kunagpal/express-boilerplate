@@ -1,3 +1,7 @@
+/**
+ * @file Contains re-usable social authentication code.
+ */
+
 var path = require('path'),
 
 	_ = require('lodash'),
@@ -12,6 +16,15 @@ var path = require('path'),
 		FACEBOOK: facebook
 	},
 
+	/**
+	 * Handles all the heavy lifting related to social authentication.
+	 *
+	 * @param {Object} req - The request object.
+	 * @param {?String} token - The dynamic auth token.
+	 * @param {?String} refresh - The static refresh token.
+	 * @param {Object} profile - The set of user profile details.
+	 * @param {Function} done - The callback that marks the end of the passport process routing.
+	 */
 	passportCallback = function (req, token, refresh, profile, done) {
 		process.nextTick(function () {
 			// eslint-disable-next-line lodash/prefer-lodash-method
