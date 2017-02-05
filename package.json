@@ -56,7 +56,7 @@
     "heroku-client": "3.0.0-beta3",
     "lodash": "4.17.4",
     "mongodb": "2.2.21",
-    "morgan": "1.7.0",
+    "morgan": "1.8.0",
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
     "passport-google-oauth2": "0.1.6",
@@ -87,7 +87,7 @@
     "nsp": "2.6.2",
     "parse-gitignore": "0.3.1",
     "recursive-readdir": "2.1.0",
-    "supertest": "2.0.1"
+    "supertest": "3.0.0"
   },
   "optionalDependencies": {
     "bcrypt": "1.0.2"
