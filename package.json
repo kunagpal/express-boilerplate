@@ -41,7 +41,7 @@
     "async": "2.1.4",
     "body-parser": "1.16.0",
     "bower": "1.8.0",
-    "clean-css": "4.0.3",
+    "clean-css": "4.0.4",
     "compression": "1.6.2",
     "cookie-parser": "1.4.3",
     "cors": "2.8.1",
@@ -56,7 +56,7 @@
     "heroku-client": "3.0.0",
     "lodash": "4.17.4",
     "mongodb": "2.2.21",
-    "morgan": "1.7.0",
+    "morgan": "1.8.0",
     "passport": "0.3.2",
     "passport-facebook": "2.1.1",
     "passport-google-oauth2": "0.1.6",
@@ -69,7 +69,7 @@
     "csslint": "1.0.5",
     "dotenv": "4.0.0",
     "editorconfig": "0.13.2",
-    "eslint": "3.14.0",
+    "eslint": "3.15.0",
     "eslint-plugin-jsdoc": "2.4.0",
     "eslint-plugin-lodash": "2.3.4",
     "eslint-plugin-mocha": "4.8.0",
@@ -87,7 +87,7 @@
     "nsp": "2.6.2",
     "parse-gitignore": "0.3.1",
     "recursive-readdir": "2.1.0",
-    "supertest": "2.0.1"
+    "supertest": "3.0.0"
   },
   "optionalDependencies": {
     "bcrypt": "1.0.2"
