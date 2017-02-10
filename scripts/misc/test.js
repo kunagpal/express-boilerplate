@@ -15,7 +15,7 @@ var path = require('path'),
  * @param {Function} done - The callback that marks the end of the unit tests.
  */
 module.exports = function (done) {
-	istanbul.runToCompletion(['cover', unitTestScript, '--print', 'both'], function (err, res) {
+	istanbul.runToCompletion(['cover', '--colors', unitTestScript, '--print', 'both'], function (err, res) {
 		console.info(err, res);
 		done();
 	});
