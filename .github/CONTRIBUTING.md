@@ -26,7 +26,7 @@ bug fixes (preferably with corresponding unit / e2e tests), or improvements / op
 
 #### Bugs
 This section guides you through submitting a bug report for express-boilerplate. Following these guidelines helps maintainers and the community understand your report,
-reproduce the behavior, and find related reports. Before creating bug reports, please check this list as you might find out that you don't need to create one. When you
+reproduce the behaviour, and find related reports. Before creating bug reports, please check this list as you might find out that you don't need to create one. When you
 are creating a bug report, please include as many details as possible. If you'd like, you can use [this template](https://github.com/kunagpal/express-boilerplate/blob/master/.github/ISSUE_TEMPLATE.md)
 to structure the information.
 
@@ -43,8 +43,8 @@ Bugs are tracked as GitHub issues. Create an issue [here](https://github.com/kun
 * Describe the exact steps which reproduce the problem in as many details as possible.
 * Provide specific examples to demonstrate the steps. Include links to files or GitHub projects, or copy/pasteable snippets, which you use in those examples. If you're
   providing snippets in the issue, use Markdown code blocks.
-* Describe the behavior you observed after following the steps and point out what exactly is the problem with that behavior.
-* Explain which behavior you expected to see instead and why.
+* Describe the behaviour you observed after following the steps and point out what exactly is the problem with that behaviour.
+* Explain which behaviour you expected to see instead and why.
 * If the problem is related to performance, include a CPU profile capture and a screenshot with your report.
 * Provide more context by answering these questions:
     1. Can you reproduce the problem in safe mode?
@@ -80,7 +80,7 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue on [here](
 * Use a clear and descriptive title for the issue to identify the suggestion.
 * Provide a step-by-step description of the suggested enhancement in as many details as possible.
 * Provide specific examples to demonstrate the steps. Include copy/pasteable snippets which you use in those examples, as Markdown code blocks.
-* Describe the current behavior and explain which behavior you expected to see instead and why.
+* Describe the current behaviour and explain which behaviour you expected to see instead and why.
 * Explain why this enhancement would be useful to most express-boilerplate users.
 * List some other boilerplates / generators where this enhancement exists.
 * Specify which version of express-boilerplate you're using.
@@ -165,7 +165,7 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue on [here](
 #### Labels
 This section lists the labels we use to help us track and manage issues and pull requests. Some are specific to express-boilerplate. GitHub search makes it easy to use
 labels for finding groups of issues or pull requests you're interested in. For example, you might be interested in open issues across express-boilerplate and all
-express-boilerplate-owned packages which are labeled as bugs, but still need to be reliably reproduced or perhaps open pull requests in express-boilerplate which haven't
+express-boilerplate-owned packages which are labelled as bugs, but still need to be reliably reproduced or perhaps open pull requests in express-boilerplate which haven't
 been reviewed yet. To help you find issues and pull requests, each label is listed with search links for finding open items with that label in express-boilerplate only and
 also across all express-boilerplate repositories. We encourage you to read about other search filters which will help you write more focused queries.
 
