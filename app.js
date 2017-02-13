@@ -15,13 +15,11 @@ var path = require('path'),
 	cookieParser = require('cookie-parser'),
 	expressSession = require('express-session'),
 
-	api = require(path.join(__dirname, 'routes', 'api')),
-	index = require(path.join(__dirname, 'routes', 'index')),
-	users = require(path.join(__dirname, 'routes', 'users')),
+	name = require('./package').name,
+	routes = require('./utils/misc').requireDir('routes'),
+	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
 
 	app = express(),
-	name = require('./package').name,
-	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
 
 	NOT_FOUND = 404,
 	INTERNAL_SERVER_ERROR = 500,
@@ -48,9 +46,7 @@ app.use(expressSession({ secret: process.env.SESSION_SECRET }));
 app.use(csurf());
 
 app.use(function (req, res, next) {
-	if (!req.session.flash) {
-		req.session.flash = [];
-	}
+	!req.session.flash && (req.session.flash = []);
 
 	res.flash = function (content) {
 		return content ? req.session.flash.push(content) : req.session.flash.pop();
@@ -62,9 +58,9 @@ app.use(function (req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', index);
-app.use('/api', api);
-app.use('/users', users);
+app.use('/', routes.index);
+app.use('/api', routes.api);
+app.use('/users', routes.users);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -79,8 +75,7 @@ process.env.NODE_ENV && app.use(onError);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
-	err.status = err.status || INTERNAL_SERVER_ERROR;
-	res.status(err.status);
+	res.status(err.status = err.status || INTERNAL_SERVER_ERROR);
 
 	if (err.code === CSRF_TOKEN_ERROR) {
 		return res.redirect(req.headers.referer);
