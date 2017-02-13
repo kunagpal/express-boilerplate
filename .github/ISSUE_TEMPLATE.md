@@ -6,13 +6,13 @@
 2. [Second Step]
 3. [Other Steps...]
 
-#### Expected/suggested behavior
+#### Expected/suggested behaviour
 
 [Description]
 
-#### Observed behavior:
+#### Observed behaviour:
 
-[Describe observed behavior here]
+[Describe observed behaviour here]
 
 #### Screenshots and GIFs
 
