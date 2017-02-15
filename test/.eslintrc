@@ -17,7 +17,7 @@ globals:
   utils: true,
   assert: true,
 
-  testDb: true
+  db: true
 
   it: true
   before: true
@@ -32,7 +32,7 @@ rules:
   mocha/handle-done-callback: 2
   mocha/no-exclusive-tests: 2
   mocha/no-global-tests: 2
-  mocha/no-hooks-for-single-case: 2
+  mocha/no-hooks-for-single-case: 0
   mocha/no-hooks: 0
   mocha/no-identical-title: 2
   mocha/no-mocha-arrows: 2

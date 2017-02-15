@@ -3,7 +3,6 @@
  * Can also be used with require,
  */
 var path = require('path'),
-	http = require('http'),
 
 	_ = require('lodash'),
 	debug = require('debug'),
@@ -11,8 +10,7 @@ var path = require('path'),
 	utils = require(path.join(__dirname, '..', 'utils', 'misc')),
 
 	port,
-	app,
-	server,
+	app = require(path.join(__dirname, '..', 'app')),
 	name = require(path.join(__dirname, '..', 'package')).name,
 	bugger = debug(`${name}:server`),
 
@@ -41,10 +39,7 @@ var path = require('path'),
 	 * Pipes useful information to the console after the app has started.
 	 */
 	onListening = function () {
-		var address = server.address(),
-			bind = _.isString(address) ? `pipe ${address}` : `port ${address.port}`;
-
-		bugger(`Listening on ${bind}`);
+		bugger(`Listening on ${port}`);
 	},
 
 	/**
@@ -71,14 +66,12 @@ module.exports = function (done) {
 
 		global.db = database;
 
-		app = require(path.join(__dirname, '..', 'app')); // eslint-disable-line global-require
 		app.set('port', port);
 
-		server = http.createServer(app);
-		server.on('error', onError);
-		server.on('listening', onListening);
+		app.on('error', onError);
+		app.on('listening', onListening);
 
-		server.listen(port);
+		app.listen(port);
 		done();
 	});
 };
