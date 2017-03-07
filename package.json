@@ -62,7 +62,7 @@
     "passport-google-oauth2": "0.1.6",
     "pm2": "2.4.2",
     "raven": "1.1.4",
-    "uglify-js": "2.8.7"
+    "uglify-js": "2.8.8"
   },
   "devDependencies": {
     "chalk": "1.1.3",
