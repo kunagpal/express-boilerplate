@@ -1,7 +1,7 @@
 var CODECLIMATE_PATH = '.codeclimate.yml';
 
 describe(CODECLIMATE_PATH, function () {
-	var codeClimateYAML = utils.ymlToJson(CODECLIMATE_PATH);
+	var codeClimateYAML = testUtils.ymlToJson(CODECLIMATE_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(CODECLIMATE_PATH, done);

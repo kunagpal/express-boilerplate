@@ -1,7 +1,7 @@
 var APPVEYOR_PATH = 'appveyor.yml';
 
 describe(APPVEYOR_PATH, function () {
-	var appveyorYAML = utils.ymlToJson(APPVEYOR_PATH);
+	var appveyorYAML = testUtils.ymlToJson(APPVEYOR_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(APPVEYOR_PATH, done);

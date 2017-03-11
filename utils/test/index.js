@@ -161,7 +161,7 @@ exports.runTests = function (testDir, done) {
 				fs: fs,
 				path: path,
 				assert: assert,
-				utils: exports
+				testUtils: exports
 			});
 
 			mocha.run(next);

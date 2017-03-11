@@ -10,7 +10,8 @@ var path = require('path'),
 	utils = require(path.join(__dirname, '..', 'utils', 'misc')),
 
 	port,
-	app = require(path.join(__dirname, '..', 'app')),
+	app,
+	appPath = path.join(__dirname, '..', 'app'),
 	name = require(path.join(__dirname, '..', 'package')).name,
 	bugger = debug(`${name}:server`),
 
@@ -65,6 +66,8 @@ module.exports = function (done) {
 		if (err) { throw err; }
 
 		global.db = database;
+
+		app = require(appPath);
 
 		app.set('port', port);
 

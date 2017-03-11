@@ -22,10 +22,10 @@ describe('bower', function () {
 		});
 	});
 
-	describe('authors', utils.checkContributors(bowerJSON.authors));
+	describe('authors', testUtils.checkContributors(bowerJSON.authors));
 
 	// eslint-disable-next-line mocha/no-skipped-tests
-	describe.skip('dependencies', utils.checkDependencies(bowerJSON, 'bower'));
+	describe.skip('dependencies', testUtils.checkDependencies(bowerJSON, 'bower'));
 
 	it('should point to a valid homepage', function () {
 		assert(url.parse(bowerJSON.homepage), 'Project repository url does not point to a valid URL');

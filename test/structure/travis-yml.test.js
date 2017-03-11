@@ -1,7 +1,7 @@
 var TRAVIS_PATH = '.travis.yml';
 
 describe(TRAVIS_PATH, function () {
-	var travisYAML = utils.ymlToJson(TRAVIS_PATH);
+	var travisYAML = testUtils.ymlToJson(TRAVIS_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(TRAVIS_PATH, done);

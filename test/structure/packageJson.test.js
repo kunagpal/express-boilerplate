@@ -70,9 +70,9 @@ describe('package.json', function () {
 		});
 	});
 
-	describe('contributors', utils.checkContributors(packageJSON.contributors));
+	describe('contributors', testUtils.checkContributors(packageJSON.contributors));
 
-	describe('dependencies', utils.checkDependencies(packageJSON));
+	describe('dependencies', testUtils.checkDependencies(packageJSON));
 
 	describe('repository', function () {
 		var packageRepository = packageJSON.repository;

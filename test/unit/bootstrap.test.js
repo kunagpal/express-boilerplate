@@ -1,28 +1,27 @@
-var async = require('async'),
-	mongo = require('mongodb').MongoClient,
+var mongo = require('mongodb').MongoClient,
 
-	app = require(path.resolve('app')),
-
+	app,
 	testServer,
-	port = 3000;
-
-process.env.MONGO_URI = `mongodb://127.0.0.1:27017/${app.settings.title}-test`;
+	testPort = 3000,
+	rootPath = path.join(__dirname, '..', '..'),
+	projectName = require(path.join(rootPath, 'package')).name;
 
 before(function (done) {
-	async.parallel([
-		function (next) {
-			mongo.connect(process.env.MONGO_URI, function (err, database) {
-				next(err, global.db = database);
-			});
-		},
-		function (next) {
-			next(null, testServer = app.listen(port));
-		}
-	], done);
+	process.env.MONGO_URI = `mongodb://127.0.0.1:27017/${_.kebabCase(projectName)}-test`;
+
+	mongo.connect(process.env.MONGO_URI, function (err, database) {
+		if (err) { return done(err); }
+
+		global.db = database;
+		app = require(path.join(rootPath, 'app'));
+		testServer = app.listen(testPort);
+		done();
+	});
 });
 
 after(function () {
-	db.close();
 	testServer.close();
+	db.close();
+
 	delete global.db;
 });
