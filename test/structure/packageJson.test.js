@@ -1,8 +1,4 @@
-var url = require('url'),
-	path = require('path'),
-	assert = require('assert'),
-
-	_ = require('lodash');
+var url = require('url');
 
 describe('package.json', function () {
 	var rootPath = path.join(__dirname, '..', '..'),
@@ -74,57 +70,9 @@ describe('package.json', function () {
 		});
 	});
 
-	describe('contributors', function () {
-		var packageContributors = packageJSON.contributors;
+	describe('contributors', testUtils.checkContributors(packageJSON.contributors));
 
-		it('should exist and be an array', function () {
-			assert(_.isArray(packageContributors), 'Project contributor details missing / in non array form');
-		});
-
-		it('should have a non-zero length', function () {
-			assert(!_.isEmpty(packageContributors), 'Project contributors section is empty');
-		});
-
-		it('should contain valid contributor details', function () {
-			_.forEach(packageContributors, function (contributor, index) {
-				assert(contributor.name, `Project contributor ${index} name missing`);
-				assert(/@.+\./i.test(contributor.email), `Project contributor ${index} email invalid`);
-			});
-		});
-	});
-
-	describe('dependencies', function () {
-		var packageDependencies = _.pick(packageJSON, ['dependencies', 'devDependencies', 'optionalDependencies']);
-
-		it('should exist and be an object', function () {
-			assert(!_.isEmpty(packageDependencies) && _.isObject(packageDependencies), 'Project has no dependencies');
-		});
-
-		it('should have precise dependency versions', function () {
-			_.forEach(packageDependencies, function (dependencies, type) {
-				_.forEach(dependencies, function (version, name) {
-					assert(/^\d/.test(version), `${type}: ${name}@${version} is invalid`);
-				});
-			});
-		});
-
-		it('should have the same versions across package.json and node_modules', function () {
-			var dependencyPath = path.join(rootPath, 'node_modules'),
-				dependencies = _.merge({}, packageDependencies.dependencies, packageDependencies.devDependencies,
-					packageDependencies.optionalDependencies, packageDependencies.peerDependencies,
-					packageDependencies.bundledDependencies);
-
-			_.forEach(dependencies, function (specifiedVersion, dependency) {
-				if (dependency !== 'bcrypt') {
-					// eslint-disable-next-line global-require
-					var installedVersion = require(path.join(dependencyPath, dependency, 'package.json')).version;
-
-					assert(specifiedVersion === installedVersion,
-						`${dependency} is specified as ${specifiedVersion}, but installed as ${installedVersion}`);
-				}
-			});
-		});
-	});
+	describe('dependencies', testUtils.checkDependencies(packageJSON));
 
 	describe('repository', function () {
 		var packageRepository = packageJSON.repository;
@@ -134,7 +82,7 @@ describe('package.json', function () {
 		});
 
 		it('should have a type git', function () {
-			assert(packageRepository.type === 'git', 'Project repository is of a non-git type');
+			assert.strictEqual(packageRepository.type, 'git', 'Project repository is of a non-git type');
 		});
 
 		it('should point to a valid URL', function () {
@@ -144,11 +92,11 @@ describe('package.json', function () {
 
 	describe('engine', function () {
 		it('should point to a valid node engine', function () {
-			assert(packageJSON.engines.node === '6.x', 'Project engine is invalid');
+			assert.strictEqual(packageJSON.engines.node, '>=4.0.0', 'Project engine is invalid');
 		});
 
 		it('should point to a valid npm engine', function () {
-			assert(packageJSON.engines.npm === '4.x', 'Project engine is invalid');
+			assert.strictEqual(packageJSON.engines.npm, '>=2.0.0', 'Project engine is invalid');
 		});
 	});
 });

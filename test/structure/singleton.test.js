@@ -1,6 +1,3 @@
-var fs = require('fs'),
-	assert = require('assert');
-
 describe('singleton configuration files', function () {
 	it('should have a README.md', function (done) {
 		fs.stat('README.md', done);

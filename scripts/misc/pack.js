@@ -1,3 +1,7 @@
+/**
+ * @file Minifies static assets in the public folder.
+ */
+
 var fs = require('fs'),
 	path = require('path'),
 
@@ -41,28 +45,41 @@ catch (err) {
 	console.warn(`${TARGET_DIR} already exists`);
 }
 
+/**
+ * Parallely minifies javascript and stylesheets in SCRIPTS and STYLES respectively.
+ *
+ * @param {Function} next - The callback whose invocation marks the end of the minifacation routine.
+ */
 module.exports = function (next) {
 	async.parallel({
-		js: function (done) {
-			fs.readdir(path.join(ASSET_PATH, 'javascripts'), function (err, scripts) {
-				if (err) {
-					return done(err);
-				}
 
-				async.each(scripts, function (script, callback) {
+		/**
+		 * Handles the minification of front end javascript in SCRIPTS.
+		 *
+		 * @param {Function} done - The callback that marks the completion of the JS minification routine.
+		 */
+		js: function (done) {
+			fs.readdir(SCRIPTS, function (err, scripts) {
+				if (err) { return done(err); }
+
+				return async.each(scripts, function (script, callback) {
 					// eslint-disable-next-line max-len
 					fs.writeFile(path.join(TARGET_DIR, script), uglifyJs.minify(path.join(SCRIPTS, script), JS_OPTIONS).code,
 						callback);
 				}, done);
 			});
 		},
-		css: function (done) {
-			fs.readdir(path.join(ASSET_PATH, 'stylesheets'), function (err, styles) {
-				if (err) {
-					return done(err);
-				}
 
-				async.each(styles, function (style, callback) {
+		/**
+		 * Minifies stylesheets in the STYLES directory.
+		 *
+		 * @param {Function} done - The callback that marks the end of the stylesheet minification routine.
+		 */
+		css: function (done) {
+			fs.readdir(STYLES, function (err, styles) {
+				if (err) { return done(err); }
+
+				return async.each(styles, function (style, callback) {
 					// eslint-disable-next-line max-len
 					fs.writeFile(path.join(TARGET_DIR, style), cleanCss.minify([path.join(STYLES, style)]).styles, callback);
 				}, done);
@@ -71,4 +88,4 @@ module.exports = function (next) {
 	}, next);
 };
 
-!module.parent && module.exports(process.exit);
+!module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.

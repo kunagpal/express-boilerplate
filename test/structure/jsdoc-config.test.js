@@ -1,7 +1,3 @@
-var fs = require('fs'),
-	_ = require('lodash'),
-	assert = require('assert');
-
 describe('JSDoc configuration', function () {
 	var json,
 		content,
@@ -31,11 +27,11 @@ describe('JSDoc configuration', function () {
 
 	describe('source', function () {
 		it('should have an include pattern', function () {
-			assert(json.source.includePattern === '.+\\.js(doc)?$', 'Inclusion pattern is invalid!');
+			assert.strictEqual(json.source.includePattern, '.+\\.js(doc)?$', 'Inclusion pattern is invalid!');
 		});
 
 		it('should have an exclude pattern', function () {
-			assert(json.source.excludePattern === '(^|\\/|\\\\)_', 'Exclusion pattern is invalid!');
+			assert.strictEqual(json.source.excludePattern, '(^|\\/|\\\\)_', 'Exclusion pattern is invalid!');
 		});
 	});
 
@@ -60,16 +56,16 @@ describe('JSDoc configuration', function () {
 	});
 
 	describe('opts', function () {
-		it('should use the Postman JSDoc theme', function () {
-			assert(json.opts.template === './node_modules/ink-docstrap/template', 'Invalid documentation theme set!');
+		it('should use a JSDoc theme', function () {
+			assert.strictEqual(json.opts.template, './node_modules/ink-docstrap/template', 'Check doc theme!');
 		});
 
 		it('should use UTF-8 encoding', function () {
-			assert(json.opts.encoding === 'utf8', 'Encoding might be incorrect!');
+			assert.strictEqual(json.opts.encoding, 'utf8', 'Encoding might be incorrect!');
 		});
 
 		it('should create documentation in out/docs', function () {
-			assert(json.opts.destination, './out/docs', 'Possible invalid output directory!');
+			assert.strictEqual(json.opts.destination, './out/docs', 'Possible invalid output directory!');
 		});
 
 		it('should recurse', function () {
@@ -77,16 +73,16 @@ describe('JSDoc configuration', function () {
 		});
 
 		it('should have a valid readme', function () {
-			assert(json.opts.readme === 'README.md', 'Invalid README file!');
+			assert.strictEqual(json.opts.readme, 'README.md', 'Invalid README file!');
 		});
 	});
 
 	describe('markdown', function () {
 		it('should have a gfm parser', function () {
-			assert(json.markdown.parser === 'gfm', 'GitHub flavoured markdown not set!');
+			assert.strictEqual(json.markdown.parser, 'gfm', 'GitHub flavoured markdown not set!');
 		});
 
-		it('should have jsdoc and closure dictionaries', function () {
+		it('should not use hardwrap', function () {
 			assert(!json.markdown.hardwrap, 'Hardwrap might be enabled!');
 		});
 	});

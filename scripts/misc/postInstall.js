@@ -1,3 +1,7 @@
+/**
+ * @file Handles postinstall tasks.
+ */
+
 var fs = require('fs'),
 	path = require('path'),
 	childProcess = require('child_process'), // eslint-disable-line security/detect-child-process

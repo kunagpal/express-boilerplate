@@ -2,6 +2,13 @@ init:
   - git config --global core.autocrlf input
   - git config --global core.eol lf
 
+branches:
+  only:
+    - master
+    - develop
+
+skip_branch_with_pr: true
+
 environment:
   matrix:
     - node: "4"
@@ -12,9 +19,15 @@ environment:
 services:
   - mongodb
 
+matrix:
+  allow_failures:
+    - node: "5"
+
+cache:
+  - node_modules -> package.json
+
 install:
   - ps: Install-Product node $env:node
-  - npm cache clean
   - appveyor-retry npm install
 
 build: off # Disable MSBuilds, not related to the regular build process

@@ -1,0 +1,59 @@
+---
+settings:
+  lodash:
+    pragma: _
+
+plugins:
+  - mocha
+
+env:
+  es6: true
+  node: true
+
+globals:
+  # Injected test modules
+  _: true,
+  fs: true,
+  path: true,
+  assert: true,
+  testUtils: true,
+
+  # shared database connection instance
+  db: true
+
+  # Test stubs
+  it: true
+  before: true
+  after: true
+  afterEach: true
+  beforeEach: true
+  describe: true
+
+  # App utilities
+
+  # Models
+  User: true
+
+  # Database scrubber
+  purge: true
+
+# http://eslint.org/docs/rules/
+rules:
+  # Mocha
+  mocha/handle-done-callback: 2
+  mocha/no-exclusive-tests: 2
+  mocha/no-global-tests: 2
+  mocha/no-hooks-for-single-case: 0
+  mocha/no-hooks: 0
+  mocha/no-identical-title: 2
+  mocha/no-mocha-arrows: 2
+  mocha/no-pending-tests: 2
+  mocha/no-return-and-callback: 2
+  mocha/no-sibling-hooks: 2
+  mocha/no-skipped-tests: 2
+  mocha/no-synchronous-tests: 0
+  mocha/no-top-level-hooks: 0
+  mocha/valid-suite-description: 2
+  mocha/valid-test-description: 2
+  mocha/max-top-level-suites: 2
+  mocha/no-nested-tests: 2

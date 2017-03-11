@@ -1,3 +1,7 @@
+/**
+ * @file Contains routes that require authentication to be accessed.
+ */
+
 var router = require('express').Router(); // eslint-disable-line new-cap
 
 /* GET users listing. */

@@ -1,14 +1,7 @@
-var fs = require('fs'),
-	path = require('path'),
-	assert = require('assert'),
-
-	_ = require('lodash'),
-	utils = require(path.join(__dirname, '..', '..', 'utils', 'test')),
-
-	CODECLIMATE_PATH = '.codeclimate.yml';
+var CODECLIMATE_PATH = '.codeclimate.yml';
 
 describe(CODECLIMATE_PATH, function () {
-	var codeClimateYAML = utils.ymlToJson(CODECLIMATE_PATH);
+	var codeClimateYAML = testUtils.ymlToJson(CODECLIMATE_PATH);
 
 	it('should exist', function (done) {
 		fs.stat(CODECLIMATE_PATH, done);
@@ -22,7 +15,7 @@ describe(CODECLIMATE_PATH, function () {
 		var duplicationEngine = codeClimateYAML.engines.duplication;
 
 		assert(duplicationEngine.enabled, 'Duplication config missing / broken');
-		assert(_.head(duplicationEngine.config.languages) === 'javascript', 'Possible invalid language setting');
+		assert.strictEqual(_.head(duplicationEngine.config.languages), 'javascript', 'Invalid language setting');
 	});
 
 	it('should have the ESLint engine enabled', function () {
@@ -43,6 +36,7 @@ describe(CODECLIMATE_PATH, function () {
 	});
 
 	it('should have a field ratings, as an array', function () {
-		assert(_.isArray(codeClimateYAML.exclude_paths), 'Exclude paths is either missing or is in invalid format');
+		assert.deepStrictEqual(codeClimateYAML.exclude_paths, ['Procfile', 'LICENSE', '**.ejs', '**.yml', '**.opts'],
+			'Exclude paths is either missing or is in invalid format');
 	});
 });
