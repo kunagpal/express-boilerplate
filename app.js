@@ -4,11 +4,13 @@
 
 var path = require('path'),
 
+	_ = require('lodash'),
 	cors = require('cors'),
 	csurf = require('csurf'),
 	logger = require('morgan'),
 	helmet = require('helmet'),
 	express = require('express'),
+	load = require('require-all'),
 	passport = require('passport'),
 	bodyParser = require('body-parser'),
 	compression = require('compression'),
@@ -16,7 +18,7 @@ var path = require('path'),
 	expressSession = require('express-session'),
 
 	name = require('./package').name,
-	routes = require('./utils/misc').requireDir('routes'),
+	routes = load(path.join(__dirname, 'routes')),
 	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
 
 	app = express(),
@@ -24,6 +26,11 @@ var path = require('path'),
 	NOT_FOUND = 404,
 	INTERNAL_SERVER_ERROR = 500,
 	CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
+
+_.merge(global, load(path.join(__dirname, 'database')));
+
+// inject utils into the global namespace
+global.utils = require(path.join(__dirname, 'utils', 'misc'));
 
 // view engine setup
 app.set('title', name);
