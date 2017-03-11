@@ -1,12 +1,14 @@
 # Express Boilerplate Changelog
 
-#### v0.0.0 (January 2017)
+#### v0.0.1 (12 March 2017)
+* App startup improvements.
+* Test setup simplification.
+
+#### v0.0.0 (3 January 2017)
 * CORS configuration
 * CI Build configuration
-* App control, test, utilty scripts
+* App control, test, utility scripts
 * Code coverage, other miscellaneous badges
-
-#### v0.0.0 (September - December 2016)
 * System tests
 * DB purge script
 * Database model code
@@ -14,8 +16,6 @@
 * Static asset minification script
 * Postinstall script for Windows scripts
 * ESLint plugins, middleware, NSP, middleware and structural test
-
-#### v0.0.0 (August 2016)
 * CSSLint
 * EditorConfig
 * CodeClimate config
