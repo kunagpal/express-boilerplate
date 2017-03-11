@@ -10,7 +10,7 @@ var pm2 = require('pm2'),
 /**
  * Starts the app, passing on any errors encountered to the callback.
  *
- * @param {Function} done - The callback invoked to indicate the end of the app star routine.
+ * @param {Function} done - The callback invoked to indicate the end of the app start routine.
  */
 module.exports = function (done) {
 	async.series([
