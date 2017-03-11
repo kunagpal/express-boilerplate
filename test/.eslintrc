@@ -11,20 +11,31 @@ env:
   node: true
 
 globals:
+  # Injected test modules
   _: true,
   fs: true,
   path: true,
-  utils: true,
   assert: true,
+  testUtils: true,
 
+  # shared database connection instance
   db: true
 
+  # Test stubs
   it: true
   before: true
   after: true
   afterEach: true
   beforeEach: true
   describe: true
+
+  # App utilities
+
+  # Models
+  User: true
+
+  # Database scrubber
+  purge: true
 
 # http://eslint.org/docs/rules/
 rules:

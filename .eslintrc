@@ -24,9 +24,8 @@ extensions:
 
 globals:
   db: true
+  utils: true
   global: true
-  testFlag: true
-  testDb: true
 
 # http://eslint.org/docs/rules/
 rules:
@@ -62,7 +61,7 @@ rules:
   no-unsafe-finally: 2
   use-isnan: 2
   valid-jsdoc: [2, { "requireReturn": false, "preferType": {
-  	"object": "Object", "string": "String", "number": "Number", "buffer": "Buffer", "array": "Array"
+      "object": "Object", "string": "String", "number": "Number", "buffer": "Buffer", "array": "Array"
     },
     "prefer": { "arg": "param", "argument": "param", "return": "returns", "class": "constructor" }
   }]
@@ -77,7 +76,7 @@ rules:
   consistent-return: 1
   curly: 2
   default-case: 2
-  dot-location: 2
+  dot-location: 0
   dot-notation: 2
   eqeqeq: 2
   guard-for-in: 2
@@ -153,13 +152,13 @@ rules:
   no-shadow: 2
   no-undef-init: 2
   no-undef: [2, { "typeof": true }]
-  no-undefined: 2
+  no-undefined: 0
   no-unused-vars: 2
   no-use-before-define: 2
 
   # Node.js and CommonJS
   callback-return: 2
-  global-require: 2
+  global-require: 1
   handle-callback-err: 2
   no-mixed-requires: 0
   no-new-require: 2
@@ -212,7 +211,7 @@ rules:
   no-continue: 0
   no-inline-comments: 0
   no-lonely-if: 2
-  no-mixed-operators: 2
+  no-mixed-operators: 0
   no-mixed-spaces-and-tabs: 2
   no-multi-assign: 2
   no-multiple-empty-lines: 2
