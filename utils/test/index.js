@@ -139,7 +139,7 @@ exports.runTests = function (testDir, done) {
 		 * @param {Function} next - The callback that marks the end of the test instance compilation.
 		 */
 		function (tests, next) {
-			var mocha = new Mocha();
+			var mocha = new Mocha({ timeout: 5000 });
 
 			_.forEach(tests, mocha.addFile.bind(mocha));
 
