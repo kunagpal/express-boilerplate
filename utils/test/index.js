@@ -15,7 +15,6 @@ var fs = require('fs'),
 
 	ENCODING = 'utf-8',
 	TEST_FILE_PATTERN = '.test.js',
-	YAML_LOAD_ERROR = 'The specified file does not exist, or is invalid YAML',
 	PACKAGES = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies'];
 
 /**
@@ -30,9 +29,7 @@ exports.ymlToJson = function (yamlPath) {
 	try {
 		json = yaml.safeLoad(fs.readFileSync(yamlPath, ENCODING)); // eslint-disable-line no-sync
 	}
-	catch (err) {
-		console.error(YAML_LOAD_ERROR);
-	}
+	catch (err) {} // eslint-disable-line no-empty
 
 	return json;
 };
