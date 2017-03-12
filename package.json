@@ -16,7 +16,6 @@
     "check": "node node_modules/.bin/npm-check -u",
     "docs": "node node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts utils app.js",
     "start": "node scripts/app/start.js",
-    "restart": "node scripts/app/restart.js",
     "stop": "node scripts/app/stop.js",
     "seed": "node scripts/database/seed.js",
     "purge": "node scripts/database/purge.js",
@@ -28,15 +27,10 @@
     "e2e": "node scripts/test/e2e.js",
     "structure": "node scripts/test/structure.js",
     "test": "npm run csslint && node scripts/test",
-    "pack": "node scripts/misc/pack.js",
+    "prestart": "node scripts/misc/prestart.js",
     "postinstall": "node scripts/misc/postInstall.js"
   },
-  "contributors": [
-    {
-      "name": "Kunal Nagpal",
-      "email": "kunagpal@gmail.com"
-    }
-  ],
+  "author": "Kunal Nagpal <kunagpal@gmail.com>",
   "dependencies": {
     "async": "2.1.5",
     "body-parser": "1.17.1",
