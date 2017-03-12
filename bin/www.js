@@ -48,7 +48,6 @@ var path = require('path'),
 	 */
 	onSigint = function () {
 		db.close(process.exit);
-		process.exit(0); // eslint-disable-line
 	};
 
 process.env.NODE_ENV ? utils.checkVars() : require('dotenv').load();
