@@ -1,5 +1,10 @@
 # Express Boilerplate Changelog
 
+#### v0.0.2 (13 March 2017)
+* Better `SIGINT` handling.
+* Cleaned up package scripts.
+* Cleaner route instantiation.
+
 #### v0.0.1 (12 March 2017)
 * App startup improvements.
 * Test setup simplification.
