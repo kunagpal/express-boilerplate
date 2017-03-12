@@ -46,10 +46,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cookieParser(process.env.COOKIE_SECRET || 'cookie_secret', { signed: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET, { signed: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(expressSession({ secret: process.env.SESSION_SECRET }));
+app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(csurf());
 
 app.use(function (req, res, next) {
@@ -66,8 +66,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes.index);
-app.use('/api', routes.api);
-app.use('/home', routes.home);
+
+delete routes.index;
+
+_.forEach(routes, function (router, mountPoint) {
+	app.use(`/${mountPoint}`, router);
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

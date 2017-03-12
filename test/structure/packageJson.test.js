@@ -37,10 +37,6 @@ describe('package.json', function () {
 			assert(packageScripts.stop, 'Project stop script missing');
 		});
 
-		it('should have a restart script', function () {
-			assert(packageScripts.restart, 'Project restart script missing');
-		});
-
 		it('should have a docs script', function () {
 			assert(packageScripts.docs, 'Project docs script missing');
 		});
@@ -65,12 +61,10 @@ describe('package.json', function () {
 			assert(packageScripts.postinstall, 'Project postinstall script missing');
 		});
 
-		it('should have a pack script', function () {
-			assert(packageScripts.pack, 'Project pack script missing');
+		it('should have a prestart script', function () {
+			assert(packageScripts.prestart, 'Project prestart script missing');
 		});
 	});
-
-	describe('contributors', testUtils.checkContributors(packageJSON.contributors));
 
 	describe('dependencies', testUtils.checkDependencies(packageJSON));
 

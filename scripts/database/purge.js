@@ -21,9 +21,7 @@ module.exports = function (done) {
 		return db.dropDatabase(function (error) {
 			if (error) { return done(error); }
 
-			db.close();
-
-			return done();
+			return db.close(done);
 		});
 	});
 };

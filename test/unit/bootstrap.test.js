@@ -19,9 +19,11 @@ before(function (done) {
 	});
 });
 
-after(function () {
+after(function (done) {
 	testServer.close();
-	db.close();
 
-	delete global.db;
+	db.close(function (err) {
+		delete global.db;
+		done(err);
+	});
 });
