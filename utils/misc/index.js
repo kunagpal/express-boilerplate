@@ -2,10 +2,9 @@
 * @file Contains miscellaneous helpers used throughout the project.
 */
 
-var fs = require('fs'),
-	path = require('path'),
+var _ = require('lodash'),
 
-	_ = require('lodash'),
+	reject = Promise.reject.bind(Promise),
 
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
 		'SENTRY_DSN', 'MONGO_URI', 'PORT'];
@@ -23,14 +22,12 @@ exports.checkVars = function () {
 };
 
 /**
- * Helper function to load all modules from a directory.
+ * Handles the provided error meta with either the provided callback, or a Promise.reject.
  *
- * @param   {String} dir - The directory from which to load modules.
- * @returns {Object}     A set of all the required modules in dir.
+ * @param {Error|String} err - An error instance, or the message to be passed down.
+ * @param {Function} callback - The function to handle the error with.
+ * @returns {Promise|*} - A rejected promise instance, or a callback stub associated with the current error context.
  */
-exports.requireDir = function (dir) {
-	return _.isString(dir) && !_.isEmpty(dir)
-		? _.transform(fs.readdirSync(path.resolve(dir)), function (result, value) { // eslint-disable-line no-sync
-			result[path.parse(value).name] = require(path.resolve(dir, value)); // eslint-disable-line global-require
-		}, {}) : {};
+exports.handle = function (err, callback) {
+	return (_.isFunction(callback) ? callback : reject)(_.isError(err) ? err : new Error(err));
 };
