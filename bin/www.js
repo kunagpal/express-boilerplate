@@ -47,7 +47,7 @@ var path = require('path'),
 	 * Handles SIGINT gracefully.
 	 */
 	onSigint = function () {
-		db.close();
+		db.close(process.exit);
 		process.exit(0); // eslint-disable-line
 	};
 
