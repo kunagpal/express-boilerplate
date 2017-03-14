@@ -40,7 +40,7 @@
     "cookie-parser": "1.4.3",
     "cors": "2.8.1",
     "csurf": "1.9.0",
-    "debug": "2.6.2",
+    "debug": "2.6.3",
     "ejs": "2.5.6",
     "emailjs": "1.0.8",
     "express": "5.0.0-alpha.5",
