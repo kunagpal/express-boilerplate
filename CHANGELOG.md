@@ -1,5 +1,8 @@
 # Express Boilerplate Changelog
 
+#### v0.0.4 (22 March 2017)
+* Restored unit test coverage publishing
+
 #### v0.0.3 (22 March 2017)
 * `User.insert` handles bulk and singular record creation.
 
