@@ -1,26 +1,26 @@
 describe('User', function () {
 	afterEach(purge);
 
-	describe('.insertOne', function () {
+	describe('.insert', function () {
 		describe('error handling', function () {
 			describe('callbacks', function () {
 				it('should result in an error for missing data', function (done) {
-					User.insertOne(function (err) {
-						assert.equal(err.message, 'Invalid user data', 'User.insertOne does not handle missing data');
+					User.insert(function (err) {
+						assert.equal(err.message, 'Invalid user data', 'User.insert does not handle missing data');
 						done();
 					});
 				});
 
 				it('should result in an error for empty data', function (done) {
-					User.insertOne(null, function (err) {
-						assert.equal(err.message, 'Invalid user data', 'User.insertOne does not handle empty data');
+					User.insert(null, function (err) {
+						assert.equal(err.message, 'Invalid user data', 'User.insert does not handle empty data');
 						done();
 					});
 				});
 
 				it('should result in an error for malformed data', function (done) {
-					User.insertOne('someone@example.com', function (err) {
-						assert.equal(err.message, 'Invalid user data', 'User.insertOne does not handle malformed data');
+					User.insert('someone@example.com', function (err) {
+						assert.equal(err.message, 'Invalid user data', 'User.insert does not handle malformed data');
 						done();
 					});
 				});
@@ -29,9 +29,9 @@ describe('User', function () {
 			describe('promises', function () {
 				it('should result in an error for missing data', function (done) {
 					User
-						.insertOne()
+						.insert()
 						.then(done, function (err) {
-							assert.equal(err.message, 'Invalid user data', 'User.insertOne mishandles missing data');
+							assert.equal(err.message, 'Invalid user data', 'User.insert mishandles missing data');
 							done();
 						})
 						.catch(done);
@@ -39,9 +39,9 @@ describe('User', function () {
 
 				it('should result in an error for empty data', function (done) {
 					User
-						.insertOne(null)
+						.insert(null)
 						.then(done, function (err) {
-							assert.equal(err.message, 'Invalid user data', 'User.insertOne does not handle empty data');
+							assert.equal(err.message, 'Invalid user data', 'User.insert does not handle empty data');
 							done();
 						})
 						.catch(done);
@@ -49,9 +49,9 @@ describe('User', function () {
 
 				it('should result in an error for malformed data', function (done) {
 					User
-						.insertOne('someone@example.com')
+						.insert('someone@example.com')
 						.then(done, function (err) {
-							assert.equal(err.message, 'Invalid user data', 'User.insertOne mishandled malformed data');
+							assert.equal(err.message, 'Invalid user data', 'User.insert mishandled malformed data');
 							done();
 						})
 						.catch(done);
@@ -62,13 +62,13 @@ describe('User', function () {
 		describe('duplicate data', function () {
 			describe('callbacks', function () {
 				beforeEach(function (done) {
-					User.insertOne({ email: 'someone@user.com', authStrategy: 'admin' }, done);
+					User.insert({ email: 'someone@user.com', authStrategy: 'admin' }, done);
 				});
 
 				it('should result in an error', function (done) {
-					User.insertOne({ email: 'someone@user.com', authStrategy: 'local' }, function (err, user) {
-						assert(err.message, 'User.insertOne does not handle duplicate data correctly');
-						assert(!user, 'User.insertOne leaks data on duplicate insertion');
+					User.insert({ email: 'someone@user.com', authStrategy: 'local' }, function (err, user) {
+						assert(err.message, 'User.insert does not handle duplicate data correctly');
+						assert(!user, 'User.insert leaks data on duplicate insertion');
 						done();
 					});
 				});
@@ -77,9 +77,9 @@ describe('User', function () {
 			describe('promises', function () {
 				beforeEach(function (done) {
 					User
-						.insertOne({ email: 'someone@user.com', authStrategy: 'admin' })
+						.insert({ email: 'someone@user.com', authStrategy: 'admin' })
 						.then(function (user) {
-							assert(_.isObject(user) && !_.isEmpty(user), 'User.insertOne may not be working correctly');
+							assert(_.isObject(user) && !_.isEmpty(user), 'User.insert may not be working correctly');
 							done();
 						}, done)
 						.catch(done);
@@ -87,9 +87,9 @@ describe('User', function () {
 
 				it('should result in an error', function (done) {
 					User
-						.insertOne({ email: 'someone@user.com', authStrategy: 'local' })
+						.insert({ email: 'someone@user.com', authStrategy: 'local' })
 						.then(done, function (err) {
-							assert(err.message, 'User.insertOne does not handle duplicate data correctly');
+							assert(err.message, 'User.insert does not handle duplicate data correctly');
 							done();
 						})
 						.catch(done);
@@ -100,23 +100,49 @@ describe('User', function () {
 		describe('normal functioning', function () {
 			describe('callbacks', function () {
 				it('should insert a user correctly', function (done) {
-					User.insertOne({ email: 'someone@example.com' }, function (err, user) {
+					User.insert({ email: 'someone@example.com' }, function (err, user) {
 						if (err) { return done(err); }
 
 						assert(_.isObject(user) && !_.isEmpty(user), 'User record was not created correctly');
 						done();
 					});
 				});
+
+				it('should insert multiple users correctly', function (done) {
+					User.insert([{ email: 'someone@example.com' }, { email: 'someone.else@example.com' }],
+						function (err, meta) {
+							if (err) { return done(err); }
+
+							assert.deepStrictEqual(meta.result, { ok: 1, n: 2 }, 'Bulk records weren\'t inserted');
+							assert.deepStrictEqual(meta.insertedIds, ['someone@example.com',
+								'someone.else@example.com'], 'Users not created properly');
+
+							done();
+						});
+				});
 			});
 
 			describe('promises', function () {
 				it('should insert a user correctly', function (done) {
 					User
-						.insertOne({ email: 'someone@example.com' })
+						.insert({ email: 'someone@example.com' })
 						.then(function (user) {
 							assert(_.isObject(user) && !_.isEmpty(user), 'User record was not created correctly');
 							done();
 						}, done)
+						.catch(done);
+				});
+
+				it('should insert multiple users correctly', function (done) {
+					User
+						.insert([{ email: 'someone@example.com' }, { email: 'someone.else@example.com' }])
+						.then(function (meta) {
+							assert.deepStrictEqual(meta.result, { ok: 1, n: 2 }, 'Bulk records weren\'t inserted');
+							assert.deepStrictEqual(meta.insertedIds, ['someone@example.com',
+								'someone.else@example.com'], 'Users not created properly');
+
+							done();
+						})
 						.catch(done);
 				});
 			});
