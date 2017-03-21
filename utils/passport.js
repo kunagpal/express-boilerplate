@@ -57,7 +57,7 @@ _.forOwn(AUTH_STRATEGIES, function (strategy, name) {
 		clientID: process.env[`${name}_ID`],
 		clientSecret: process.env[`${name}_SECRET`],
 		profileFields: ['id', 'email', 'displayName'],
-		callbackURL: `<>${name.toLowerCase()}/callback`
+		callbackURL: `<>${_.toLower(name)}/callback`
 	}, passportCallback
 	));
 });

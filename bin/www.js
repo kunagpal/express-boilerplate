@@ -61,7 +61,7 @@ port = _.toInteger(process.env.PORT);
  * @param {Function} done - The callback invoked at the end of the app start routine.
  */
 module.exports = function (done) {
-	mongodb.connect(process.env.MONGO_URI, function (err, database) {
+	mongodb.connect(process.env.MONGO_URI, { w: 1 }, function (err, database) {
 		if (err) { throw err; }
 
 		global.db = database;

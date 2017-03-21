@@ -5,7 +5,9 @@
 var path = require('path'),
 	chalk = require('chalk'),
 
-	run = require(path.join(__dirname, '..', '..', 'utils', 'test')).runTests;
+	rootPath = path.join(__dirname, '..', '..'),
+	run = require(path.join(rootPath, 'utils', 'test')).runTests,
+	purge = require(path.join(rootPath, 'scripts', 'database', 'purge'));
 
 /**
  * Runs tests in the test/unit directory, without generating coverage information.
@@ -14,6 +16,8 @@ var path = require('path'),
  */
 module.exports = function (done) {
 	console.info(chalk.blue.bold('Running unit tests'));
+
+	global.purge = purge;
 	run('test/unit', done);
 };
 
