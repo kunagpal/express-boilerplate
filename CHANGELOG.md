@@ -1,5 +1,8 @@
 # Express Boilerplate Changelog
 
+#### v0.0.3 (22 March 2017)
+* `User.insert` handles bulk and singular record creation.
+
 #### v0.0.2 (13 March 2017)
 * Better `SIGINT` handling.
 * Cleaned up package scripts.
