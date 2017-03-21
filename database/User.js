@@ -28,35 +28,20 @@ var _ = require('lodash'),
 /**
  * Creates a new users record.
  *
- * @param {Object} data - The data object to be inserted into the users collection.
+ * @param {Object|Object[]} data - The data object to be inserted into the users collection.
  * @param {Function} callback - The function invoked to mark the end of user creation.
  * @returns {Promise|*} - A handler for the resultant insertOne state.
  */
-exports.insertOne = function (data, callback) {
-	if (_.isEmpty(data) || !_.isObject(data)) {
+exports.insert = function (data, callback) {
+	var nonArray = !_.isArray(data);
+
+	if (_.isEmpty(data) || (!_.isObject(data) && nonArray)) {
 		_.isFunction(data) && (callback = data);
 
 		return utils.handle('Invalid user data', callback);
 	}
 
-	return users.insertOne(user(data), callback);
-};
-
-/**
- * Provides an interface for bulk record creation.
- *
- * @param {Object[]} records - A list of records to be inserted in bulk.
- * @param {Function} callback - The function invoked to mark the end of user creation.
- * @returns {Promise|*} - A handler for the resultant insertMany state.
- */
-exports.insertMany = function (records, callback) {
-	if (!_.isArray(records) || _.isEmpty(records)) {
-		_.isFunction(records) && (callback = records);
-
-		return utils.handle('Invalid user data', callback);
-	}
-
-	return users.insertMany(_.map(records, user), callback);
+	return nonArray ? users.insertOne(user(data), callback) : users.insertMany(_.map(data, user), callback);
 };
 
 /**
