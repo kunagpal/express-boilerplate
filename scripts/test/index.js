@@ -23,7 +23,7 @@ var path = require('path'),
  */
 module.exports = function (done) {
 	console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
-	async.series([esLint, structure, e2e, security, unit], done);
+	async.series([esLint, structure, security, unit, e2e], done);
 };
 
 !module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
