@@ -152,12 +152,16 @@ describe('User', function () {
 	describe('.find', function () {
 		describe('no data', function () {
 			describe('callbacks', function () {
+				var validate = function (err, result) {
+					assert.strictEqual(err, null, 'Error should be null for User.find');
+					assert.deepStrictEqual(result, [], 'User.find does not return an empty set for no matches');
+				};
+
 				it('should handle default queries correctly', function (done) {
 					User.find(function (err, result) { // eslint-disable-line lodash/prefer-lodash-method
 						if (err) { return done(err); }
 
-						assert.strictEqual(err, null, 'Error should be null for User.find');
-						assert.deepStrictEqual(result, [], 'User.find does not return an empty set for no matches');
+						validate(err, result);
 
 						done();
 					});
@@ -168,8 +172,7 @@ describe('User', function () {
 					User.find('someone@example.com', function (err, result) {
 						if (err) { return done(err); }
 
-						assert.strictEqual(err, null, 'Error should be null for User.find');
-						assert.deepStrictEqual(result, [], 'User.find does not return an empty set for no matches');
+						validate(err, result);
 
 						done();
 					});
@@ -180,8 +183,7 @@ describe('User', function () {
 					User.find({ _id: 'someone@example.com' }, function (err, result) {
 						if (err) { return done(err); }
 
-						assert.strictEqual(err, null, 'Error should be null for User.find');
-						assert.deepStrictEqual(result, [], 'User.find does not return an empty set for no matches');
+						validate(err, result);
 
 						done();
 					});
@@ -225,6 +227,14 @@ describe('User', function () {
 		});
 
 		describe('valid data', function () {
+			var validate = function (err, result) {
+				!result && (result = err) && (err = null);
+
+				assert.strictEqual(err, null, 'Error should be null for User.find');
+				assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
+				assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+			};
+
 			describe('callbacks', function () {
 				beforeEach(function (done) {
 					User.insert({ email: 'someone@example.com' }, done);
@@ -234,9 +244,7 @@ describe('User', function () {
 					User.find(function (err, result) { // eslint-disable-line lodash/prefer-lodash-method
 						if (err) { return done(err); }
 
-						assert.strictEqual(err, null, 'Error should be null for User.find');
-						assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
-						assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+						validate(err, result);
 
 						done();
 					});
@@ -247,9 +255,7 @@ describe('User', function () {
 					User.find('someone@example.com', function (err, result) {
 						if (err) { return done(err); }
 
-						assert.strictEqual(err, null, 'Error should be null for User.find');
-						assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
-						assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+						validate(err, result);
 
 						done();
 					});
@@ -260,9 +266,7 @@ describe('User', function () {
 					User.find({ _id: 'someone@example.com' }, function (err, result) {
 						if (err) { return done(err); }
 
-						assert.strictEqual(err, null, 'Error should be null for User.find');
-						assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
-						assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+						validate(err, result);
 
 						done();
 					});
@@ -281,8 +285,7 @@ describe('User', function () {
 					User // eslint-disable-line lodash/prefer-lodash-method
 						.find()
 						.then(function (result) {
-							assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
-							assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+							validate(result);
 
 							done();
 						}, done)
@@ -293,8 +296,7 @@ describe('User', function () {
 					User // eslint-disable-line lodash/prefer-lodash-method
 						.find('someone@example.com')
 						.then(function (result) {
-							assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
-							assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+							validate(result);
 
 							done();
 						}, done)
@@ -305,8 +307,7 @@ describe('User', function () {
 					User // eslint-disable-line lodash/prefer-lodash-method
 						.find({ _id: 'someone@example.com' })
 						.then(function (result) {
-							assert.deepStrictEqual(result.length, 1, 'User records may be mutated!');
-							assert.strictEqual(result[0]._id, 'someone@example.com', 'User records may be polluted');
+							validate(result);
 
 							done();
 						}, done)
