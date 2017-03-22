@@ -69,7 +69,7 @@ rules:
 
   # Best Practices
   accessor-pairs: 2
-  array-callback-return: 2
+  array-callback-return: 1
   block-scoped-var: 2
   class-methods-use-this: 2
   complexity: [2, 6]
