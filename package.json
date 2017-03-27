@@ -44,7 +44,7 @@
     "ejs": "2.5.6",
     "emailjs": "1.0.8",
     "express": "5.0.0-alpha.5",
-    "express-session": "1.15.1",
+    "express-session": "1.15.2",
     "express-status-monitor": "0.1.9",
     "helmet": "3.5.0",
     "heroku-client": "3.0.2",
