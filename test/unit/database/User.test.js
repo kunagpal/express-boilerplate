@@ -449,4 +449,296 @@ describe('User', function () {
 			});
 		});
 	});
+
+	describe('.deleteOne', function () {
+		describe('no data', function () {
+			describe('callbacks', function () {
+				it('should handle missing delete queries', function (done) {
+					User.deleteOne(function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+						assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
+
+						done();
+					});
+				});
+
+				it('should handle singular delete queries', function (done) {
+					User.deleteOne('someone@example.com', function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+						assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
+
+						done();
+					});
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User.deleteOne({}, function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+						assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				it('should handle missing delete queries', function (done) {
+					User
+						.deleteOne()
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+							assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle singular delete queries', function (done) {
+					User
+						.deleteOne('someone@example.com')
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+							assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User
+						.deleteOne({})
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+							assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+
+		describe('valid data', function () {
+			describe('callbacks', function () {
+				beforeEach(function (done) {
+					User.insert([{ email: 'someone@example.com' }, { email: 'somebody@example.com' }], done);
+				});
+
+				it('should handle missing delete queries', function (done) {
+					User.deleteOne(function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+						assert.strictEqual(result.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
+
+						done();
+					});
+				});
+
+				it('should handle singular delete queries', function (done) {
+					User.deleteOne('someone@example.com', function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+						assert.strictEqual(result.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
+
+						done();
+					});
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User.deleteOne({}, function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+						assert.strictEqual(result.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				beforeEach(function (done) {
+					User
+						.insert({ email: 'someone@example.com' })
+						.then(function () { done(); }, done)
+						.catch(done);
+				});
+
+				it('should handle missing delete queries', function (done) {
+					User
+						.deleteOne()
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+							assert.strictEqual(result.deletedCount, 1, 'User.deleteOne did not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle singular delete queries', function (done) {
+					User
+						.deleteOne('someone@example.com')
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+							assert.strictEqual(result.deletedCount, 1, 'User.deleteOne did not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User
+						.deleteOne({})
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+							assert.strictEqual(result.deletedCount, 1, 'User.deleteOne did not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+	});
+
+	describe('.delete', function () {
+		describe('no data', function () {
+			describe('callbacks', function () {
+				it('should handle missing delete queries', function (done) {
+					User.delete(function (err, result) {
+						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+						assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
+
+						done();
+					});
+				});
+
+				it('should handle singular delete queries', function (done) {
+					User.delete('someone@example.com', function (err, result) {
+						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+						assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
+
+						done();
+					});
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User.delete({}, function (err, result) {
+						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+						assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				it('should handle missing delete queries', function (done) {
+					User
+						.delete()
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+							assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle singular delete queries', function (done) {
+					User
+						.delete('someone@example.com')
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+							assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User
+						.delete({})
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+							assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+
+		describe('valid data', function () {
+			describe('callbacks', function () {
+				beforeEach(function (done) {
+					User.insert([{ email: 'someone@example.com' }, { email: 'somebody@example.com' }], done);
+				});
+
+				it('should handle missing delete queries', function (done) {
+					User.delete(function (err, result) {
+						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
+						assert.strictEqual(result.deletedCount, 2, 'User.delete didn\'t remove correctly');
+
+						done();
+					});
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User.delete({}, function (err, result) {
+						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
+						assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
+						assert.strictEqual(result.deletedCount, 2, 'User.delete didn\'t remove correctly');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				beforeEach(function (done) {
+					User
+						.insert([{ email: 'someone@example.com' }, { email: 'somebody@example.com' }])
+						.then(function () { done(); }, done)
+						.catch(done);
+				});
+
+				it('should handle missing delete queries', function (done) {
+					User
+						.delete()
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
+							assert.strictEqual(result.deletedCount, 2, 'User.delete did not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle invalid delete queries', function (done) {
+					User
+						.delete({})
+						.then(function (result) {
+							assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
+							assert.strictEqual(result.deletedCount, 2, 'User.delete did not remove records');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+	});
 });
