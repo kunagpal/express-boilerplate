@@ -111,11 +111,11 @@ exports.update = function (query, data, callback) {
  * @param {Function} callback - The function invoked to mark the end of user creation.
  * @returns {Promise|*} - A handler for the resultant removeOne state.
  */
-exports.removeOne = function (query, callback) {
+exports.deleteOne = function (query, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(query) && (callback = query) && (query = {});
 
-	return users.removeOne(query, callback);
+	return users.deleteOne(query, callback);
 };
 
 /**
@@ -125,9 +125,9 @@ exports.removeOne = function (query, callback) {
  * @param {Function} callback - The function invoked to mark the end of user creation.
  * @returns {Promise|*} - A handler for the resultant update state.
  */
-exports.remove = function (query, callback) {
+exports.delete = function (query, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(query) && (callback = query) && (query = {});
 
-	return users.removeMany(query, callback);
+	return users.deleteMany(query, callback);
 };
