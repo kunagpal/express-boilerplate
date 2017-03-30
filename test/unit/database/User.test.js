@@ -149,6 +149,139 @@ describe('User', function () {
 		});
 	});
 
+	describe('.findOne', function () {
+		describe('no data', function () {
+			describe('callbacks', function () {
+				it('should handle missing queries correctly', function (done) {
+					User.findOne(function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
+						assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+
+						done();
+					});
+				});
+
+				it('should handle singular query entities correctly', function (done) {
+					User.findOne('someone@example.com', function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
+						assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+
+						done();
+					});
+				});
+
+				it('should handle non-existent queries correctly', function (done) {
+					User.findOne({}, function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
+						assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				it('should handle missing queries correctly', function (done) {
+					User
+						.findOne()
+						.then(function (result) {
+							assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle non-existent queries correctly', function (done) {
+					User
+						.findOne({})
+						.then(function (result) {
+							assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+
+		describe('valid data', function () {
+			var email = 'someone@example.com';
+
+			describe('callbacks', function () {
+				var data = { email: email };
+
+				beforeEach(function (done) {
+					User.insert(data, done);
+				});
+
+				it('should handle missing queries correctly', function (done) {
+					User.findOne(function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for valid data');
+						assert.deepStrictEqual(result._id, email, 'User.findOne doesn\'t return a valid result');
+
+						done();
+					});
+				});
+
+				it('should handle singular query entites correctly', function (done) {
+					User.findOne(email, function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
+						assert.strictEqual(result._id, email, 'User.findOne should not return a result for valid data');
+
+						done();
+					});
+				});
+
+				it('should handle non-existent queries correctly', function (done) {
+					User.findOne({ email: 'somebody@example.com' }, function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
+						assert.strictEqual(result, null, 'User.findOne should not return a result for no matches');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				beforeEach(function (done) {
+					User
+						.insert({ email: email })
+						.then(function () { done(); }, done)
+						.catch(done);
+				});
+
+				it('should handle missing queries correctly', function (done) {
+					User
+						.findOne()
+						.then(function (result) {
+							assert.strictEqual(result._id, email, 'User.findOne doesn\'t return a result correctly');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle singular query entities correctly', function (done) {
+					User
+						.findOne(email)
+						.then(function (result) {
+							assert.strictEqual(result._id, email, 'User.findOne doesn\'t return a result correctly');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle non-existent queries correctly', function (done) {
+					User
+						.findOne({})
+						.then(function (result) {
+							assert.strictEqual(result._id, email, 'User.findOne doesn\'t return a result correctly');
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+	});
+
 	describe('.find', function () {
 		describe('no data', function () {
 			describe('callbacks', function () {
