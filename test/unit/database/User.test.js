@@ -637,6 +637,193 @@ describe('User', function () {
 		});
 	});
 
+	describe('.update', function () {
+		describe('no data', function () {
+			describe('callbacks', function () {
+				it('should handle invalid inserts correctly', function (done) {
+					User.update('someone@example.com', function (err, result) {
+						assert.strictEqual(err, null, 'Error might be malformed');
+						assert.strictEqual(result.upsertedId, null);
+						assert.strictEqual(result.matchedCount, 0, 'User.update does not handle invalid matches');
+						assert.strictEqual(result.modifiedCount, 0, 'User.update does not handle invalid updates');
+						assert.strictEqual(result.upsertedCount, 0, 'User.update does not handle invalid upserts');
+						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
+
+						done();
+					});
+				});
+
+				it('should handle non-existent targets correctly', function (done) {
+					User.update('someone@example.com', { foo: 'bar' }, function (err, result) {
+						assert.strictEqual(err, null, 'User.update should not error out for invalid targets');
+						assert.strictEqual(result.upsertedId, null);
+						assert.strictEqual(result.matchedCount, 0, 'User.update does not handle invalid matches');
+						assert.strictEqual(result.modifiedCount, 0, 'User.update does not handle invalid updates');
+						assert.strictEqual(result.upsertedCount, 0, 'User.update does not handle invalid upserts');
+						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
+
+						done();
+					});
+				});
+
+				it('should handle generic queries correctly', function (done) {
+					User.update({ foo: 'bar' }, function (err, result) {
+						assert.strictEqual(err, null, 'User.update should not error out for invalid targets');
+						assert.strictEqual(result.upsertedId, null);
+						assert.strictEqual(result.matchedCount, 0, 'User.update does not handle invalid matches');
+						assert.strictEqual(result.modifiedCount, 0, 'User.update does not handle invalid updates');
+						assert.strictEqual(result.upsertedCount, 0, 'User.update does not handle invalid upserts');
+						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				it('should handle invalid inserts correctly', function (done) {
+					User
+						.update('someone@example.com')
+						.then(function (meta) {
+							assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.update err');
+							assert.strictEqual(meta.upsertedId, null);
+							assert.strictEqual(meta.matchedCount, 0, 'User.update invalid matche handle error');
+							assert.strictEqual(meta.modifiedCount, 0, 'User.update invalid update handle error');
+							assert.strictEqual(meta.upsertedCount, 0, 'User.update invalid upsert handle error');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle non-existent targets correctly', function (done) {
+					User
+						.update('someone@example.com', { foo: 'bar' })
+						.then(function (result) {
+							assert.strictEqual(result.upsertedId, null);
+							assert.strictEqual(result.matchedCount, 0, 'User.update invalid matche handle error');
+							assert.strictEqual(result.modifiedCount, 0, 'User.update invalid update handle error');
+							assert.strictEqual(result.upsertedCount, 0, 'User.update invalid upsert handle error');
+							assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update err');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle generic queries correctly', function (done) {
+					User
+						.update({ foo: 'bar' })
+						.then(function (result) {
+							assert.strictEqual(result.upsertedId, null);
+							assert.strictEqual(result.matchedCount, 0, 'User.update invalid matche handle error');
+							assert.strictEqual(result.modifiedCount, 0, 'User.update invalid update handle error');
+							assert.strictEqual(result.upsertedCount, 0, 'User.update invalid upsert handle error');
+							assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update err');
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+
+		describe('valid update targets', function () {
+			describe('callbacks', function () {
+				beforeEach(function (done) {
+					User.insert([{ email: 'someone@example.com', authStrategy: 'local' },
+						{ email: 'somebody@example.com', authStrategy: 'admin' }], done);
+				});
+
+				it('should correctly update an arbitrary document', function (done) {
+					User.update({ authStrategy: 'random' }, function (err, result) {
+						assert.strictEqual(err, null, 'User.update does not update arbitrary records correctly');
+						assert.strictEqual(result.matchedCount, 2, 'User.update did not match records to update');
+						assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
+						assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
+						assert.strictEqual(result.modifiedCount, 2, 'User.update modifiedCount mismatch');
+
+						done();
+					});
+				});
+
+				it('should correctly update a document found with a singular query', function (done) {
+					User.update('somebody@example.com', { authStrategy: 'local' }, function (err, result) {
+						assert.strictEqual(err, null, 'User.update does not update arbitrary records correctly');
+						assert.strictEqual(result.matchedCount, 1, 'User.update did not match records to update');
+						assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
+						assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
+						assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
+
+						done();
+					});
+				});
+
+				it('should correctly update an specific document', function (done) {
+					User.update({ authStrategy: 'local' }, { authStrategy: 'admin' }, function (err, result) {
+						assert.strictEqual(err, null, 'User.update does not update arbitrary records correctly');
+						assert.strictEqual(result.matchedCount, 1, 'User.update did not match records to update');
+						assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
+						assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
+						assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
+
+						done();
+					});
+				});
+			});
+
+			describe('promises', function () {
+				beforeEach(function (done) {
+					User
+						.insert([
+							{ email: 'someone@example.com', authStrategy: 'local' },
+							{ email: 'somebody@example.com', authStrategy: 'admin' }])
+						.then(function () { done(); }, done)
+						.catch(done);
+				});
+
+				it('should correctly update an arbitrary document', function (done) {
+					User
+						.update({ authStrategy: 'random' })
+						.then(function (result) {
+							assert.strictEqual(result.matchedCount, 2, 'User.update didn\'t get records to update');
+							assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
+							assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
+							assert.strictEqual(result.modifiedCount, 2, 'User.update modifiedCount mismatch');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should correctly update a document found with a singular query', function (done) {
+					User
+						.update('somebody@example.com', { authStrategy: 'local' })
+						.then(function (result) {
+							assert.strictEqual(result.matchedCount, 1, 'User.update did not get records to update');
+							assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
+							assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
+							assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should correctly update an specific document', function (done) {
+					User
+						.update({ authStrategy: 'local' }, { authStrategy: 'admin' })
+						.then(function (result) {
+							assert.strictEqual(result.matchedCount, 1, 'User.update did not get records to update');
+							assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
+							assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
+							assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+			});
+		});
+	});
+
 	describe('.deleteOne', function () {
 		describe('no data', function () {
 			describe('callbacks', function () {
