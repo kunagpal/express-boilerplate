@@ -101,8 +101,9 @@ exports.updateOne = function (query, data, callback) {
 exports.update = function (query, data, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(data) && (callback = data) && (data = query) && (query = {});
+	_.isEmpty(data) && (data = query) && (query = {});
 
-	return users.updateMany(query, data, callback);
+	return users.updateMany(query, { $set: data }, callback);
 };
 
 /**
