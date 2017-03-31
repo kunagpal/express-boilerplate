@@ -82,9 +82,10 @@ exports.find = function (query, callback) {
  */
 exports.updateOne = function (query, data, callback) {
 	_.isString(query) && (query = { _id: query });
-	_.isFunction(data) && (callback = data) && (query = {});
+	_.isFunction(data) && (callback = data) && (data = query) && (data = {});
+	_.isEmpty(data) && (data = query) && (query = {});
 
-	return users.updateOne(query, data, callback);
+	return users.updateOne(query, { $set: data }, callback);
 };
 
 /**
