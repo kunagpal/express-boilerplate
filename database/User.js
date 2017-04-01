@@ -21,9 +21,7 @@ var _ = require('lodash'),
 			createdAt: new Date().toISOString(),
 			settings: {}
 		};
-	},
-
-	QUERY_LIMIT = 1;
+	};
 
 /**
  * Creates a new users record.
@@ -45,31 +43,35 @@ exports.insert = function (data, callback) {
 };
 
 /**
- * Creates a new users record.
+ * Returns the first users record matching the given query, sliced down to the specific fields.
  *
  * @param {Object} query - The data object to be found in the users collection.
+ * @param {Object} slice - The set of attributes to slice down to.
  * @param {Function} callback - The function invoked to mark the end of user fetch.
  * @returns {Promise|*} - A handler for the resultant findOne state.
  */
-exports.findOne = function (query, callback) {
+exports.findOne = function (query, slice, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(query) && (callback = query) && (query = {});
+	_.isFunction(slice) && (callback = slice) && (slice = {});
 
-	return users.find(query).limit(QUERY_LIMIT).next(callback); // eslint-disable-line lodash/prefer-lodash-method
+	return users.find(query, slice).limit(1).next(callback); // eslint-disable-line lodash/prefer-lodash-method
 };
 
 /**
  * Finds multiple records matching the given constraints.
  *
  * @param {Object} query - The data object to be inserted into the users collection.
+ * @param {Object} slice - The set of attributes to slice down to.
  * @param {Function} callback - The function invoked to mark the end of user creation.
  * @returns {Promise|*} - A handler for the resultant find state.
  */
-exports.find = function (query, callback) {
+exports.find = function (query, slice, callback) {
 	_.isString(query) && (query = { _id: query });
-	_.isFunction(query) && (callback = query) && (query = {});
+	_.isFunction(query) && (callback = query) && (query = slice = {});
+	_.isFunction(slice) && (callback = slice) && (slice = {});
 
-	return users.find(query).toArray(callback); // eslint-disable-line lodash/prefer-lodash-method
+	return users.find(query, slice).toArray(callback); // eslint-disable-line lodash/prefer-lodash-method
 };
 
 /**
@@ -84,6 +86,8 @@ exports.updateOne = function (query, data, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(data) && (callback = data) && (data = query) && (data = {});
 	_.isEmpty(data) && (data = query) && (query = {});
+
+	data.updatedAt = new Date().toISOString();
 
 	return users.updateOne(query, { $set: data }, callback);
 };
@@ -102,6 +106,8 @@ exports.update = function (query, data, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(data) && (callback = data) && (data = query) && (query = {});
 	_.isEmpty(data) && (data = query) && (query = {});
+
+	data.updatedAt = new Date().toISOString();
 
 	return users.updateMany(query, { $set: data }, callback);
 };
