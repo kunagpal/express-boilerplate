@@ -178,6 +178,15 @@ describe('User', function () {
 						done();
 					});
 				});
+
+				it('should handle slicing correctly', function (done) {
+					User.findOne({}, {}, function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
+						assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+
+						done();
+					});
+				});
 			});
 
 			describe('promises', function () {
@@ -191,9 +200,29 @@ describe('User', function () {
 						.catch(done);
 				});
 
+				it('should handle singular queries correctly', function (done) {
+					User
+						.findOne('someone@example.com')
+						.then(function (result) {
+							assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+							done();
+						}, done)
+						.catch(done);
+				});
+
 				it('should handle non-existent queries correctly', function (done) {
 					User
 						.findOne({})
+						.then(function (result) {
+							assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle slicing correctly', function (done) {
+					User
+						.findOne({}, {})
 						.then(function (result) {
 							assert.strictEqual(result, null, 'User.findOne should not return a result for no data');
 							done();
@@ -232,9 +261,19 @@ describe('User', function () {
 				});
 
 				it('should handle non-existent queries correctly', function (done) {
-					User.findOne({ email: 'somebody@example.com' }, function (err, result) {
+					User.findOne({ _id: 'somebody@example.com' }, function (err, result) {
 						assert.strictEqual(err, null, 'User.findOne should not return an error for no data');
 						assert.strictEqual(result, null, 'User.findOne should not return a result for no matches');
+
+						done();
+					});
+				});
+
+				it('should handle slicing correctly', function (done) {
+					User.findOne({ _id: email }, { _id: 1 }, function (err, result) {
+						assert.strictEqual(err, null, 'User.findOne should not return an error for valid data');
+						assert.deepStrictEqual(result, { _id: email },
+							'User.findOne should only slice down to the specified fields');
 
 						done();
 					});
@@ -274,6 +313,17 @@ describe('User', function () {
 						.findOne({})
 						.then(function (result) {
 							assert.strictEqual(result._id, email, 'User.findOne doesn\'t return a result correctly');
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle slicing correctly', function (done) {
+					User
+						.findOne(email, { _id: 1 })
+						.then(function (result) {
+							assert.deepStrictEqual(result, { _id: email },
+								'User.findOne doesn\'t return a result correctly');
 							done();
 						}, done)
 						.catch(done);
@@ -321,6 +371,16 @@ describe('User', function () {
 						done();
 					});
 				});
+
+				it('should handle slicing correctly', function (done) {
+					// eslint-disable-next-line lodash/prefer-lodash-method
+					User.find({ _id: 'someone@example.com' }, { _id: 1 }, function (err, result) {
+						if (err) { return done(err); }
+
+						validate(err, result);
+						done();
+					});
+				});
 			});
 
 			describe('promises', function () {
@@ -349,6 +409,17 @@ describe('User', function () {
 				it('should handle object based queries correctly', function (done) {
 					User // eslint-disable-line lodash/prefer-lodash-method
 						.find({ _id: 'someone@example.com' })
+						.then(function (result) {
+							assert.deepStrictEqual(result, [], 'User.find doesn\'t return an empty set for no matches');
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle slicing correctly', function (done) {
+					User // eslint-disable-line lodash/prefer-lodash-method
+						.find({ _id: 'someone@example.com' }, { _id: 1 })
 						.then(function (result) {
 							assert.deepStrictEqual(result, [], 'User.find doesn\'t return an empty set for no matches');
 
@@ -404,6 +475,17 @@ describe('User', function () {
 						done();
 					});
 				});
+
+				it('should handle slicing correctly', function (done) {
+					// eslint-disable-next-line lodash/prefer-lodash-method
+					User.find({ _id: 'someone@example.com' }, { _id: 1 }, function (err, result) {
+						if (err) { return done(err); }
+
+						validate(err, result);
+
+						done();
+					});
+				});
 			});
 
 			describe('promises', function () {
@@ -441,6 +523,18 @@ describe('User', function () {
 						.find({ _id: 'someone@example.com' })
 						.then(function (result) {
 							validate(result);
+
+							done();
+						}, done)
+						.catch(done);
+				});
+
+				it('should handle slicing correctly', function (done) {
+					User // eslint-disable-line lodash/prefer-lodash-method
+						.find({ _id: 'someone@example.com' }, { _id: 1 })
+						.then(function (result) {
+							assert.deepStrictEqual(result, [{ _id: 'someone@example.com' }],
+								'User.find does not handle slicing correctly');
 
 							done();
 						}, done)
