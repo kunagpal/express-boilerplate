@@ -87,6 +87,8 @@ exports.updateOne = function (query, data, callback) {
 	_.isFunction(data) && (callback = data) && (data = query) && (data = {});
 	_.isEmpty(data) && (data = query) && (query = {});
 
+	data.updatedAt = new Date().toISOString();
+
 	return users.updateOne(query, { $set: data }, callback);
 };
 
@@ -104,6 +106,8 @@ exports.update = function (query, data, callback) {
 	_.isString(query) && (query = { _id: query });
 	_.isFunction(data) && (callback = data) && (data = query) && (query = {});
 	_.isEmpty(data) && (data = query) && (query = {});
+
+	data.updatedAt = new Date().toISOString();
 
 	return users.updateMany(query, { $set: data }, callback);
 };
