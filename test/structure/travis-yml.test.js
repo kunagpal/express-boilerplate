@@ -31,11 +31,13 @@ describe(TRAVIS_PATH, function () {
 		var addons = travisYAML.addons;
 
 		it('should have the correct ubuntu toolchain as in sources', function () {
-			assert.deepStrictEqual(addons.apt.sources, ['ubuntu-toolchain-r-test'], 'Incorrect build toolchain');
+			assert.deepStrictEqual(addons.apt.sources, ['mongodb-3.4-precise', 'ubuntu-toolchain-r-test'],
+				'Incorrect build toolchain');
 		});
 
 		it('should have the g++ 4.8 listed as a package', function () {
-			assert.deepStrictEqual(addons.apt.packages, ['g++-4.8'], 'Incorrect build package specified');
+			assert.deepStrictEqual(addons.apt.packages, ['g++-4.8', 'mongodb-org-server'],
+				'Incorrect build package specified');
 		});
 
 		it('should have a secured codeclimate repository token', function () {
