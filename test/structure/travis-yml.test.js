@@ -45,6 +45,12 @@ describe(TRAVIS_PATH, function () {
 		});
 	});
 
+	it('should bootstrap MacOSX builds correctly', function () {
+		// eslint-disable-next-line max-len
+		assert.strictEqual(travisYAML.before_install, 'if [[ $TRAVIS_OS_NAME = \'osx\' ]]; then brew update; sudo mkdir -p /data/db; brew install mongodb; brew services start mongodb; fi',
+			'MongoDB might not work correctly for MacOSX builds');
+	});
+
 	it('should use mongodb as a service', function () {
 		assert.deepStrictEqual(travisYAML.services, ['mongodb'], 'MongoDB may not be used');
 	});
