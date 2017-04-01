@@ -7,7 +7,7 @@ describe(TRAVIS_PATH, function () {
 		fs.stat(TRAVIS_PATH, done);
 	});
 
-	it.skip('should run builds on linux and osx', function () { // eslint-disable-line mocha/no-skipped-tests
+	it('should run builds on linux and osx', function () {
 		assert.deepStrictEqual(travisYAML.os, ['linux', 'osx'], 'Travis builds are not set to linux and osx');
 	});
 
@@ -43,6 +43,12 @@ describe(TRAVIS_PATH, function () {
 		it('should have a secured codeclimate repository token', function () {
 			assert(/^.+$/.test(addons.code_climate.repo_token.secure), 'Invalid codeclimate repo token');
 		});
+	});
+
+	it('should bootstrap MacOSX builds correctly', function () {
+		// eslint-disable-next-line max-len
+		assert.strictEqual(travisYAML.before_install, 'if [[ $TRAVIS_OS_NAME = \'osx\' ]]; then brew update; sudo mkdir -p /data/db; brew install mongodb; brew services start mongodb; fi',
+			'MongoDB might not work correctly for MacOSX builds');
 	});
 
 	it('should use mongodb as a service', function () {
