@@ -6,21 +6,21 @@ describe('User', function () {
 			describe('callbacks', function () {
 				it('should result in an error for missing data', function (done) {
 					User.insert(function (err) {
-						assert.equal(err.message, 'Invalid user data', 'User.insert does not handle missing data');
+						assert.equal(err.message, utils.err.badInsertData, 'User.insert does not handle missing data');
 						done();
 					});
 				});
 
 				it('should result in an error for empty data', function (done) {
 					User.insert(null, function (err) {
-						assert.equal(err.message, 'Invalid user data', 'User.insert does not handle empty data');
+						assert.equal(err.message, utils.err.badInsertData, 'User.insert does not handle empty data');
 						done();
 					});
 				});
 
 				it('should result in an error for malformed data', function (done) {
 					User.insert('someone@example.com', function (err) {
-						assert.equal(err.message, 'Invalid user data', 'User.insert does not handle malformed data');
+						assert.equal(err.message, utils.err.badInsertData, 'User.insert doesn\'t handle bad data');
 						done();
 					});
 				});
@@ -31,7 +31,7 @@ describe('User', function () {
 					User
 						.insert()
 						.then(done, function (err) {
-							assert.equal(err.message, 'Invalid user data', 'User.insert mishandles missing data');
+							assert.equal(err.message, utils.err.badInsertData, 'User.insert mishandles missing data');
 							done();
 						})
 						.catch(done);
@@ -41,7 +41,7 @@ describe('User', function () {
 					User
 						.insert(null)
 						.then(done, function (err) {
-							assert.equal(err.message, 'Invalid user data', 'User.insert does not handle empty data');
+							assert.equal(err.message, utils.err.badInsertData, 'User.insert doesn\'t handle bad data');
 							done();
 						})
 						.catch(done);
@@ -51,7 +51,7 @@ describe('User', function () {
 					User
 						.insert('someone@example.com')
 						.then(done, function (err) {
-							assert.equal(err.message, 'Invalid user data', 'User.insert mishandled malformed data');
+							assert.equal(err.message, utils.err.badInsertData, 'User.insert mishandled malformed data');
 							done();
 						})
 						.catch(done);
