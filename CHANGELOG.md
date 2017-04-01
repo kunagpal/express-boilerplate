@@ -1,5 +1,10 @@
 # Express Boilerplate Changelog
 
+#### v0.0.7 (2 April 2017)
+* :clock1: Added `updatedAt` timestamps for User.update* actions
+* Enabled slicing on User.find* actions
+* Enforced unit test code coverage thresolds #286
+
 #### v0.0.6 (1 April 2017)
 * :apple: Enabled OSX builds on Travis
 
