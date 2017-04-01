@@ -1,5 +1,8 @@
 # Express Boilerplate Changelog
 
+#### v0.0.6 (1 April 2017)
+* :apple: Enabled OSX builds on Travis
+
 #### v0.0.5 (1 April 2017)
 * :arrow_up: Bumped MongoDB version to v3.4.0 for Travis builds
 * :green_heart: Fixed sporadic test failures related to database resets
