@@ -29,9 +29,9 @@ addons:
 services:
   - mongodb
 
-cache:
-  directories:
-    - node_modules
+# cache:
+  # directories:
+    # - node_modules
 
 after_script:
   - npm install codeclimate-test-reporter
