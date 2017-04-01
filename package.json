@@ -14,7 +14,8 @@
   "private": true,
   "scripts": {
     "check": "node node_modules/.bin/npm-check -u",
-    "docs": "node node_modules/.bin/jsdoc -c .jsdocrc bin routes scripts utils app.js",
+    "make-wiki": "node scripts/docs/make-wiki.js",
+    "make-docs": "node node_modules/.bin/jsdoc -c .jsdocrc bin database routes scripts utils app.js",
     "start": "node scripts/app/start.js",
     "stop": "node scripts/app/stop.js",
     "seed": "node scripts/database/seed.js",

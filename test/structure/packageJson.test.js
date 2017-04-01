@@ -38,7 +38,11 @@ describe('package.json', function () {
 		});
 
 		it('should have a docs script', function () {
-			assert(packageScripts.docs, 'Project docs script missing');
+			assert(packageScripts['make-docs'], 'Project docs script missing');
+		});
+
+		it('should have a wiki script', function () {
+			assert(packageScripts['make-wiki'], 'Project wiki script missing');
 		});
 
 		it('should have a seed script', function () {
