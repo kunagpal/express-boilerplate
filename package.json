@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://waffle.io/kunagpal/express-boilerplate"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "check": "node node_modules/.bin/npm-check -u",
