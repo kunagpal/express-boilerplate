@@ -31,3 +31,7 @@ exports.checkVars = function () {
 exports.handle = function (err, callback) {
 	return (_.isFunction(callback) ? callback : reject)(_.isError(err) ? err : new Error(err));
 };
+
+exports.err = {
+	badInsertData: 'Invalid insertion data'
+};
