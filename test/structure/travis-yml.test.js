@@ -7,7 +7,7 @@ describe(TRAVIS_PATH, function () {
 		fs.stat(TRAVIS_PATH, done);
 	});
 
-	it.skip('should run builds on linux and osx', function () { // eslint-disable-line mocha/no-skipped-tests
+	it('should run builds on linux and osx', function () {
 		assert.deepStrictEqual(travisYAML.os, ['linux', 'osx'], 'Travis builds are not set to linux and osx');
 	});
 
