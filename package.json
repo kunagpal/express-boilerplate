@@ -33,7 +33,7 @@
   },
   "author": "Kunal Nagpal <kunagpal@gmail.com>",
   "dependencies": {
-    "async": "2.2.0",
+    "async": "2.3.0",
     "body-parser": "1.17.1",
     "bower": "1.8.0",
     "clean-css": "4.0.10",
