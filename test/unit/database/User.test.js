@@ -335,17 +335,14 @@ describe('User', function () {
 	describe('.find', function () {
 		describe('no data', function () {
 			describe('callbacks', function () {
-				var validate = function (err, result) {
+				var validateEmpty = function (err, result) {
 					assert.strictEqual(err, null, 'Error should be null for User.find');
 					assert.deepStrictEqual(result, [], 'User.find does not return an empty set for no matches');
 				};
 
 				it('should handle default queries correctly', function (done) {
 					User.find(function (err, result) { // eslint-disable-line lodash/prefer-lodash-method
-						if (err) { return done(err); }
-
-						validate(err, result);
-
+						validateEmpty(err, result);
 						done();
 					});
 				});
@@ -353,10 +350,7 @@ describe('User', function () {
 				it('should handle primary key based queries correctly', function (done) {
 					// eslint-disable-next-line lodash/prefer-lodash-method
 					User.find('someone@example.com', function (err, result) {
-						if (err) { return done(err); }
-
-						validate(err, result);
-
+						validateEmpty(err, result);
 						done();
 					});
 				});
@@ -364,10 +358,7 @@ describe('User', function () {
 				it('should handle object based queries correctly', function (done) {
 					// eslint-disable-next-line lodash/prefer-lodash-method
 					User.find({ _id: 'someone@example.com' }, function (err, result) {
-						if (err) { return done(err); }
-
-						validate(err, result);
-
+						validateEmpty(err, result);
 						done();
 					});
 				});
@@ -375,9 +366,7 @@ describe('User', function () {
 				it('should handle slicing correctly', function (done) {
 					// eslint-disable-next-line lodash/prefer-lodash-method
 					User.find({ _id: 'someone@example.com' }, { _id: 1 }, function (err, result) {
-						if (err) { return done(err); }
-
-						validate(err, result);
+						validateEmpty(err, result);
 						done();
 					});
 				});
@@ -446,10 +435,7 @@ describe('User', function () {
 
 				it('should handle default queries correctly', function (done) {
 					User.find(function (err, result) { // eslint-disable-line lodash/prefer-lodash-method
-						if (err) { return done(err); }
-
 						validate(err, result);
-
 						done();
 					});
 				});
@@ -457,10 +443,7 @@ describe('User', function () {
 				it('should handle primary key based queries correctly', function (done) {
 					// eslint-disable-next-line lodash/prefer-lodash-method
 					User.find('someone@example.com', function (err, result) {
-						if (err) { return done(err); }
-
 						validate(err, result);
-
 						done();
 					});
 				});
@@ -468,10 +451,7 @@ describe('User', function () {
 				it('should handle object based queries correctly', function (done) {
 					// eslint-disable-next-line lodash/prefer-lodash-method
 					User.find({ _id: 'someone@example.com' }, function (err, result) {
-						if (err) { return done(err); }
-
 						validate(err, result);
-
 						done();
 					});
 				});
@@ -479,10 +459,7 @@ describe('User', function () {
 				it('should handle slicing correctly', function (done) {
 					// eslint-disable-next-line lodash/prefer-lodash-method
 					User.find({ _id: 'someone@example.com' }, { _id: 1 }, function (err, result) {
-						if (err) { return done(err); }
-
 						validate(err, result);
-
 						done();
 					});
 				});
@@ -546,42 +523,35 @@ describe('User', function () {
 
 	describe('.updateOne', function () {
 		describe('no data', function () {
+			var validateEmpty = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'Error might be malformed');
+				assert.strictEqual(meta.upsertedId, null);
+				assert.strictEqual(meta.matchedCount, 0, 'User.updateOne does not handle invalid matches');
+				assert.strictEqual(meta.modifiedCount, 0, 'User.updateOne does not handle invalid updates');
+				assert.strictEqual(meta.upsertedCount, 0, 'User.updateOne does not handle invalid upserts');
+				assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne error');
+			};
+
 			describe('callbacks', function () {
 				it('should handle invalid inserts correctly', function (done) {
 					User.updateOne('someone@example.com', function (err, result) {
-						assert.strictEqual(err, null, 'Error might be malformed');
-						assert.strictEqual(result.upsertedId, null);
-						assert.strictEqual(result.matchedCount, 0, 'User.updateOne does not handle invalid matches');
-						assert.strictEqual(result.modifiedCount, 0, 'User.updateOne does not handle invalid updates');
-						assert.strictEqual(result.upsertedCount, 0, 'User.updateOne does not handle invalid upserts');
-						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne error');
-
+						validateEmpty(err, result);
 						done();
 					});
 				});
 
 				it('should handle non-existent targets correctly', function (done) {
 					User.updateOne('someone@example.com', { foo: 'bar' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.updateOne should not error out for invalid targets');
-						assert.strictEqual(result.upsertedId, null);
-						assert.strictEqual(result.matchedCount, 0, 'User.updateOne does not handle invalid matches');
-						assert.strictEqual(result.modifiedCount, 0, 'User.updateOne does not handle invalid updates');
-						assert.strictEqual(result.upsertedCount, 0, 'User.updateOne does not handle invalid upserts');
-						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne error');
-
+						validateEmpty(err, result);
 						done();
 					});
 				});
 
 				it('should handle generic queries correctly', function (done) {
 					User.updateOne({ foo: 'bar' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.updateOne should not error out for invalid targets');
-						assert.strictEqual(result.upsertedId, null);
-						assert.strictEqual(result.matchedCount, 0, 'User.updateOne does not handle invalid matches');
-						assert.strictEqual(result.modifiedCount, 0, 'User.updateOne does not handle invalid updates');
-						assert.strictEqual(result.upsertedCount, 0, 'User.updateOne does not handle invalid upserts');
-						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne error');
-
+						validateEmpty(err, result);
 						done();
 					});
 				});
@@ -592,11 +562,7 @@ describe('User', function () {
 					User
 						.updateOne('someone@example.com')
 						.then(function (meta) {
-							assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne err');
-							assert.strictEqual(meta.upsertedId, null);
-							assert.strictEqual(meta.matchedCount, 0, 'User.updateOne invalid matche handle error');
-							assert.strictEqual(meta.modifiedCount, 0, 'User.updateOne invalid update handle error');
-							assert.strictEqual(meta.upsertedCount, 0, 'User.updateOne invalid upsert handle error');
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -605,12 +571,8 @@ describe('User', function () {
 				it('should handle non-existent targets correctly', function (done) {
 					User
 						.updateOne('someone@example.com', { foo: 'bar' })
-						.then(function (result) {
-							assert.strictEqual(result.upsertedId, null);
-							assert.strictEqual(result.matchedCount, 0, 'User.updateOne invalid matche handle error');
-							assert.strictEqual(result.modifiedCount, 0, 'User.updateOne invalid update handle error');
-							assert.strictEqual(result.upsertedCount, 0, 'User.updateOne invalid upsert handle error');
-							assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne err');
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -619,12 +581,8 @@ describe('User', function () {
 				it('should handle generic queries correctly', function (done) {
 					User
 						.updateOne({ foo: 'bar' })
-						.then(function (result) {
-							assert.strictEqual(result.upsertedId, null);
-							assert.strictEqual(result.matchedCount, 0, 'User.updateOne invalid matche handle error');
-							assert.strictEqual(result.modifiedCount, 0, 'User.updateOne invalid update handle error');
-							assert.strictEqual(result.upsertedCount, 0, 'User.updateOne invalid upsert handle error');
-							assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne err');
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -633,6 +591,16 @@ describe('User', function () {
 		});
 
 		describe('valid update targets', function () {
+			var validate = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'User.updateOne does not update arbitrary records correctly');
+				assert.strictEqual(meta.matchedCount, 1, 'User.updateOne did not match records to update');
+				assert.strictEqual(meta.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
+				assert.strictEqual(meta.upsertedId, null, 'User.updateOne upsertedId mismatch');
+				assert.strictEqual(meta.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
+			};
+
 			describe('callbacks', function () {
 				beforeEach(function (done) {
 					User.insert([{ email: 'someone@example.com', authStrategy: 'local' },
@@ -640,37 +608,22 @@ describe('User', function () {
 				});
 
 				it('should correctly update an arbitrary document', function (done) {
-					User.updateOne({ authStrategy: 'random' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.updateOne does not update arbitrary records correctly');
-						assert.strictEqual(result.matchedCount, 1, 'User.updateOne did not match records to update');
-						assert.strictEqual(result.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
-						assert.strictEqual(result.upsertedId, null, 'User.updateOne upsertedId mismatch');
-						assert.strictEqual(result.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
-
+					User.updateOne({ authStrategy: 'random' }, function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
 
 				it('should correctly update a document found with a singular query', function (done) {
-					User.updateOne('somebody@example.com', { authStrategy: 'local' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.updateOne does not update arbitrary records correctly');
-						assert.strictEqual(result.matchedCount, 1, 'User.updateOne did not match records to update');
-						assert.strictEqual(result.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
-						assert.strictEqual(result.upsertedId, null, 'User.updateOne upsertedId mismatch');
-						assert.strictEqual(result.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
-
+					User.updateOne('somebody@example.com', { authStrategy: 'local' }, function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
 
 				it('should correctly update an specific document', function (done) {
-					User.updateOne({ authStrategy: 'local' }, { authStrategy: 'admin' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.updateOne does not update arbitrary records correctly');
-						assert.strictEqual(result.matchedCount, 1, 'User.updateOne did not match records to update');
-						assert.strictEqual(result.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
-						assert.strictEqual(result.upsertedId, null, 'User.updateOne upsertedId mismatch');
-						assert.strictEqual(result.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
-
+					User.updateOne({ authStrategy: 'local' }, { authStrategy: 'admin' }, function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
@@ -689,12 +642,8 @@ describe('User', function () {
 				it('should correctly update an arbitrary document', function (done) {
 					User
 						.updateOne({ authStrategy: 'random' })
-						.then(function (result) {
-							assert.strictEqual(result.matchedCount, 1, 'User.updateOne didn\'t get records to update');
-							assert.strictEqual(result.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
-							assert.strictEqual(result.upsertedId, null, 'User.updateOne upsertedId mismatch');
-							assert.strictEqual(result.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -703,12 +652,8 @@ describe('User', function () {
 				it('should correctly update a document found with a singular query', function (done) {
 					User
 						.updateOne('somebody@example.com', { authStrategy: 'local' })
-						.then(function (result) {
-							assert.strictEqual(result.matchedCount, 1, 'User.updateOne did not get records to update');
-							assert.strictEqual(result.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
-							assert.strictEqual(result.upsertedId, null, 'User.updateOne upsertedId mismatch');
-							assert.strictEqual(result.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -717,12 +662,8 @@ describe('User', function () {
 				it('should correctly update an specific document', function (done) {
 					User
 						.updateOne({ authStrategy: 'local' }, { authStrategy: 'admin' })
-						.then(function (result) {
-							assert.strictEqual(result.matchedCount, 1, 'User.updateOne did not get records to update');
-							assert.strictEqual(result.upsertedCount, 0, 'User.updateOne upsertedCount mismatch');
-							assert.strictEqual(result.upsertedId, null, 'User.updateOne upsertedId mismatch');
-							assert.strictEqual(result.modifiedCount, 1, 'User.updateOne modifiedCount mismatch');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -733,42 +674,35 @@ describe('User', function () {
 
 	describe('.update', function () {
 		describe('no data', function () {
+			var validateEmpty = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'Error might be malformed');
+				assert.strictEqual(meta.upsertedId, null);
+				assert.strictEqual(meta.matchedCount, 0, 'User.update does not handle invalid matches');
+				assert.strictEqual(meta.modifiedCount, 0, 'User.update does not handle invalid updates');
+				assert.strictEqual(meta.upsertedCount, 0, 'User.update does not handle invalid upserts');
+				assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
+			};
+
 			describe('callbacks', function () {
 				it('should handle invalid inserts correctly', function (done) {
-					User.update('someone@example.com', function (err, result) {
-						assert.strictEqual(err, null, 'Error might be malformed');
-						assert.strictEqual(result.upsertedId, null);
-						assert.strictEqual(result.matchedCount, 0, 'User.update does not handle invalid matches');
-						assert.strictEqual(result.modifiedCount, 0, 'User.update does not handle invalid updates');
-						assert.strictEqual(result.upsertedCount, 0, 'User.update does not handle invalid upserts');
-						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
-
+					User.update('someone@example.com', function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
 
 				it('should handle non-existent targets correctly', function (done) {
-					User.update('someone@example.com', { foo: 'bar' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.update should not error out for invalid targets');
-						assert.strictEqual(result.upsertedId, null);
-						assert.strictEqual(result.matchedCount, 0, 'User.update does not handle invalid matches');
-						assert.strictEqual(result.modifiedCount, 0, 'User.update does not handle invalid updates');
-						assert.strictEqual(result.upsertedCount, 0, 'User.update does not handle invalid upserts');
-						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
-
+					User.update('someone@example.com', { foo: 'bar' }, function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
 
 				it('should handle generic queries correctly', function (done) {
-					User.update({ foo: 'bar' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.update should not error out for invalid targets');
-						assert.strictEqual(result.upsertedId, null);
-						assert.strictEqual(result.matchedCount, 0, 'User.update does not handle invalid matches');
-						assert.strictEqual(result.modifiedCount, 0, 'User.update does not handle invalid updates');
-						assert.strictEqual(result.upsertedCount, 0, 'User.update does not handle invalid upserts');
-						assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
-
+					User.update({ foo: 'bar' }, function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
@@ -779,11 +713,7 @@ describe('User', function () {
 					User
 						.update('someone@example.com')
 						.then(function (meta) {
-							assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.update err');
-							assert.strictEqual(meta.upsertedId, null);
-							assert.strictEqual(meta.matchedCount, 0, 'User.update invalid matche handle error');
-							assert.strictEqual(meta.modifiedCount, 0, 'User.update invalid update handle error');
-							assert.strictEqual(meta.upsertedCount, 0, 'User.update invalid upsert handle error');
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -792,12 +722,8 @@ describe('User', function () {
 				it('should handle non-existent targets correctly', function (done) {
 					User
 						.update('someone@example.com', { foo: 'bar' })
-						.then(function (result) {
-							assert.strictEqual(result.upsertedId, null);
-							assert.strictEqual(result.matchedCount, 0, 'User.update invalid matche handle error');
-							assert.strictEqual(result.modifiedCount, 0, 'User.update invalid update handle error');
-							assert.strictEqual(result.upsertedCount, 0, 'User.update invalid upsert handle error');
-							assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update err');
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -806,12 +732,8 @@ describe('User', function () {
 				it('should handle generic queries correctly', function (done) {
 					User
 						.update({ foo: 'bar' })
-						.then(function (result) {
-							assert.strictEqual(result.upsertedId, null);
-							assert.strictEqual(result.matchedCount, 0, 'User.update invalid matche handle error');
-							assert.strictEqual(result.modifiedCount, 0, 'User.update invalid update handle error');
-							assert.strictEqual(result.upsertedCount, 0, 'User.update invalid upsert handle error');
-							assert.deepStrictEqual(result.result, { n: 0, nModified: 0, ok: 1 }, 'User.update err');
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -820,6 +742,18 @@ describe('User', function () {
 		});
 
 		describe('valid update targets', function () {
+			var validate = function (err, meta, count) {
+				_.isNumber(meta) && (count = meta) && (meta = err) && (err = null);
+				!meta && (meta = err) && (err = null);
+				count = count || 2;
+
+				assert(!err, 'User.update does not update arbitrary records correctly');
+				assert.strictEqual(meta.matchedCount, count, 'User.update did not match records to update');
+				assert.strictEqual(meta.upsertedCount, 0, 'User.update upsertedCount mismatch');
+				assert.strictEqual(meta.upsertedId, null, 'User.update upsertedId mismatch');
+				assert.strictEqual(meta.modifiedCount, count, 'User.update modifiedCount mismatch');
+			};
+
 			describe('callbacks', function () {
 				beforeEach(function (done) {
 					User.insert([{ email: 'someone@example.com', authStrategy: 'local' },
@@ -827,37 +761,22 @@ describe('User', function () {
 				});
 
 				it('should correctly update an arbitrary document', function (done) {
-					User.update({ authStrategy: 'random' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.update does not update arbitrary records correctly');
-						assert.strictEqual(result.matchedCount, 2, 'User.update did not match records to update');
-						assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
-						assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
-						assert.strictEqual(result.modifiedCount, 2, 'User.update modifiedCount mismatch');
-
+					User.update({ authStrategy: 'random' }, function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
 
 				it('should correctly update a document found with a singular query', function (done) {
-					User.update('somebody@example.com', { authStrategy: 'local' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.update does not update arbitrary records correctly');
-						assert.strictEqual(result.matchedCount, 1, 'User.update did not match records to update');
-						assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
-						assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
-						assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
-
+					User.update('somebody@example.com', { authStrategy: 'local' }, function (err, meta) {
+						validate(err, meta, 1);
 						done();
 					});
 				});
 
-				it('should correctly update an specific document', function (done) {
-					User.update({ authStrategy: 'local' }, { authStrategy: 'admin' }, function (err, result) {
-						assert.strictEqual(err, null, 'User.update does not update arbitrary records correctly');
-						assert.strictEqual(result.matchedCount, 1, 'User.update did not match records to update');
-						assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
-						assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
-						assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
-
+				it('should correctly update a specific document', function (done) {
+					User.update({ authStrategy: 'local' }, { authStrategy: 'admin' }, function (err, meta) {
+						validate(err, meta, 1);
 						done();
 					});
 				});
@@ -876,12 +795,8 @@ describe('User', function () {
 				it('should correctly update an arbitrary document', function (done) {
 					User
 						.update({ authStrategy: 'random' })
-						.then(function (result) {
-							assert.strictEqual(result.matchedCount, 2, 'User.update didn\'t get records to update');
-							assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
-							assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
-							assert.strictEqual(result.modifiedCount, 2, 'User.update modifiedCount mismatch');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -890,26 +805,18 @@ describe('User', function () {
 				it('should correctly update a document found with a singular query', function (done) {
 					User
 						.update('somebody@example.com', { authStrategy: 'local' })
-						.then(function (result) {
-							assert.strictEqual(result.matchedCount, 1, 'User.update did not get records to update');
-							assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
-							assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
-							assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
-
+						.then(function (meta) {
+							validate(meta, 1);
 							done();
 						}, done)
 						.catch(done);
 				});
 
-				it('should correctly update an specific document', function (done) {
+				it('should correctly update a specific document', function (done) {
 					User
 						.update({ authStrategy: 'local' }, { authStrategy: 'admin' })
-						.then(function (result) {
-							assert.strictEqual(result.matchedCount, 1, 'User.update did not get records to update');
-							assert.strictEqual(result.upsertedCount, 0, 'User.update upsertedCount mismatch');
-							assert.strictEqual(result.upsertedId, null, 'User.update upsertedId mismatch');
-							assert.strictEqual(result.modifiedCount, 1, 'User.update modifiedCount mismatch');
-
+						.then(function (meta) {
+							validate(meta, 1);
 							done();
 						}, done)
 						.catch(done);
@@ -920,33 +827,32 @@ describe('User', function () {
 
 	describe('.deleteOne', function () {
 		describe('no data', function () {
+			var validateEmpty = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+				assert.deepStrictEqual(meta.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+				assert.strictEqual(meta.deletedCount, 0, 'User.deleteOne should not remove records');
+			};
+
 			describe('callbacks', function () {
 				it('should handle missing delete queries', function (done) {
-					User.deleteOne(function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-						assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
-
+					User.deleteOne(function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
 
 				it('should handle singular delete queries', function (done) {
-					User.deleteOne('someone@example.com', function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-						assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
-
+					User.deleteOne('someone@example.com', function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
 
 				it('should handle invalid delete queries', function (done) {
-					User.deleteOne({}, function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-						assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
-
+					User.deleteOne({}, function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
@@ -956,10 +862,8 @@ describe('User', function () {
 				it('should handle missing delete queries', function (done) {
 					User
 						.deleteOne()
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-							assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
-
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -968,10 +872,8 @@ describe('User', function () {
 				it('should handle singular delete queries', function (done) {
 					User
 						.deleteOne('someone@example.com')
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-							assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
-
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -980,10 +882,8 @@ describe('User', function () {
 				it('should handle invalid delete queries', function (done) {
 					User
 						.deleteOne({})
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-							assert.strictEqual(result.deletedCount, 0, 'User.deleteOne should not remove records');
-
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -992,37 +892,36 @@ describe('User', function () {
 		});
 
 		describe('valid data', function () {
+			var validate = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+				assert.deepStrictEqual(meta.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
+				assert.strictEqual(meta.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
+			};
+
 			describe('callbacks', function () {
 				beforeEach(function (done) {
 					User.insert([{ email: 'someone@example.com' }, { email: 'somebody@example.com' }], done);
 				});
 
 				it('should handle missing delete queries', function (done) {
-					User.deleteOne(function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
-						assert.strictEqual(result.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
-
+					User.deleteOne(function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
 
 				it('should handle singular delete queries', function (done) {
-					User.deleteOne('someone@example.com', function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
-						assert.strictEqual(result.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
-
+					User.deleteOne('someone@example.com', function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
 
 				it('should handle invalid delete queries', function (done) {
-					User.deleteOne({}, function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
-						assert.strictEqual(result.deletedCount, 1, 'User.deleteOne didn\'t remove correctly');
-
+					User.deleteOne({}, function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
@@ -1039,10 +938,8 @@ describe('User', function () {
 				it('should handle missing delete queries', function (done) {
 					User
 						.deleteOne()
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
-							assert.strictEqual(result.deletedCount, 1, 'User.deleteOne did not remove records');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1051,10 +948,8 @@ describe('User', function () {
 				it('should handle singular delete queries', function (done) {
 					User
 						.deleteOne('someone@example.com')
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
-							assert.strictEqual(result.deletedCount, 1, 'User.deleteOne did not remove records');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1063,10 +958,8 @@ describe('User', function () {
 				it('should handle invalid delete queries', function (done) {
 					User
 						.deleteOne({})
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 1, ok: 1 }, 'User.deleteOne remove error');
-							assert.strictEqual(result.deletedCount, 1, 'User.deleteOne did not remove records');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1077,33 +970,32 @@ describe('User', function () {
 
 	describe('.delete', function () {
 		describe('no data', function () {
+			var validateEmpty = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'User.delete should not return an error for no data');
+				assert.deepStrictEqual(meta.result, { n: 0, ok: 1 }, 'User.delete should not remove');
+				assert.strictEqual(meta.deletedCount, 0, 'User.delete should not remove records');
+			};
+
 			describe('callbacks', function () {
 				it('should handle missing delete queries', function (done) {
-					User.delete(function (err, result) {
-						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-						assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
-
+					User.delete(function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
 
 				it('should handle singular delete queries', function (done) {
-					User.delete('someone@example.com', function (err, result) {
-						assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-						assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
-
+					User.delete('someone@example.com', function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
 
 				it('should handle invalid delete queries', function (done) {
-					User.delete({}, function (err, result) {
-						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-						assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
-
+					User.delete({}, function (err, meta) {
+						validateEmpty(err, meta);
 						done();
 					});
 				});
@@ -1113,10 +1005,8 @@ describe('User', function () {
 				it('should handle missing delete queries', function (done) {
 					User
 						.delete()
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-							assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
-
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1125,10 +1015,8 @@ describe('User', function () {
 				it('should handle singular delete queries', function (done) {
 					User
 						.delete('someone@example.com')
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-							assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
-
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1137,10 +1025,8 @@ describe('User', function () {
 				it('should handle invalid delete queries', function (done) {
 					User
 						.delete({})
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-							assert.strictEqual(result.deletedCount, 0, 'User.delete should not remove records');
-
+						.then(function (meta) {
+							validateEmpty(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1149,27 +1035,29 @@ describe('User', function () {
 		});
 
 		describe('valid data', function () {
+			var validate = function (err, meta) {
+				!meta && (meta = err) && (err = null);
+
+				assert.strictEqual(err, null, 'User.delete should not return an error for no data');
+				assert.deepStrictEqual(meta.result, { n: 2, ok: 1 }, 'User.delete remove error');
+				assert.strictEqual(meta.deletedCount, 2, 'User.delete didn\'t remove correctly');
+			};
+
 			describe('callbacks', function () {
 				beforeEach(function (done) {
 					User.insert([{ email: 'someone@example.com' }, { email: 'somebody@example.com' }], done);
 				});
 
 				it('should handle missing delete queries', function (done) {
-					User.delete(function (err, result) {
-						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
-						assert.strictEqual(result.deletedCount, 2, 'User.delete didn\'t remove correctly');
-
+					User.delete(function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
 
 				it('should handle invalid delete queries', function (done) {
-					User.delete({}, function (err, result) {
-						assert.strictEqual(err, null, 'User.delete should not return an error for no data');
-						assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
-						assert.strictEqual(result.deletedCount, 2, 'User.delete didn\'t remove correctly');
-
+					User.delete({}, function (err, meta) {
+						validate(err, meta);
 						done();
 					});
 				});
@@ -1186,10 +1074,8 @@ describe('User', function () {
 				it('should handle missing delete queries', function (done) {
 					User
 						.delete()
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
-							assert.strictEqual(result.deletedCount, 2, 'User.delete did not remove records');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1198,10 +1084,8 @@ describe('User', function () {
 				it('should handle invalid delete queries', function (done) {
 					User
 						.delete({})
-						.then(function (result) {
-							assert.deepStrictEqual(result.result, { n: 2, ok: 1 }, 'User.delete remove error');
-							assert.strictEqual(result.deletedCount, 2, 'User.delete did not remove records');
-
+						.then(function (meta) {
+							validate(meta);
 							done();
 						}, done)
 						.catch(done);
