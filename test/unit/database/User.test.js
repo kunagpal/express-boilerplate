@@ -23,6 +23,13 @@ describe('User', function () {
 			assert.strictEqual(meta.modifiedCount, 0, 'User.update does not handle invalid updates');
 			assert.strictEqual(meta.upsertedCount, 0, 'User.update does not handle invalid upserts');
 			assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
+		},
+		validateEmptyDelete = function (err, meta) {
+			!meta && (meta = err) && (err = null);
+
+			assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
+			assert.deepStrictEqual(meta.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
+			assert.strictEqual(meta.deletedCount, 0, 'User.deleteOne should not remove records');
 		};
 
 	describe('.insert', function () {
@@ -548,7 +555,7 @@ describe('User', function () {
 	describe('.updateOne', function () {
 		describe('no data', function () {
 			describe('callbacks', function () {
-				it('should handle invalid inserts correctly', function (done) {
+				it('should handle invalid updateOnes correctly', function (done) {
 					User.updateOne('someone@example.com', function (err, result) {
 						validateEmptyUpdate(err, result);
 						done();
@@ -571,7 +578,7 @@ describe('User', function () {
 			});
 
 			describe('promises', function () {
-				it('should handle invalid inserts correctly', function (done) {
+				it('should handle invalid updateOnes correctly', function (done) {
 					User
 						.updateOne('someone@example.com')
 						.then(function (meta) {
@@ -678,7 +685,7 @@ describe('User', function () {
 	describe('.update', function () {
 		describe('no data', function () {
 			describe('callbacks', function () {
-				it('should handle invalid inserts correctly', function (done) {
+				it('should handle invalid updates correctly', function (done) {
 					User.update('someone@example.com', function (err, meta) {
 						validateEmptyUpdate(err, meta);
 						done();
@@ -701,7 +708,7 @@ describe('User', function () {
 			});
 
 			describe('promises', function () {
-				it('should handle invalid inserts correctly', function (done) {
+				it('should handle invalid updates correctly', function (done) {
 					User
 						.update('someone@example.com')
 						.then(function (meta) {
@@ -809,32 +816,24 @@ describe('User', function () {
 
 	describe('.deleteOne', function () {
 		describe('no data', function () {
-			var validateEmpty = function (err, meta) {
-				!meta && (meta = err) && (err = null);
-
-				assert.strictEqual(err, null, 'User.deleteOne should not return an error for no data');
-				assert.deepStrictEqual(meta.result, { n: 0, ok: 1 }, 'User.deleteOne should not remove');
-				assert.strictEqual(meta.deletedCount, 0, 'User.deleteOne should not remove records');
-			};
-
 			describe('callbacks', function () {
 				it('should handle missing delete queries', function (done) {
 					User.deleteOne(function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyDelete(err, meta);
 						done();
 					});
 				});
 
 				it('should handle singular delete queries', function (done) {
 					User.deleteOne('someone@example.com', function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyDelete(err, meta);
 						done();
 					});
 				});
 
 				it('should handle invalid delete queries', function (done) {
 					User.deleteOne({}, function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyDelete(err, meta);
 						done();
 					});
 				});
@@ -845,7 +844,7 @@ describe('User', function () {
 					User
 						.deleteOne()
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyDelete(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -855,7 +854,7 @@ describe('User', function () {
 					User
 						.deleteOne('someone@example.com')
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyDelete(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -865,7 +864,7 @@ describe('User', function () {
 					User
 						.deleteOne({})
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyDelete(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -952,32 +951,24 @@ describe('User', function () {
 
 	describe('.delete', function () {
 		describe('no data', function () {
-			var validateEmpty = function (err, meta) {
-				!meta && (meta = err) && (err = null);
-
-				assert.strictEqual(err, null, 'User.delete should not return an error for no data');
-				assert.deepStrictEqual(meta.result, { n: 0, ok: 1 }, 'User.delete should not remove');
-				assert.strictEqual(meta.deletedCount, 0, 'User.delete should not remove records');
-			};
-
 			describe('callbacks', function () {
 				it('should handle missing delete queries', function (done) {
 					User.delete(function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyDelete(err, meta);
 						done();
 					});
 				});
 
 				it('should handle singular delete queries', function (done) {
 					User.delete('someone@example.com', function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyDelete(err, meta);
 						done();
 					});
 				});
 
 				it('should handle invalid delete queries', function (done) {
 					User.delete({}, function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyDelete(err, meta);
 						done();
 					});
 				});
@@ -988,7 +979,7 @@ describe('User', function () {
 					User
 						.delete()
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyDelete(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -998,7 +989,7 @@ describe('User', function () {
 					User
 						.delete('someone@example.com')
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyDelete(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -1008,7 +999,7 @@ describe('User', function () {
 					User
 						.delete({})
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyDelete(meta);
 							done();
 						}, done)
 						.catch(done);
