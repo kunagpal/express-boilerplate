@@ -1,6 +1,30 @@
 describe('User', function () {
 	afterEach(purge);
 
+	var users = [
+			{ email: 'someone@example.com', authStrategy: 'local' },
+			{ email: 'somebody@example.com', authStrategy: 'admin' }
+		],
+		seedCb = function (done) {
+			User.insert(users, done);
+		},
+		seedPromise = function (done) {
+			User
+				.insert(users)
+				.then(function () { done(); }, done)
+				.catch(done);
+		},
+		validateEmptyUpdate = function (err, meta) {
+			!meta && (meta = err) && (err = null);
+
+			assert.strictEqual(err, null, 'Error might be malformed');
+			assert.strictEqual(meta.upsertedId, null);
+			assert.strictEqual(meta.matchedCount, 0, 'User.update does not handle invalid matches');
+			assert.strictEqual(meta.modifiedCount, 0, 'User.update does not handle invalid updates');
+			assert.strictEqual(meta.upsertedCount, 0, 'User.update does not handle invalid upserts');
+			assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
+		};
+
 	describe('.insert', function () {
 		describe('error handling', function () {
 			describe('callbacks', function () {
@@ -523,35 +547,24 @@ describe('User', function () {
 
 	describe('.updateOne', function () {
 		describe('no data', function () {
-			var validateEmpty = function (err, meta) {
-				!meta && (meta = err) && (err = null);
-
-				assert.strictEqual(err, null, 'Error might be malformed');
-				assert.strictEqual(meta.upsertedId, null);
-				assert.strictEqual(meta.matchedCount, 0, 'User.updateOne does not handle invalid matches');
-				assert.strictEqual(meta.modifiedCount, 0, 'User.updateOne does not handle invalid updates');
-				assert.strictEqual(meta.upsertedCount, 0, 'User.updateOne does not handle invalid upserts');
-				assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.updateOne error');
-			};
-
 			describe('callbacks', function () {
 				it('should handle invalid inserts correctly', function (done) {
 					User.updateOne('someone@example.com', function (err, result) {
-						validateEmpty(err, result);
+						validateEmptyUpdate(err, result);
 						done();
 					});
 				});
 
 				it('should handle non-existent targets correctly', function (done) {
 					User.updateOne('someone@example.com', { foo: 'bar' }, function (err, result) {
-						validateEmpty(err, result);
+						validateEmptyUpdate(err, result);
 						done();
 					});
 				});
 
 				it('should handle generic queries correctly', function (done) {
 					User.updateOne({ foo: 'bar' }, function (err, result) {
-						validateEmpty(err, result);
+						validateEmptyUpdate(err, result);
 						done();
 					});
 				});
@@ -562,7 +575,7 @@ describe('User', function () {
 					User
 						.updateOne('someone@example.com')
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyUpdate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -572,7 +585,7 @@ describe('User', function () {
 					User
 						.updateOne('someone@example.com', { foo: 'bar' })
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyUpdate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -582,7 +595,7 @@ describe('User', function () {
 					User
 						.updateOne({ foo: 'bar' })
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyUpdate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -602,10 +615,7 @@ describe('User', function () {
 			};
 
 			describe('callbacks', function () {
-				beforeEach(function (done) {
-					User.insert([{ email: 'someone@example.com', authStrategy: 'local' },
-						{ email: 'somebody@example.com', authStrategy: 'admin' }], done);
-				});
+				beforeEach(seedCb);
 
 				it('should correctly update an arbitrary document', function (done) {
 					User.updateOne({ authStrategy: 'random' }, function (err, meta) {
@@ -630,14 +640,7 @@ describe('User', function () {
 			});
 
 			describe('promises', function () {
-				beforeEach(function (done) {
-					User
-						.insert([
-							{ email: 'someone@example.com', authStrategy: 'local' },
-							{ email: 'somebody@example.com', authStrategy: 'admin' }])
-						.then(function () { done(); }, done)
-						.catch(done);
-				});
+				beforeEach(seedPromise);
 
 				it('should correctly update an arbitrary document', function (done) {
 					User
@@ -674,35 +677,24 @@ describe('User', function () {
 
 	describe('.update', function () {
 		describe('no data', function () {
-			var validateEmpty = function (err, meta) {
-				!meta && (meta = err) && (err = null);
-
-				assert.strictEqual(err, null, 'Error might be malformed');
-				assert.strictEqual(meta.upsertedId, null);
-				assert.strictEqual(meta.matchedCount, 0, 'User.update does not handle invalid matches');
-				assert.strictEqual(meta.modifiedCount, 0, 'User.update does not handle invalid updates');
-				assert.strictEqual(meta.upsertedCount, 0, 'User.update does not handle invalid upserts');
-				assert.deepStrictEqual(meta.result, { n: 0, nModified: 0, ok: 1 }, 'User.update error');
-			};
-
 			describe('callbacks', function () {
 				it('should handle invalid inserts correctly', function (done) {
 					User.update('someone@example.com', function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyUpdate(err, meta);
 						done();
 					});
 				});
 
 				it('should handle non-existent targets correctly', function (done) {
 					User.update('someone@example.com', { foo: 'bar' }, function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyUpdate(err, meta);
 						done();
 					});
 				});
 
 				it('should handle generic queries correctly', function (done) {
 					User.update({ foo: 'bar' }, function (err, meta) {
-						validateEmpty(err, meta);
+						validateEmptyUpdate(err, meta);
 						done();
 					});
 				});
@@ -713,7 +705,7 @@ describe('User', function () {
 					User
 						.update('someone@example.com')
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyUpdate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -723,7 +715,7 @@ describe('User', function () {
 					User
 						.update('someone@example.com', { foo: 'bar' })
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyUpdate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -733,7 +725,7 @@ describe('User', function () {
 					User
 						.update({ foo: 'bar' })
 						.then(function (meta) {
-							validateEmpty(meta);
+							validateEmptyUpdate(meta);
 							done();
 						}, done)
 						.catch(done);
@@ -755,10 +747,7 @@ describe('User', function () {
 			};
 
 			describe('callbacks', function () {
-				beforeEach(function (done) {
-					User.insert([{ email: 'someone@example.com', authStrategy: 'local' },
-						{ email: 'somebody@example.com', authStrategy: 'admin' }], done);
-				});
+				beforeEach(seedCb);
 
 				it('should correctly update an arbitrary document', function (done) {
 					User.update({ authStrategy: 'random' }, function (err, meta) {
@@ -783,14 +772,7 @@ describe('User', function () {
 			});
 
 			describe('promises', function () {
-				beforeEach(function (done) {
-					User
-						.insert([
-							{ email: 'someone@example.com', authStrategy: 'local' },
-							{ email: 'somebody@example.com', authStrategy: 'admin' }])
-						.then(function () { done(); }, done)
-						.catch(done);
-				});
+				beforeEach(seedPromise);
 
 				it('should correctly update an arbitrary document', function (done) {
 					User
