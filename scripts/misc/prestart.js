@@ -38,19 +38,17 @@ var fs = require('fs'),
 		}
 	};
 
-try {
-	fs.mkdirSync(TARGET_DIR); // eslint-disable-line no-sync
-}
-catch (err) {
-	console.warn(`${TARGET_DIR} already exists`);
-}
-
 /**
  * Parallely minifies javascript and stylesheets in SCRIPTS and STYLES respectively.
  *
  * @param {Function} next - The callback whose invocation marks the end of the minifacation routine.
  */
 module.exports = function (next) {
+	try {
+		fs.mkdirSync(TARGET_DIR); // eslint-disable-line no-sync
+	}
+	catch (e) {} // eslint-disable-line no-empty
+
 	async.parallel({
 
 		/**
