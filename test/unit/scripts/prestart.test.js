@@ -19,9 +19,9 @@ describe('App prestart script', function () {
 	before(cleanup);
 	after(cleanup);
 
-	it('should work correctly', function (done) {
+	it('should work correctly', function (done) { // eslint-disable-line mocha/no-exclusive-tests
 		prestart(function (err) {
-			assert.strictEqual(err, null, 'Prestart script failure');
+			assert.strictEqual(err, null, `Prestart script failure: ${err}`);
 
 			fs.stat(dir, function (error, stat) {
 				assert(stat.isDirectory(), `${dir} is not a valid directory`);
