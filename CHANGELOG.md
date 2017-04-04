@@ -1,5 +1,9 @@
 # Express Boilerplate Changelog
 
+#### v0.0.8 (5 April 2017)
+* Added script to generate wiki.
+* Added and used error utilities.
+
 #### v0.0.7 (2 April 2017)
 * :clock1: Added `updatedAt` timestamps for User.update* actions
 * Enabled slicing on User.find* actions
