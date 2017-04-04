@@ -36,7 +36,7 @@ exports.insert = function (data, callback) {
 	if (_.isEmpty(data) || (!_.isObject(data) && nonArray)) {
 		_.isFunction(data) && (callback = data);
 
-		return utils.handle('Invalid user data', callback);
+		return utils.handle(utils.err.badInsertData, callback);
 	}
 
 	return nonArray ? users.insertOne(user(data), callback) : users.insertMany(_.map(data, user), callback);

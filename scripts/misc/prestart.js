@@ -11,9 +11,8 @@ var fs = require('fs'),
 
 	cleanCss = new CleanCSS(),
 
-	ASSET_PATH = path.join(__dirname, '..', '..', 'public'),
-	TARGET_DIR = path.join(ASSET_PATH, 'min'),
-	SCRIPTS = path.join(ASSET_PATH, 'javascripts'),
+	TARGET_DIR = path.join('public', 'min'),
+	SCRIPTS = path.join(__dirname, '..', '..', 'public', 'javascripts'),
 	STYLES = path.relative(process.cwd(), path.join('public', 'stylesheets')),
 	JS_OPTIONS = {
 		mangle: true,
@@ -38,19 +37,16 @@ var fs = require('fs'),
 		}
 	};
 
-try {
-	fs.mkdirSync(TARGET_DIR); // eslint-disable-line no-sync
-}
-catch (err) {
-	console.warn(`${TARGET_DIR} already exists`);
-}
-
 /**
  * Parallely minifies javascript and stylesheets in SCRIPTS and STYLES respectively.
  *
  * @param {Function} next - The callback whose invocation marks the end of the minifacation routine.
  */
 module.exports = function (next) {
+	try {
+		fs.mkdirSync(TARGET_DIR); // eslint-disable-line no-sync
+	} catch (e) {} // eslint-disable-line no-empty, brace-style
+
 	async.parallel({
 
 		/**
@@ -59,7 +55,7 @@ module.exports = function (next) {
 		 * @param {Function} done - The callback that marks the completion of the JS minification routine.
 		 */
 		js: function (done) {
-			fs.readdir(SCRIPTS, function (err, scripts) {
+			fs.readdir('public/javascripts', function (err, scripts) {
 				if (err) { return done(err); }
 
 				return async.each(scripts, function (script, callback) {

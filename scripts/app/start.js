@@ -3,9 +3,7 @@
  */
 
 var pm2 = require('pm2'),
-	async = require('async'),
-
-	pack = require('../misc/pack');
+	async = require('async');
 
 /**
  * Starts the app, passing on any errors encountered to the callback.
@@ -14,7 +12,6 @@ var pm2 = require('pm2'),
  */
 module.exports = function (done) {
 	async.series([
-		pack,
 
 		pm2.connect.bind(pm2),
 
