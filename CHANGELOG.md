@@ -1,5 +1,8 @@
 # Express Boilerplate Changelog
 
+#### v0.0.9 (6 April 2017)
+* Added archive generation script.
+
 #### v0.0.8 (5 April 2017)
 * Added script to generate wiki.
 * Added and used error utilities.

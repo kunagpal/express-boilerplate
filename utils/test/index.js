@@ -34,6 +34,20 @@ exports.ymlToJson = function (yamlPath) {
 	return json;
 };
 
+exports.clearDir = function (dir) {
+	try {
+		fs // eslint-disable-line no-sync
+			.readdirSync(dir) // public/min is meant to be a flattened representation of minified assets
+			.forEach(function (file) {
+				try {
+					fs.unlinkSync(path.join(dir, file)); // eslint-disable-line no-sync
+				}
+				catch (e) {} // eslint-disable-line no-empty
+			});
+	} catch (e) {} // eslint-disable-line no-empty, brace-style, no-sync
+	try { fs.rmdirSync(dir); } catch (e) {} // eslint-disable-line no-empty, brace-style, no-sync
+};
+
 /**
  * Checks the provided contributors object for sanity.
  *
