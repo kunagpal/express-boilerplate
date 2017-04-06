@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Houses CLI-require friendly logic to stop the app.
  */
