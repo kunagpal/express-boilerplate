@@ -13,6 +13,7 @@
   "version": "0.0.8",
   "private": true,
   "scripts": {
+    "archive": "node scripts/package/archive.js",
     "check": "node node_modules/.bin/npm-check -u",
     "make-wiki": "node scripts/docs/make-wiki.js",
     "make-docs": "node node_modules/.bin/jsdoc -c .jsdocrc bin database routes scripts utils app.js",
@@ -48,7 +49,6 @@
     "express-session": "1.15.2",
     "express-status-monitor": "0.1.9",
     "helmet": "3.5.0",
-    "heroku-client": "3.0.2",
     "lodash": "4.17.4",
     "mongodb": "2.2.25",
     "morgan": "1.8.1",
@@ -67,7 +67,6 @@
     "editorconfig": "0.13.2",
     "eslint": "3.19.0",
     "eslint-plugin-jsdoc": "3.0.0",
-    "eslint-plugin-jsdoc": "2.4.0",
     "eslint-plugin-lodash": "2.4.0",
     "eslint-plugin-mocha": "4.9.0",
     "eslint-plugin-mongodb": "0.2.4",
