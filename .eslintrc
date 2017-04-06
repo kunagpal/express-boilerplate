@@ -337,7 +337,7 @@ rules:
   lodash/prefer-includes: 2
   lodash/prefer-is-nil: 2
   lodash/prefer-lodash-chain: 2
-  lodash/prefer-lodash-method: 2
+  lodash/prefer-lodash-method: 0
   lodash/prefer-lodash-typecheck: 2
   lodash/prefer-matches: 2
   lodash/prefer-noop: 2
