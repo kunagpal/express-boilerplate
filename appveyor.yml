@@ -12,9 +12,7 @@ skip_branch_with_pr: true
 environment:
   matrix:
     - node: "4"
-    - node: "5"
     - node: "6"
-    - node: "7"
 
 services:
   - mongodb
