@@ -20,7 +20,7 @@ describe(TRAVIS_PATH, function () {
 	});
 
 	it('should have builds set for Node v4-7', function () {
-		assert.deepStrictEqual(travisYAML.node_js, ['4', '5', '6', '7'], 'Travis is not set for builds on Node v4-7');
+		assert.deepStrictEqual(travisYAML.node_js, ['4', '6'], 'Travis is not set for builds on Node v4, v6');
 	});
 
 	it('should run on master and develop only', function () {
