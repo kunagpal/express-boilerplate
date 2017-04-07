@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Houses logic to start the app using pm2.
  */

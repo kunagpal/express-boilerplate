@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Purges the database at process.env.MONGO_URI.
  */
