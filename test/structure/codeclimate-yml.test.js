@@ -29,6 +29,7 @@ describe(CODECLIMATE_PATH, function () {
 	it('should have the MarkdownLint engine enabled', function () {
 		assert(codeClimateYAML.engines.markdownlint.enabled, 'MarkdownLint config missing / broken');
 		assert(!codeClimateYAML.engines.markdownlint.checks.MD013.enabled, 'MarkdownLint must skip line length');
+		assert(!codeClimateYAML.engines.markdownlint.checks.MD029.enabled, 'MarkdownLint must skip list prefix');
 	});
 
 	it('should have a valid ratings structure', function () {
