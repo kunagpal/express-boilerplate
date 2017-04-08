@@ -17,6 +17,8 @@ engines:
     checks:
       MD013:
         enabled: false
+      MD029:
+        enabled: false
 ratings:
   paths:
   - "**.css"
