@@ -20,16 +20,11 @@ exports.checkVars = function () {
 /**
  * Creates an exportable model pseudo class that can be stubbed with helpers.
  *
- * @param {String[]} fields - An array of string attributes to maintain in the current model.
+ * @param {Function} maker - A function that creates a raw instance of the specified model.
  * @param {Object} model - An instance of a MongoDB collection that can be used for making queries.
  * @param {?Object} [helpers={}] - An optional object containing the helper methods specific to the current model.
  * @returns {Object} A model pseudo class that can be used for various CRUD operations.
  */
-exports.makeModel = function (fields, model, helpers) {
-	return _.assignIn(function (data) {
-		return _(data)
-			.pick(fields.concat('_id'))
-			.assign({ createdAt: new Date().toISOString() })
-			.value();
-	}, model, helpers || {});
+exports.makeModel = function (maker, model, helpers) {
+	return _.assignIn(maker, model, helpers || {});
 };
