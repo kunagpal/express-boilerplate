@@ -1,20 +1,20 @@
 [Short description of problem/suggestion here]
 
-#### Reproduction/enhancement Steps
+* Reproduction/enhancement Steps
 
 1. [First Step]
 2. [Second Step]
 3. [Other Steps...]
 
-#### Expected/suggested behaviour
+* Expected/suggested behaviour
 
 [Description]
 
-#### Observed behaviour:
+* Observed behaviour
 
 [Describe observed behaviour here]
 
-#### Screenshots and GIFs
+* Screenshots and GIFs
 
 ![Screenshots and GIFs which follow reproduction steps to demonstrate the problem](url)
 

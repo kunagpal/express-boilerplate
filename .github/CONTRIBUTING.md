@@ -1,12 +1,14 @@
 # Contributing to express-boilerplate
+
 This document merely outlines guidelines and best practices, not hard rules. Even improvements to [these documents](https://github.com/kunagpal/express-boilerplate/blob/master/.github)
 are appreciated. Contributions in all shapes and sizes are welcome, provided they add meaning to the project. These may come in the form of new features (:tada:),
 bug fixes (preferably with corresponding unit / e2e tests), or improvements / optimizations to existing tests / code. For more details, please check the sections below:
 
 ## Table of contents
+
 1. [Code of conduct](#code-of-conduct)
 
-2. [How to contribute?](#how-to-contribute)
+2. [How to contribute](#how-to-contribute)
     1. [Bugs](#bugs)
         1. [Before submitting a bug report](#before-submitting-a-bug-report)
         2. [Good bug reports](#good-bug-reports)
@@ -22,21 +24,24 @@ bug fixes (preferably with corresponding unit / e2e tests), or improvements / op
 4. [Additional notes](#additional-notes)
     1. [Labels](#labels)
 
-### How to contribute?
+### How to contribute
 
 #### Bugs
+
 This section guides you through submitting a bug report for express-boilerplate. Following these guidelines helps maintainers and the community understand your report,
 reproduce the behaviour, and find related reports. Before creating bug reports, please check this list as you might find out that you don't need to create one. When you
 are creating a bug report, please include as many details as possible. If you'd like, you can use [this template](https://github.com/kunagpal/express-boilerplate/blob/master/.github/ISSUE_TEMPLATE.md)
 to structure the information.
 
 ##### Before submitting a bug report
+
 * Check the debugging guide. You might be able to find the cause of the problem and fix things yourself. Most importantly, check if you can reproduce the problem in the
 latest version.
 
 * Perform a cursory search to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
 
 ##### Good bug reports
+
 Bugs are tracked as GitHub issues. Create an issue [here](https://github.com/kunagpal/express-boilerplate/issues/new) and provide the following information.
 
 * Use a clear and descriptive title for the issue to identify the problem.
@@ -63,6 +68,7 @@ Bugs are tracked as GitHub issues. Create an issue [here](https://github.com/kun
       and the guest?
 
 #### Enhancements
+
 This section guides you through submitting an enhancement suggestion for express-boilerplate, including completely new features and minor improvements to existing
 functionality. Following these guidelines helps maintainers and the community understand your suggestion, and find related suggestions. Before creating enhancement
 suggestions, please check this list as you might find out that you don't need to create one. When you are creating an enhancement suggestion, please include as many
@@ -70,11 +76,13 @@ details as possible. If you'd like, you can use [this template](https://github.c
 the information.
 
 ##### Before Submitting An Enhancement Suggestion
+
 * Check the debugging guide for tips — you might discover that the enhancement is already available. Also check if you're using the latest version of express-boilerplate.
 * Check if there's already a package which provides that enhancement.
 * Perform a cursory search to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
 ##### Good enhancement suggestions
+
 Enhancement suggestions are tracked as GitHub issues. Create an issue on [here](https://github.com/kunagpal/express-boilerplate/issues/new)
 
 * Use a clear and descriptive title for the issue to identify the suggestion.
@@ -87,6 +95,7 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue on [here](
 * Specify the name and version of the OS you're using.
 
 #### Pull requests
+
 * Include screenshots and animated GIFs in your pull request whenever possible.
 * Follow the JavaScript style guide described in the ESLint config.
 * Include thoughtfully-worded, well-structured Mocha tests in the `test` folder. Run them using npm test. See the test style guide below.
@@ -107,6 +116,7 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue on [here](
 ### Code style guides
 
 #### Git Commit Messages
+
 * Use the past tense ("Added feature" not "Add feature")
 * Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 * Limit the first line to 50 characters or less
@@ -163,6 +173,7 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue on [here](
 ### Additional notes
 
 #### Labels
+
 This section lists the labels we use to help us track and manage issues and pull requests. Some are specific to express-boilerplate. GitHub search makes it easy to use
 labels for finding groups of issues or pull requests you're interested in. For example, you might be interested in open issues across express-boilerplate and all
 express-boilerplate-owned packages which are labelled as bugs, but still need to be reliably reproduced or perhaps open pull requests in express-boilerplate which haven't
