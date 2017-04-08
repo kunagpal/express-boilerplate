@@ -167,7 +167,7 @@ exports.runTests = function (testDir, done) {
 		 * @param {Function} next - The callback that marks the end of the test run.
 		 */
 		function (mocha, next) {
-			_.merge(global, {
+			_.assign(global, {
 				_: _,
 				fs: fs,
 				path: path,

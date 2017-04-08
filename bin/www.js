@@ -1,81 +1,49 @@
 /**
  * @file Handles the creation of a HTTP server on process.env.PORT, and consumes the provided app instance.
- * Can also be used with require,
  */
 var path = require('path'),
 
 	_ = require('lodash'),
-	debug = require('debug'),
 	mongodb = require('mongodb').MongoClient,
-	utils = require(path.join(__dirname, '..', 'utils', 'misc')),
 
-	port,
 	app,
-	appPath = path.join(__dirname, '..', 'app'),
-	name = require(path.join(__dirname, '..', 'package')).name,
-	bugger = debug(`${name}:server`),
+	port,
 
 	/**
-	 * Handles errors passed on from the HTTP server listen routine.
+	 * Handles error and SIGINT events for the current process.
 	 *
-	 * @param {Error} error - An error instance with details on failed app starts.
+	 * @param {?Error} err - The error instance passed on from the caller.
 	 */
-	onError = function (error) {
-		if (error.syscall !== 'listen') { throw error; }
+	onErr = function (err) {
+		db && db.close && db.close(function (error) {
+			var e = err || error; // prioritize the unhandled error over the db connection close error
 
-		var bind = _.isString(port) ? `Pipe ${port}` : `Port ${port}`;
+			if (e) { throw e; }
 
-		// handle specific listen errors with friendly messages
-		switch (error.code) {
-		case 'EACCES':
-			throw new Error(`${bind} requires elevated privileges`);
-		case 'EADDRINUSE':
-			throw new Error(`${bind} is already in use`);
-		default:
-			throw error;
-		}
-	},
-
-	/**
-	 * Pipes useful information to the console after the app has started.
-	 */
-	onListening = function () {
-		bugger(`Listening on ${port}`);
-	},
-
-	/**
-	 * Handles SIGINT gracefully.
-	 */
-	onSigint = function () {
-		db.close(process.exit);
+			process.exit(0);
+		});
 	};
 
 process.env.NODE_ENV ? utils.checkVars() : require('dotenv').load();
 
-process.on('SIGINT', onSigint);
-port = _.toInteger(process.env.PORT);
+process.on('SIGINT', onErr);
+port = Number(process.env.PORT) || 3000;
 
 /**
  * Establishes a reusable database connection to the database at MONGO_URI, and starts an HTTP server.
  *
  * @param {Function} done - The callback invoked at the end of the app start routine.
  */
-module.exports = function (done) {
-	mongodb.connect(process.env.MONGO_URI, { w: 1 }, function (err, database) {
+mongodb.connect(process.env.MONGO_URI ||
+	`mongodb://127.0.0.1:27017/${_.kebabCase(process.env.npm_package_name || require(path.resolve('package')).name)}`,
+	{ w: 1 }, function (err, database) {
 		if (err) { throw err; }
 
 		global.db = database;
 
-		app = require(appPath);
+		app = require(path.resolve('app'));
 
 		app.set('port', port);
-
-		app.on('error', onError);
-		app.on('listening', onListening);
-
+		app.on('error', onErr);
 		app.listen(port);
-		done();
 	});
-};
-
-!module.parent && module.exports(_.noop);
