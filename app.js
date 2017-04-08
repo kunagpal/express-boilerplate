@@ -27,10 +27,8 @@ var path = require('path'),
 	INTERNAL_SERVER_ERROR = 500,
 	CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
 
-_.merge(global, load(path.join(__dirname, 'database')));
-
-// inject utils into the global namespace
-global.utils = require(path.join(__dirname, 'utils', 'misc'));
+global.utils = require(path.join(__dirname, 'utils', 'misc')); // inject utils into the global namespace
+_.merge(global, load(path.join(__dirname, 'database'))); // inject models into the global namespace
 
 // view engine setup
 app.set('title', name);
