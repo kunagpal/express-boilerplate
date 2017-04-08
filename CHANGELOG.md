@@ -1,5 +1,12 @@
 # Express Boilerplate Changelog
 
+#### v0.0.10 (9 April 2017)
+* All scripts now use hashbangs
+* CI builds now run on Node versions v4 and 6 only.
+* Trimmed down User model code: #304
+* Markdown file cleanups
+* Global scope changes: #305
+
 #### v0.0.9 (6 April 2017)
 * Added archive generation script.
 
