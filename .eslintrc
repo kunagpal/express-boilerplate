@@ -27,11 +27,15 @@ extensions:
   js: true
 
 globals:
+  # Project commons
   _: true
   db: true
   path: true
   utils: true
   global: true
+
+  # Models
+  User: true
 
 # http://eslint.org/docs/rules/
 rules:
