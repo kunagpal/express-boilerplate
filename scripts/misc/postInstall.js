@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Handles postinstall tasks.
  */

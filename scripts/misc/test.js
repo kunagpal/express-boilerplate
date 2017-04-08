@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Runs unit tests, with code coverage plugged in.
  */

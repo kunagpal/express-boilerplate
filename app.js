@@ -2,10 +2,10 @@
  * @file The application bootstrapper.
  */
 
-var path = require('path'),
+global._ = require('lodash');
+global.path = require('path');
 
-	_ = require('lodash'),
-	cors = require('cors'),
+var cors = require('cors'),
 	csurf = require('csurf'),
 	logger = require('morgan'),
 	helmet = require('helmet'),
@@ -17,9 +17,9 @@ var path = require('path'),
 	cookieParser = require('cookie-parser'),
 	expressSession = require('express-session'),
 
-	name = require('./package').name,
-	routes = load(path.join(__dirname, 'routes')),
+	routes = load(path.resolve('routes')),
 	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
+	name = process.env.npm_package_name || require('./package').name,
 
 	app = express(),
 
@@ -27,10 +27,8 @@ var path = require('path'),
 	INTERNAL_SERVER_ERROR = 500,
 	CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
 
-_.merge(global, load(path.join(__dirname, 'database')));
-
-// inject utils into the global namespace
-global.utils = require(path.join(__dirname, 'utils', 'misc'));
+global.utils = require('./utils/misc'); // inject utils into the global namespace
+_.merge(global, load(path.resolve('database'))); // inject models into the global namespace
 
 // view engine setup
 app.set('title', name);
@@ -47,7 +45,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser(process.env.COOKIE_SECRET, { signed: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.resolve('public')));
 
 app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(csurf());

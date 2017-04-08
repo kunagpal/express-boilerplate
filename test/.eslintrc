@@ -1,8 +1,4 @@
 ---
-settings:
-  lodash:
-    pragma: _
-
 plugins:
   - mocha
 

@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://waffle.io/kunagpal/express-boilerplate"
   },
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": true,
   "scripts": {
     "archive": "node scripts/package/archive.js",
@@ -56,7 +56,7 @@
     "passport-facebook": "2.1.1",
     "passport-google-oauth2": "0.1.6",
     "pm2": "2.4.4",
-    "raven": "1.2.0",
+    "raven": "1.2.1",
     "require-all": "2.1.0",
     "uglify-js": "2.8.21"
   },

@@ -13,8 +13,8 @@ describe(APPVEYOR_PATH, function () {
 	});
 
 	it('should have builds set for Node v5, and v6', function () {
-		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'node'), ['4', '5', '6', '7'],
-			'Builds might not be set on Node v4-7 only');
+		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'node'), ['4', '6'],
+			'Builds might not be set on Node v4, v6 only');
 	});
 
 	it('should have mongodb in the list of enabled services', function () {
