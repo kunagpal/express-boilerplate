@@ -4,8 +4,6 @@
 
 var _ = require('lodash'),
 
-	reject = Promise.reject.bind(Promise),
-
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
 		'SENTRY_DSN', 'MONGO_URI', 'PORT'];
 
@@ -22,16 +20,18 @@ exports.checkVars = function () {
 };
 
 /**
- * Handles the provided error meta with either the provided callback, or a Promise.reject.
+ * Creates an exportable model pseudo class that can be stubbed with helpers.
  *
- * @param {Error|String} err - An error instance, or the message to be passed down.
- * @param {Function} callback - The function to handle the error with.
- * @returns {Promise|*} - A rejected promise instance, or a callback stub associated with the current error context.
+ * @param {String[]} fields - An array of string attributes to maintain in the current model.
+ * @param {Object} model - An instance of a MongoDB collection that can be used for making queries.
+ * @param {?Object} [helpers={}] - An optional object containing the helper methods specific to the current model.
+ * @returns {Object} A model pseudo class that can be used for various CRUD operations.
  */
-exports.handle = function (err, callback) {
-	return (_.isFunction(callback) ? callback : reject)(_.isError(err) ? err : new Error(err));
-};
-
-exports.err = {
-	badInsertData: 'Invalid insertion data'
+exports.makeModel = function (fields, model, helpers) {
+	return _.assignIn(function (data) {
+		return _(data)
+			.pick(fields.concat('_id'))
+			.assign({ createdAt: new Date().toISOString() })
+			.value();
+	}, model, helpers || {});
 };
