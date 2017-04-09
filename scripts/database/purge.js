@@ -1,29 +1,44 @@
 #!/usr/local/bin/node
 
 /**
- * @file Purges the database at process.env.MONGO_URI.
+ * @file Purges the database at process.env.MONGO_URI, or the current global.db instance.
  */
 
-var mongodb = require('mongodb').MongoClient;
-
-if (process.env.NODE_ENV && process.env.NODE_ENV !== 'test') {
-	throw new Error('Database purge will not occur on non-test environments');
-}
+/* eslint-disable no-process-env */
+var chalk = require('chalk'),
+	mongodb = require('mongodb').MongoClient;
 
 /**
- * Drops the database at process.env.MONGO_URI.
+ * Drops the database at process.env.MONGO_URI, or the global db instance. Works only in non-production environments.
  *
- * @param {Function} done - The callback invoked to indicate that the database drop has completed.
- * @returns {Promise|*} A MongoDB connection stub.
+ * @param {Function} done - The callback invoked to indicate that the database purge has completed.
+ * @returns {*} N.A.
  */
 module.exports = function (done) {
-	return mongodb.connect(process.env.MONGO_URI, function (err, db) {
-		if (err) { return done(err); }
+	if (global.db && db.dropDatabase) {	return db.dropDatabase(done); }
 
-		return db.dropDatabase(function (error) {
+	var mongoUri,
+		env = process.env.NODE_ENV;
+
+	if (env && env !== 'test') {
+		return done(new Error('Database purge will not occur on non-test environments'));
+	}
+	!process.env.CI && require('dotenv').load(); // eslint-disable-line global-require
+
+	mongoUri = process.env.MONGO_URI;
+
+	if (!mongoUri) { return done(new Error('process.env does not contain MONGO_URI')); }
+
+	mongodb.connect(mongoUri, function (err, db) {
+		err ? done(err) : db.dropDatabase(function (error) {
 			if (error) { return done(error); }
 
-			return db.close(done);
+			db.close(true, function (closeErr) {
+				if (closeErr) { return done(closeErr); }
+
+				!module.parent && console.info(chalk.blue(`Successfully purged db at ${chalk.bold(mongoUri)}`));
+				done();
+			});
 		});
 	});
 };
