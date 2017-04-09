@@ -21,7 +21,7 @@
 **Package version:** [Enter express-boilerplate version here]
 **OS and version:** [Enter OS name and version here]
 
-#### Additional information
+**Additional information**
 
 * Problem started happening recently, didn't happen in an older version of express-boilerplate: [Yes/No]
 * Problem can be reliably reproduced, doesn't happen randomly: [Yes/No]

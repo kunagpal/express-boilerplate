@@ -30,9 +30,7 @@ module.exports = function (done) {
 		 */
 		function (commit, meta, next) {
 			child.exec('git rev-parse --abbrev-ref HEAD', function (err, branch) {
-				if (err) { return next(err); }
-
-				next(null, `${commit.trimRight()}-${branch.trimRight().replace(/^\w+\/(.+)$/, '$1')}.zip`);
+				next(err, `${commit.trimRight()}-${(branch || '').trimRight().replace(/^\w+\/(.+)$/, '$1')}.zip`);
 			});
 		},
 
@@ -46,10 +44,8 @@ module.exports = function (done) {
 			var target = path.join('out', 'archive', file);
 
 			child.exec(`git archive --format zip -9 --output ${target} HEAD`, function (err) {
-				if (err) { return next(); }
-
-				!module.parent && console.info(chalk.blue.bold(`Successfully created archive at ${target}`));
-				next();
+				!err && !module.parent && console.info(chalk.blue.bold(`Successfully created archive at ${target}`));
+				next(err);
 			});
 		}
 	], done);

@@ -18,6 +18,16 @@ var fs = require('fs'),
 	PACKAGES = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies'];
 
 /**
+ * Checks whether the provided object is a non-empty array.
+ *
+ * @param {*} arr - The object to be checked.
+ * @returns {Boolean} - A flag to indicate that the provided object is a non-empty array.
+ */
+exports.isNonEmptyArray = function (arr) {
+	return _.isArray(arr) && !_.isEmpty(arr);
+};
+
+/**
  * Converts YAMl to JSON.
  *
  * @param {String} yamlPath - The path of the file to parse YAMl from.
