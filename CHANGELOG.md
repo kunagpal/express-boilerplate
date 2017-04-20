@@ -1,5 +1,13 @@
 # Express Boilerplate Changelog
 
+## v0.0.11 (20 April 2017)
+
+* Fixed bug that caused code coverage thresholds to not be enforced #314
+* Improved purge script to handle existing `global.db` instance as well #315
+* Miscellaneous code and markdown quality improvements
+* Cleaned application bootstrap handlers
+* Updated dependencies
+
 ## v0.0.10 (9 April 2017)
 
 * All scripts now use hashbangs
