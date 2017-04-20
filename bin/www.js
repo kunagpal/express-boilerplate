@@ -1,6 +1,8 @@
 /**
  * @file Handles the creation of a HTTP server on process.env.PORT, and consumes the provided app instance.
  */
+
+/* eslint-disable no-process-env */
 var path = require('path'),
 
 	_ = require('lodash'),

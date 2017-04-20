@@ -3,6 +3,7 @@
  */
 
 var path = require('path'),
+	cluster = require('cluster'),
 
 	chalk = require('chalk'),
 	async = require('async'),
@@ -22,7 +23,7 @@ var path = require('path'),
  * @param {Function} done - The callback that marks the end of the test suite.
  */
 module.exports = function (done) {
-	console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
+	cluster.isMaster && console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
 	async.series([esLint, structure, security, unit, e2e], done);
 };
 

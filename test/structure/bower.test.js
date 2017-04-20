@@ -18,7 +18,7 @@ describe('bower', function () {
 		});
 
 		it('should have a non empty list of keywords', function () {
-			assert(_.isArray(bowerJSON.keywords) && !_.isEmpty(bowerJSON.keywords), 'Keywords may be invalid!');
+			assert(testUtils.isNonEmptyArray(bowerJSON.keywords), 'Keywords may be invalid!');
 		});
 	});
 
@@ -32,6 +32,6 @@ describe('bower', function () {
 	});
 
 	it('should have a valid list of ignored entities', function () {
-		assert(_.isArray(bowerJSON.ignore) && !_.isEmpty(bowerJSON.ignore), 'Bower ignores might be invalid');
+		assert(testUtils.isNonEmptyArray(bowerJSON.ignore), 'Bower ignores might be invalid');
 	});
 });

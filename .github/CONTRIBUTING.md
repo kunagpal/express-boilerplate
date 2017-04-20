@@ -35,9 +35,7 @@ to structure the information.
 
 ##### Before submitting a bug report
 
-* Check the debugging guide. You might be able to find the cause of the problem and fix things yourself. Most importantly, check if you can reproduce the problem in the
-latest version.
-
+* Check the debugging guide. You might be able to find the cause of the problem and fix things yourself. Most importantly, check if you can reproduce the problem in the latest version.
 * Perform a cursory search to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
 
 ##### Good bug reports
