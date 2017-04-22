@@ -20,10 +20,11 @@ var cors = require('cors'),
 
 	routes = load(path.resolve('routes')),
 	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
-	name = process.env.npm_package_name || require('./package').name,
+	name = process.env.npm_package_name || require('./package').name, // eslint-disable-line global-require
 
 	app = express();
 
+// eslint-disable-next-line global-require
 global.utils = require('./utils/misc'); // inject utils into the global namespace
 _.merge(global, load(path.resolve('database'))); // inject models into the global namespace
 

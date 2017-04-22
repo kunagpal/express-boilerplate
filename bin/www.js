@@ -37,12 +37,14 @@ port = Number(process.env.PORT) || 3000;
  * @param {Function} done - The callback invoked at the end of the app start routine.
  */
 mongodb.connect(process.env.MONGO_URI ||
+	// eslint-disable-next-line global-require
 	`mongodb://127.0.0.1:27017/${_.kebabCase(process.env.npm_package_name || require(path.resolve('package')).name)}`,
 	{ w: 1 }, function (err, database) {
 		if (err) { throw err; }
 
 		global.db = database;
 
+		// eslint-disable-next-line global-require
 		app = require(path.resolve('app'));
 
 		app.set('port', port);
