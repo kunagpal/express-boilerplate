@@ -1,28 +1,24 @@
-var mongo = require('mongodb').MongoClient,
+var supertest = require('supertest'),
+	mongo = require('mongodb').MongoClient;
 
-	app,
-	testServer,
-	testPort = 3000,
-	rootPath = path.join(__dirname, '..', '..'),
-	projectName = require(path.join(rootPath, 'package')).name;
-
+/* eslint-disable no-process-env*/
 before(function (done) {
-	process.env.MONGO_URI = `mongodb://127.0.0.1:27017/${_.kebabCase(projectName)}-test`;
+	process.env.MONGO_URI = `mongodb://127.0.0.1:27017/${_.kebabCase(process.env.npm_package_name ||
+		require(path.resolve('package')).name)}-test`; // eslint-disable-line global-require
 
 	mongo.connect(process.env.MONGO_URI, { w: 1 }, function (err, database) {
 		if (err) { return done(err); }
 
 		global.db = database;
 
-		app = require(path.join(rootPath, 'app'));
-		testServer = app.listen(testPort);
+		// eslint-disable-next-line global-require
+		global.test = supertest(require(path.resolve('app'))); // to be used in route based tests
+
 		done();
 	});
 });
 
 after(function (done) {
-	testServer.close();
-
 	db.close(function (err) {
 		delete global.db;
 		done(err);

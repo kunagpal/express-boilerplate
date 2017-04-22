@@ -2,6 +2,7 @@
  * @file The application bootstrapper.
  */
 
+/* eslint-disable no-process-env */
 global._ = require('lodash');
 global.path = require('path');
 
@@ -19,14 +20,11 @@ var cors = require('cors'),
 
 	routes = load(path.resolve('routes')),
 	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
-	name = process.env.npm_package_name || require('./package').name,
+	name = process.env.npm_package_name || require('./package').name, // eslint-disable-line global-require
 
-	app = express(),
+	app = express();
 
-	NOT_FOUND = 404,
-	INTERNAL_SERVER_ERROR = 500,
-	CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
-
+// eslint-disable-next-line global-require
 global.utils = require('./utils/misc'); // inject utils into the global namespace
 _.merge(global, load(path.resolve('database'))); // inject models into the global namespace
 
@@ -75,7 +73,7 @@ _.forEach(routes, function (router, mountPoint) {
 app.use(function (req, res, next) {
 	var err = new Error('Not Found');
 
-	err.status = NOT_FOUND;
+	err.status = utils.NOT_FOUND;
 	next(err);
 });
 
@@ -84,9 +82,9 @@ process.env.NODE_ENV && app.use(onError);
 
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
-	res.status(err.status = err.status || INTERNAL_SERVER_ERROR);
+	res.status(err.status = err.status || utils.INTERNAL_SERVER_ERROR);
 
-	if (err.code === CSRF_TOKEN_ERROR) {
+	if (err.code === utils.CSRF_TOKEN_ERROR) {
 		return res.redirect(req.headers.referer);
 	}
 

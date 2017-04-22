@@ -83,7 +83,7 @@ rules:
   block-scoped-var: 2
   class-methods-use-this: 2
   complexity: [2, 6]
-  consistent-return: 1
+  consistent-return: [1, { "treatUndefinedAsUnspecified": true }]
   curly: 2
   default-case: 2
   dot-location: 0
@@ -168,7 +168,7 @@ rules:
 
   # Node.js and CommonJS
   callback-return: 2
-  global-require: 1
+  global-require: 2
   handle-callback-err: 2
   no-mixed-requires: 0
   no-new-require: 0
@@ -213,7 +213,7 @@ rules:
   max-statements: [2, 30]
   max-statements-per-line: 0
   multiline-ternary: 0
-  new-cap: 1
+  new-cap: 0
   new-parens: 2
   newline-after-var: [2, always]
   newline-before-return: 2

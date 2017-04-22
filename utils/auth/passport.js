@@ -19,14 +19,13 @@ var passport = require('passport'),
 	 */
 	passportCallback = function (req, token, refresh, profile, done) {
 		process.nextTick(function () {
-			// eslint-disable-next-line lodash/prefer-lodash-method
 			User.find({ _id: req.signedCookies.user }).limit(1).next(function (err, doc) {
 				if (err) { return done(err); }
 				if (doc && doc.authStrategy === profile.provider && profile.id === doc.profile) {
 					return done(null, doc); // user found, return that user
 				}
 
-				User.insertOne(new User({
+				User.insertOne(User({
 					_id: profile.emails[0].value,
 					name: profile.displayName,
 					authStrategy: profile.provider,
@@ -39,13 +38,13 @@ var passport = require('passport'),
 	};
 
 _.forEach(AUTH_STRATEGIES, function (Strategy, name) {
-	passport.use(new Strategy[name]({
+	passport.use(new Strategy[name]({ // eslint-disable-line security/detect-object-injection
 		enableProof: true, // thwarts man in the middle attacks
 		passReqToCallback: true, // allows us to pass in the req from our route
-		clientID: process.env[`${name}_ID`],
-		clientSecret: process.env[`${name}_SECRET`],
+		clientID: process.env[`${name}_ID`], // eslint-disable-line no-process-env
+		clientSecret: process.env[`${name}_SECRET`], // eslint-disable-line no-process-env
 		profileFields: ['id', 'email', 'displayName'],
-		callbackURL: `<>${_.toLower(name)}/callback`
+		callbackURL: `<>${_.toLower(name)}/callback` // eslint-disable-line no-process-env
 	}, passportCallback));
 });
 
