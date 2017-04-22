@@ -1,6 +1,7 @@
 # Express Boilerplate Changelog
 
 ## v0.1.0 (23 April 2017)
+
 * Fixed a bug that caused the test suite to be run twice #326
 
 ## v0.0.12 (22 April 2017)

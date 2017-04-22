@@ -2,13 +2,15 @@ var makeDocs = require(path.resolve('./scripts/docs/make-docs')),
 	makeWiki = require(path.resolve('./scripts/docs/make-wiki'));
 
 describe('Documentation scripts', function () {
+	var dir;
+
+	beforeEach(function () { testUtils.clearDir(dir); });
+	afterEach(function () { testUtils.clearDir(dir); });
+
 	describe('Documentation generation', function () {
-		var dir = 'out/docs';
-
-		before(function () { testUtils.clearDir(dir); });
-		after(function () { testUtils.clearDir(dir); });
-
 		it('should work correctly', function (done) {
+			dir = 'out/docs';
+
 			makeDocs(function (err) {
 				var file = `${dir}/index.html`;
 
@@ -21,12 +23,9 @@ describe('Documentation scripts', function () {
 	});
 
 	describe('Wiki generation', function () {
-		var dir = 'out/wiki';
-
-		before(function () { testUtils.clearDir(dir); });
-		after(function () { testUtils.clearDir(dir); });
-
 		it('should work correctly', function (done) {
+			dir = 'out/wiki';
+
 			makeWiki(function (err) {
 				var file = `${dir}/REFERENCE.md`;
 
