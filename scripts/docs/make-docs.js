@@ -59,7 +59,7 @@ module.exports = function (done) {
 		});
 
 		require.main.paths.pop();
-		!exitCode && console.info(chalk.green.bold('Successfully wrote docs to out/docs'));
+		!exitCode && !module.parent && console.info(chalk.green.bold('Successfully wrote docs to out/docs'));
 
 		done(exitCode);
 	}
