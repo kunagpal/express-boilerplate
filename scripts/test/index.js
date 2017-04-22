@@ -18,13 +18,19 @@ var path = require('path'),
 	name = require(path.join(__dirname, '..', '..', 'package')).name;
 
 /**
- * Runs all tests for the app.
+ * Runs all tests for the app. The apparent unit test duplication below is due to the code coverage generation being
+ * done within a worker process.
  *
  * @param {Function} done - The callback that marks the end of the test suite.
  */
 module.exports = function (done) {
-	cluster.isMaster && console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
-	async.series([esLint, structure, security, unit, e2e], done);
+	if (cluster.isMaster) {
+		console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
+		async.series([esLint, structure, security, unit, e2e], done);
+	}
+	else {
+		unit(done);
+	}
 };
 
 !module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
