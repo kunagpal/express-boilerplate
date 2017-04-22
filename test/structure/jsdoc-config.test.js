@@ -26,6 +26,11 @@ describe('JSDoc configuration', function () {
 	});
 
 	describe('source', function () {
+		it('should include relevant project directories', function () {
+			assert.deepStrictEqual(json.source.include, ['bin', 'database', 'routes', 'scripts', 'utils', 'app.js'],
+				'Included files may be invalid!');
+		});
+
 		it('should have an include pattern', function () {
 			assert.strictEqual(json.source.includePattern, '.+\\.js(doc)?$', 'Inclusion pattern is invalid!');
 		});

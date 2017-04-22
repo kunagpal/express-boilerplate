@@ -1,5 +1,9 @@
 # Express Boilerplate Changelog
 
+## v0.0.12 (22 April 2017)
+
+* Project documentation can now be generated via a programmatic script #324
+
 ## v0.0.11 (20 April 2017)
 
 * Fixed bug that caused code coverage thresholds to not be enforced #314
