@@ -8,6 +8,10 @@
 [![Windows build](https://ci.appveyor.com/api/projects/status/9dr0pa7wdotlopnu/branch/master?svg=true)](https://ci.appveyor.com/project/kunagpal/express-boilerplate/branch/master)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/352/badge)](https://bestpractices.coreinfrastructure.org/projects/352)
 [![Greenkeeper badge](https://badges.greenkeeper.io/kunagpal/express-boilerplate.svg)](https://greenkeeper.io/)
+[![Inline docs](http://inch-ci.org/github/kunagpal/express-boilerplate.svg?branch=develop&style=shields)](http://inch-ci.org/github/kunagpal/express-boilerplate)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+![](https://img.shields.io/badge/node-%3E=%20v4.8.0-brightgreen.svg)
+![](https://img.shields.io/badge/npm-%3E=%20v2.15.0-brightgreen.svg)
 
 # express-boilerplate
 

@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://waffle.io/kunagpal/express-boilerplate"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "archive": "node scripts/package/archive.js",
@@ -22,13 +22,13 @@
     "seed": "node scripts/database/seed.js",
     "purge": "node scripts/database/purge.js",
     "security": "node scripts/test/security.js",
-    "csslint": "node node_modules/csslint/dist/cli.js public/stylesheets",
+    "csslint": "node scripts/test/cssLint.js",
     "eslint": "node scripts/test/esLint.js",
     "lint": "npm run eslint && npm run csslint",
     "unit": "node scripts/misc/test.js",
     "e2e": "node scripts/test/e2e.js",
     "structure": "node scripts/test/structure.js",
-    "test": "npm run csslint && node scripts/test",
+    "test": "node scripts/test",
     "prestart": "node scripts/misc/prestart.js",
     "postinstall": "node scripts/misc/postInstall.js"
   },
@@ -94,7 +94,7 @@
   },
   "license": "GPL-3.0+",
   "engines": {
-    "node": ">=4.0.0",
-    "npm": ">=2.0.0"
+    "node": ">=4.8.0",
+    "npm": ">=2.15.0"
   }
 }

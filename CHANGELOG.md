@@ -1,6 +1,11 @@
 # Express Boilerplate Changelog
 
+## v0.1.1 (24 April 2017)
+
+* Offloaded CSSLint checks from a package.json command to a reusable script #329
+
 ## v0.1.0 (23 April 2017)
+
 * Fixed a bug that caused the test suite to be run twice #326
 
 ## v0.0.12 (22 April 2017)

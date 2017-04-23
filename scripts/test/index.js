@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Houses require friendly logic for app tests.
  */
@@ -11,6 +13,7 @@ var path = require('path'),
 
 	e2e = require(path.join(__dirname, 'e2e')),
 	esLint = require(path.join(__dirname, 'esLint')),
+	cssLint = require(path.join(__dirname, 'cssLint')),
 	security = require(path.join(__dirname, 'security')),
 	structure = require(path.join(__dirname, 'structure')),
 	unit = require(path.join(__dirname, '..', 'misc', 'test')),
@@ -26,7 +29,7 @@ var path = require('path'),
 module.exports = function (done) {
 	if (cluster.isMaster) {
 		console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
-		async.series([esLint, structure, security, unit, e2e], done);
+		async.series([esLint, cssLint, structure, security, unit, e2e], done);
 	}
 	else {
 		unit(done);
