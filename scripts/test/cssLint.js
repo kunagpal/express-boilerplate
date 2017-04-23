@@ -16,9 +16,11 @@ var path = require('path'),
 module.exports = function (done) {
 	process.argv.push(CSS_DIR);
 
+	// override the exit handler just for this sequence
+	process.exit = done;
+
 	// eslint-disable-next-line global-require
 	require(path.resolve('./node_modules/csslint/dist/cli'));
-	done();
 };
 
 !module.parent && module.exports(process.exit);
