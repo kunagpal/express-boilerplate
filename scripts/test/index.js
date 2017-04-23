@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Houses require friendly logic for app tests.
  */

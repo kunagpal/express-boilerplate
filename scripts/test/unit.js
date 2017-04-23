@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 /**
  * @file Houses the bare minimum logic to get unit tests up and running.
  */
