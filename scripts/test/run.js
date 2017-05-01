@@ -55,7 +55,7 @@ module.exports = function (testDir, done) {
 		/**
 		 * Dynamically constructs a test suite instance for the current run.
 		 *
-		 * @param {String[]] tests - The filtered test files from testDir.
+		 * @param {String[]} tests - The filtered test files from testDir.
 		 * @param {Function} next - The callback that marks the end of the test instance compilation.
 		 */
 		function (tests, next) {
