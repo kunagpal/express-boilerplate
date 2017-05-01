@@ -51,6 +51,12 @@ app.use(csurf());
 app.use(function (req, res, next) {
 	!req.session.flash && (req.session.flash = []);
 
+	/**
+	 * An elementary flash message handler to interface across the back and front ends via a series of flash messages.
+	 *
+	 * @param {String} content - A flash message to displayed on the front end.
+	 * @returns {Number|String} - A stub returned to indicate the message displayed or the current length of the queue.
+	 */
 	res.flash = function (content) {
 		return content ? req.session.flash.push(content) : req.session.flash.pop();
 	};
