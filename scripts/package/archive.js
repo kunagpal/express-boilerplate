@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 /* eslint-disable security/detect-child-process */
 var fs = require('fs'),

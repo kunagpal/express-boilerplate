@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 /**
  * @file Houses require friendly logic for app tests.
@@ -11,14 +11,15 @@ var path = require('path'),
 	async = require('async'),
 	figlet = require('figlet'),
 
-	e2e = require(path.join(__dirname, 'e2e')),
+	run = require('./run'),
+
 	esLint = require(path.join(__dirname, 'esLint')),
 	cssLint = require(path.join(__dirname, 'cssLint')),
 	security = require(path.join(__dirname, 'security')),
-	structure = require(path.join(__dirname, 'structure')),
 	unit = require(path.join(__dirname, '..', 'misc', 'test')),
 
-	name = require(path.join(__dirname, '..', '..', 'package')).name;
+	// eslint-disable-next-line global-require, no-process-env
+	name = process.env.npm_package_name || require(path.join(__dirname, '..', '..', 'package')).name;
 
 /**
  * Runs all tests for the app. The apparent unit test duplication below is due to the code coverage generation being
@@ -29,7 +30,7 @@ var path = require('path'),
 module.exports = function (done) {
 	if (cluster.isMaster) {
 		console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
-		async.series([esLint, cssLint, structure, security, unit, e2e], done);
+		async.series([esLint, cssLint, async.apply(run, 'structure'), security, unit, async.apply(run, 'e2e')], done);
 	}
 	else {
 		unit(done);

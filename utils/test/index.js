@@ -8,13 +8,9 @@ var fs = require('fs'),
 	assert = require('assert'),
 
 	_ = require('lodash'),
-	async = require('async'),
-	Mocha = require('mocha'),
 	yaml = require('js-yaml'),
-	readDir = require('recursive-readdir'),
 
 	ENCODING = 'utf-8',
-	TEST_FILE_PATTERN = '.test.js',
 	PACKAGES = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies'];
 
 /**
@@ -124,68 +120,4 @@ exports.checkDependencies = function (packageJson, mode) {
 			});
 		});
 	};
-};
-
-/**
- * Runs tests from a given directory.
- *
- * @param {?String} testDir - The directory to run tests from.
- * @param {Function} done - THe callback that indicates the end of the test run.
- */
-exports.runTests = function (testDir, done) {
-	async.waterfall([
-
-		/**
-		 * Recursively scans the provided testDir and passes on the files found in it.
-		 *
-		 * @param {Function} next - The callback that marks the end of the test directory traversal.
-		 */
-		function (next) {
-			readDir(testDir, next);
-		},
-
-		/**
-		 * Picks files matching TEST_FILE_PATTERN and passes them on.
-		 *
-		 * @param {String[]} files - The list of file paths picked from the testDir directory.
-		 * @param {Function} next - The callback that marks the end of the file picking routine.
-		 */
-		function (files, next) {
-			next(null, _.filter(files, function (file) {
-				return _.endsWith(file, TEST_FILE_PATTERN);
-			}));
-		},
-
-		/**
-		 * Dynamically constructs a test suite instance for the current run.
-		 *
-		 * @param {String[]] tests - The filtered test files from testDir.
-		 * @param {Function} next - The callback that marks the end of the test instance compilation.
-		 */
-		function (tests, next) {
-			var mocha = new Mocha({ timeout: 5000 });
-
-			_.forEach(tests, mocha.addFile.bind(mocha));
-
-			next(null, mocha);
-		},
-
-		/**
-		 * Runs tests from the provided test suite instance.
-		 *
-		 * @param {Mocha} mocha - The test suite instance used to trigger the tests.
-		 * @param {Function} next - The callback that marks the end of the test run.
-		 */
-		function (mocha, next) {
-			_.assign(global, {
-				_: _,
-				fs: fs,
-				path: path,
-				assert: assert,
-				testUtils: exports
-			});
-
-			mocha.run(next);
-		}
-	], done);
 };

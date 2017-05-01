@@ -26,8 +26,8 @@
     "eslint": "node scripts/test/esLint.js",
     "lint": "npm run eslint && npm run csslint",
     "unit": "node scripts/misc/test.js",
-    "e2e": "node scripts/test/e2e.js",
-    "structure": "node scripts/test/structure.js",
+    "e2e": "node scripts/test/run.js e2e",
+    "structure": "node scripts/test/run.js structure",
     "test": "node scripts/test",
     "prestart": "node scripts/misc/prestart.js",
     "postinstall": "node scripts/misc/postInstall.js"

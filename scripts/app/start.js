@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 /**
  * @file Houses logic to start the app using pm2.
@@ -22,9 +22,7 @@ module.exports = function (done) {
 		 *
 		 * @param {Function} next - The callback invoked to mark the end of the app start routine.
 		 */
-		function (next) {
-			pm2.start({	script: 'bin/www.js' }, next);
-		}
+		async.apply(pm2.start.bind(pm2), { script: 'bin/www.js' })
 	],
 
 	/**

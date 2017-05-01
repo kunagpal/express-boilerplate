@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 /**
  * @file Purges the database at process.env.MONGO_URI, or the current global.db instance.

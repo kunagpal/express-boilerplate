@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 /**
  * @file Houses the bare minimum logic to get unit tests up and running.
@@ -7,8 +7,8 @@
 var path = require('path'),
 	chalk = require('chalk'),
 
+	run = require('./run'),
 	rootPath = path.join(__dirname, '..', '..'),
-	run = require(path.join(rootPath, 'utils', 'test')).runTests,
 	purge = require(path.join(rootPath, 'scripts', 'database', 'purge'));
 
 /**
@@ -20,7 +20,7 @@ module.exports = function (done) {
 	console.info(chalk.blue.bold('Running unit tests'));
 
 	global.purge = purge;
-	run('test/unit', done);
+	run('unit', done);
 };
 
 !module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
