@@ -84,4 +84,8 @@ describe('singleton configuration files', function () {
 	it('should have a valid .git directory', function (done) {
 		fs.stat('.git', done);
 	});
+
+	it('should have a valid inch.json directory', function (done) {
+		fs.stat('inch.json', done);
+	});
 });
