@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 /**
  * @file Houses require friendly logic for dependency security checks using NSP.
