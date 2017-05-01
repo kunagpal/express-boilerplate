@@ -31,7 +31,7 @@ module.exports = function (done) {
 				cluster.fork();
 
 				cluster.on('exit', function () { // next cannot be passed directly due to signature mismatch
-					next();
+					next(arguments[1]);
 				});
 			}
 			else {
