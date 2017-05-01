@@ -1,5 +1,12 @@
 # Express Boilerplate Changelog
 
+## v0.1.3 (1 May 2017)
+
+* :memo: Added missing JSDoc comments #340
+* :gear: Inch CI config #339
+* :bug: Fixed a bug where failed unit tests would not fail the overall build #338
+* :shirt: Lint improvements #337
+
 ## v0.1.2 (1 May 2017)
 
 * Cleaned up project scripts #336
