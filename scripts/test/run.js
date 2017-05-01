@@ -29,7 +29,7 @@ module.exports = function (testDir, done) {
 
 	cluster.isMaster && console.info(chalk.blue.bold(`Running ${testDir} tests`));
 
-	async.waterfall([
+	return async.waterfall([
 
 		/**
 		 * Recursively scans the provided testDir and passes on the files found in it.
