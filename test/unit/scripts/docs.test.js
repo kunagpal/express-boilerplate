@@ -1,37 +1,32 @@
-var makeDocs = require(path.resolve('./scripts/docs/make-docs')),
-	makeWiki = require(path.resolve('./scripts/docs/make-wiki'));
+var make = {
+	docs: require(path.resolve('./scripts/docs/make-docs')), // eslint-disable-line global-require
+	wiki: require(path.resolve('./scripts/docs/make-wiki')) // eslint-disable-line global-require
+};
 
 describe('Documentation scripts', function () {
-	var dir;
+	var dir,
+		scopes = [{ name: 'Documentation', file: 'index.html', dir: 'docs' },
+			{ name: 'Wiki', file: 'REFERENCE.md', dir: 'wiki' }];
 
 	beforeEach(function () { testUtils.clearDir(dir); });
 	afterEach(function () { testUtils.clearDir(dir); });
 
-	describe('Documentation generation', function () {
-		it('should work correctly', function (done) {
-			dir = 'out/docs';
+	scopes.forEach(function (scope) {
+		describe(`${scope.name} generation`, function () {
+			it('should work correctly', function (done) {
+				dir = `out/${scope.dir}`;
 
-			makeDocs(function (err) {
-				var file = `${dir}/index.html`;
+				make[scope.dir](function (err) {
+					if (err) { return done(err); }
 
-				fs.readFile(file, 'utf8', function (error, data) {
-					assert(data.length, `Documentation index at ${file} is invalid`);
-					done(error || err);
-				});
-			});
-		});
-	});
+					var file = `${dir}/${scope.file}`;
 
-	describe('Wiki generation', function () {
-		it('should work correctly', function (done) {
-			dir = 'out/wiki';
+					return fs.readFile(file, 'utf8', function (error, data) {
+						if (error) { return done(error); }
+						assert(data.length, `Documentation index at ${file} is invalid`);
 
-			makeWiki(function (err) {
-				var file = `${dir}/REFERENCE.md`;
-
-				fs.readFile(file, 'utf8', function (error, data) {
-					assert(data.length, `Wiki at ${file} is invalid`);
-					done(error || err);
+						return done();
+					});
 				});
 			});
 		});

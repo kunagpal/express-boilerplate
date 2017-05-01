@@ -7,6 +7,11 @@ var path = require('path'),
 
 	CONFIG_FILE = '.jsdocrc';
 
+/**
+ * Generates styled HTML documentation for the project.
+ *
+ * @param {Function} done - The callback invoked to mark the end of the documentation construction process.
+ */
 module.exports = function (done) {
 	var exitCode = 0;
 
