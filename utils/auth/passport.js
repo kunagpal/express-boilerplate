@@ -25,7 +25,7 @@ var passport = require('passport'),
 					return done(null, doc); // user found, return that user
 				}
 
-				User.insertOne(User({
+				return User.insertOne(User({
 					_id: profile.emails[0].value,
 					name: profile.displayName,
 					authStrategy: profile.provider,

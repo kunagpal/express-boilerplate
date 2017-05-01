@@ -29,15 +29,16 @@ module.exports = function (done) {
 
 	if (!mongoUri) { return done(new Error('process.env does not contain MONGO_URI')); }
 
-	mongodb.connect(mongoUri, function (err, db) {
-		err ? done(err) : db.dropDatabase(function (error) {
+	return mongodb.connect(mongoUri, function (err, db) {
+		return err ? done(err) : db.dropDatabase(function (error) {
 			if (error) { return done(error); }
 
-			db.close(true, function (closeErr) {
+			return db.close(true, function (closeErr) {
 				if (closeErr) { return done(closeErr); }
 
 				!module.parent && console.info(chalk.blue(`Successfully purged db at ${chalk.bold(mongoUri)}`));
-				done();
+
+				return done();
 			});
 		});
 	});
