@@ -21,10 +21,10 @@
 **Package version:** [Enter express-boilerplate version here]
 **OS and version:** [Enter OS name and version here]
 
-**Additional information**
+* Additional information
 
-* Problem started happening recently, didn't happen in an older version of express-boilerplate: [Yes/No]
-* Problem can be reliably reproduced, doesn't happen randomly: [Yes/No]
-* Problem happens with all files and projects, not only some files or projects: [Yes/No]
+* Problem started happening recently, didn't happen in an older version of express-boilerplate: [ ]
+* Problem can be reliably reproduced, doesn't happen randomly: [ ]
+* Problem happens with all files and projects, not only some files or projects: [ ]
 
 <!-- This document has been heavily inspired from https://github.com/atom/atom/blob/master/CONTRIBUTING.md#template-for-submitting-bug-reports -->
