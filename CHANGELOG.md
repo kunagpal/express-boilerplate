@@ -1,8 +1,8 @@
 # Express Boilerplate Changelog
 
 ## v0.1.2 (1 May 2017)
-  * Cleaned up project scripts #336
-  * Updated dependencies
+* Cleaned up project scripts #336
+* Updated dependencies
 
 ## v0.1.1 (24 April 2017)
 
