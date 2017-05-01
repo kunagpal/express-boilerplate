@@ -4,6 +4,11 @@ var fs = require('fs'),
 
 	jsdoc2md = require('jsdoc-to-markdown');
 
+/**
+ * Generates a markdown compliant wiki for the project.
+ *
+ * @param {Function} done - A callback invoked to mark the end of the wiki construction routine.
+ */
 module.exports = function (done) {
 	// eslint-disable-next-line no-sync, no-empty, brace-style
 	try { fs.mkdirSync('out'); } catch (e) {}

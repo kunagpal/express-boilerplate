@@ -40,6 +40,11 @@ exports.ymlToJson = function (yamlPath) {
 	return json;
 };
 
+/**
+ * Accepts a single level directory and clears it.
+ *
+ * @param {String} dir - An absolute path to the single level directory to be cleared.
+ */
 exports.clearDir = function (dir) {
 	try {
 		fs // eslint-disable-line no-sync
