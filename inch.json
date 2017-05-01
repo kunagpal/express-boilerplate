@@ -1,0 +1,17 @@
+{
+  "files": {
+    "included": [
+      "app.js",
+      "bin/**/*.js",
+      "database/**/*.js",
+      "scripts/**/*.js",
+      "utils/**/*.js",
+      "public/**/*.js"
+    ],
+    "excluded": [
+      "node_modules/**/*.js",
+      "views/**/*.js",
+      "test/**/*.js"
+    ]
+  }
+}
