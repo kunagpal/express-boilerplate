@@ -1,5 +1,9 @@
 # Express Boilerplate Changelog
 
+## v0.1.2 (1 May 2017)
+  * Cleaned up project scripts #336
+  * Updated dependencies
+
 ## v0.1.1 (24 April 2017)
 
 * Offloaded CSSLint checks from a package.json command to a reusable script #329
