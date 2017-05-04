@@ -48,7 +48,7 @@
     "express": "5.0.0-alpha.5",
     "express-session": "1.15.2",
     "express-status-monitor": "0.1.9",
-    "helmet": "3.5.0",
+    "helmet": "3.6.0",
     "lodash": "4.17.4",
     "mongodb": "2.2.26",
     "morgan": "1.8.1",
