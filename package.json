@@ -82,7 +82,7 @@
     "npm-check": "5.4.0",
     "nsp": "2.6.3",
     "parse-gitignore": "0.4.0",
-    "recursive-readdir": "2.1.1",
+    "recursive-readdir": "2.2.1",
     "supertest": "3.0.0"
   },
   "optionalDependencies": {
