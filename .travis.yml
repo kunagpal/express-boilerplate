@@ -1,12 +1,10 @@
+sudo: false
+# dist: trusty
 language: node_js
 
 os:
-  - linux
+#  - linux
   - osx
-
-compiler:
-  - gcc
-  - clang
 
 node_js:
   - "4"
@@ -19,11 +17,7 @@ branches:
 
 addons:
   apt:
-    sources:
-      - mongodb-3.4-precise
-      - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
       - mongodb-org-server
   code_climate:
     repo_token:
@@ -31,7 +25,6 @@ addons:
 
 before_install:
   if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
-    brew update;
     sudo mkdir -p /data/db;
     brew install mongodb;
     brew services start mongodb;

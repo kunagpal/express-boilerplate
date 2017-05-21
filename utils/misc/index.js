@@ -3,7 +3,7 @@
 */
 
 var REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
-	'SENTRY_DSN', 'MONGO_URI', 'PORT'];
+	'SENTRY_DSN', 'MONGO_URI', 'PORT', 'NODE_ENV'];
 
 exports.NOT_FOUND = 404;
 exports.INTERNAL_SERVER_ERROR = 500;
@@ -31,4 +31,18 @@ exports.checkVars = function () {
  */
 exports.makeModel = function (maker, model, helpers) {
 	return _.assignIn(maker, model, helpers || {});
+};
+
+/**
+ * Handles error and SIGINT events.
+ *
+ * @param {?Error} err - An error object, optionally passed on from the error event.
+ */
+exports.handle = function (err) {
+	global.db && db.close && db.close(function (error) {
+		var e = err || error; // prioritize the unhandled error over the db connection close error
+
+		if (e) { throw e; }
+		process.exit(0);
+	});
 };

@@ -8,11 +8,7 @@ describe(TRAVIS_PATH, function () {
 	});
 
 	it('should run builds on linux and osx', function () {
-		assert.deepStrictEqual(travisYAML.os, ['linux', 'osx'], 'Travis builds are not set to linux and osx');
-	});
-
-	it('should use gcc and clang compilers respectively', function () {
-		assert.deepStrictEqual(travisYAML.compiler, ['gcc', 'clang'], 'Travis build compilers not set to gcc, clang');
+		assert.deepStrictEqual(travisYAML.os, ['osx'], 'Travis builds are not set to linux and osx');
 	});
 
 	it('should have a language field with value node_js', function () {
@@ -30,14 +26,8 @@ describe(TRAVIS_PATH, function () {
 	describe('addons', function () {
 		var addons = travisYAML.addons;
 
-		it('should have the correct ubuntu toolchain as in sources', function () {
-			assert.deepStrictEqual(addons.apt.sources, ['mongodb-3.4-precise', 'ubuntu-toolchain-r-test'],
-				'Incorrect build toolchain');
-		});
-
-		it('should have the g++ 4.8 listed as a package', function () {
-			assert.deepStrictEqual(addons.apt.packages, ['g++-4.8', 'mongodb-org-server'],
-				'Incorrect build package specified');
+		it('should have mongodb listed as a package', function () {
+			assert.deepStrictEqual(addons.apt.packages, ['mongodb-org-server'], 'Incorrect build package specified');
 		});
 
 		it('should have a secured codeclimate repository token', function () {
@@ -47,7 +37,7 @@ describe(TRAVIS_PATH, function () {
 
 	it('should bootstrap MacOSX builds correctly', function () {
 		// eslint-disable-next-line max-len
-		assert.strictEqual(travisYAML.before_install, 'if [[ $TRAVIS_OS_NAME = \'osx\' ]]; then brew update; sudo mkdir -p /data/db; brew install mongodb; brew services start mongodb; fi',
+		assert.strictEqual(travisYAML.before_install, 'if [[ $TRAVIS_OS_NAME = \'osx\' ]]; then sudo mkdir -p /data/db; brew install mongodb; brew services start mongodb; fi',
 			'MongoDB might not work correctly for MacOSX builds');
 	});
 
@@ -57,5 +47,12 @@ describe(TRAVIS_PATH, function () {
 
 	it('should cache the node_modules', function () {
 		assert.deepStrictEqual(travisYAML.cache.directories, ['node_modules'], 'Caching may be invalid');
+	});
+
+	it('should correctly publish code coverge to CodeClimate', function () {
+		assert.deepStrictEqual(travisYAML.after_script, [
+			'npm install codeclimate-test-reporter',
+			'node node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info'
+		], 'Invalid post build sequence');
 	});
 });
