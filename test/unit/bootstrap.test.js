@@ -14,6 +14,7 @@ before(function (done) {
 		// eslint-disable-next-line global-require
 		global.test = supertest(require(path.resolve('app'))); // to be used in route based tests
 		process.on('SIGINT', utils.handle); // utils is exposed as a global in app.js
+		process.env.NODE_ENV = 'test';
 
 		return done();
 	});
@@ -21,6 +22,7 @@ before(function (done) {
 
 after(function (done) {
 	db.close(function (err) {
+		delete process.env.NODE_ENV;
 		delete global.db;
 		done(err);
 	});

@@ -34,14 +34,10 @@ module.exports = function (done) {
 		return unit(done);
 	}
 
-	process.env.NODE_ENV = 'test';
 	console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
 
-	return async.series([esLint, cssLint, async.apply(run, 'structure'), security, unit, async.apply(run, 'e2e')],
-	function (err) {
-		delete process.env.NODE_ENV;
-		done(err);
-	});
+	// eslint-disable-next-line max-len
+	return async.series([esLint, cssLint, async.apply(run, 'structure'), security, unit, async.apply(run, 'e2e')], done);
 };
 
 !module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
