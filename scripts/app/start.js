@@ -5,14 +5,18 @@
  */
 
 var pm2 = require('pm2'),
+	_ = require('lodash'),
 	async = require('async');
 
 /**
  * Starts the app, passing on any errors encountered to the callback.
  *
+ * @param {?Object} [options={}] - The options to launch the pm2 daemon with.
  * @param {Function} done - The callback invoked to indicate the end of the app start routine.
  */
-module.exports = function (done) {
+module.exports = function (options, done) {
+	_.isFunction(options) && (done = options) && (options = {});
+
 	async.series([
 
 		pm2.connect.bind(pm2),
@@ -22,7 +26,7 @@ module.exports = function (done) {
 		 *
 		 * @param {Function} next - The callback invoked to mark the end of the app start routine.
 		 */
-		async.apply(pm2.start.bind(pm2), { script: 'bin/www.js' })
+		async.apply(pm2.start.bind(pm2), _.defaults(options, { script: 'bin/www.js' }))
 	],
 
 	/**
