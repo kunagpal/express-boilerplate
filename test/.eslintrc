@@ -3,27 +3,20 @@ plugins:
   - mocha
 
 env:
+  mocha: true
   es6: true
   node: true
 
 globals:
   # Injected test modules
-  _: true,
-  fs: true,
-  path: true,
-  assert: true,
-  testUtils: true,
+  _: true
+  fs: true
+  path: true
+  assert: true
+  testUtils: true
 
   # shared database connection instance
   db: true
-
-  # Test stubs
-  it: true
-  before: true
-  after: true
-  afterEach: true
-  beforeEach: true
-  describe: true
 
   # App utilities
 
