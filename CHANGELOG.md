@@ -1,5 +1,13 @@
 # Express Boilerplate Changelog
 
+## v0.1.4 (21 May 2017)
+
+* Added generic SIGINT cum error event handler to utils #362
+* Enabled start options in pm2 script #361
+* Explicitly set process.env.NODE_ENV to `test` in test bootstrapper #360
+* Temporarily disabled Linux builds on Travis #352
+* Updated dependencies
+
 ## v0.1.3 (1 May 2017)
 
 * :memo: Added missing JSDoc comments #340
