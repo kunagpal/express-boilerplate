@@ -13,6 +13,7 @@ before(function (done) {
 
 		// eslint-disable-next-line global-require
 		global.test = supertest(require(path.resolve('app'))); // to be used in route based tests
+		process.on('SIGINT', utils.handle); // utils is exposed as a global in app.js
 
 		return done();
 	});
