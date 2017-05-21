@@ -4,6 +4,7 @@
  * @file Houses require friendly logic for app tests.
  */
 
+/* eslint-disable no-process-env */
 var path = require('path'),
 	cluster = require('cluster'),
 
@@ -18,7 +19,7 @@ var path = require('path'),
 	security = require(path.join(__dirname, 'security')),
 	unit = require(path.join(__dirname, '..', 'misc', 'test')),
 
-	// eslint-disable-next-line global-require, no-process-env
+	// eslint-disable-next-line global-require
 	name = process.env.npm_package_name || require(path.join(__dirname, '..', '..', 'package')).name;
 
 /**
@@ -26,15 +27,21 @@ var path = require('path'),
  * done within a worker process.
  *
  * @param {Function} done - The callback that marks the end of the test suite.
+ * @returns {*} - The callback stub for the unit test worker.
  */
 module.exports = function (done) {
-	if (cluster.isMaster) {
-		console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
-		async.series([esLint, cssLint, async.apply(run, 'structure'), security, unit, async.apply(run, 'e2e')], done);
+	if (cluster.isWorker) {
+		return unit(done);
 	}
-	else {
-		unit(done);
-	}
+
+	process.env.NODE_ENV = 'test';
+	console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
+
+	return async.series([esLint, cssLint, async.apply(run, 'structure'), security, unit, async.apply(run, 'e2e')],
+	function (err) {
+		delete process.env.NODE_ENV;
+		done(err);
+	});
 };
 
 !module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
