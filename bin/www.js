@@ -9,26 +9,11 @@ var path = require('path'),
 	mongodb = require('mongodb').MongoClient,
 
 	app,
-	port,
-
-	/**
-	 * Handles error and SIGINT events for the current process.
-	 *
-	 * @param {?Error} err - The error instance passed on from the caller.
-	 */
-	onErr = function (err) {
-		db && db.close && db.close(function (error) {
-			var e = err || error; // prioritize the unhandled error over the db connection close error
-
-			if (e) { throw e; }
-
-			process.exit(0);
-		});
-	};
+	port;
 
 process.env.NODE_ENV ? utils.checkVars() : require('dotenv').load();
 
-process.on('SIGINT', onErr);
+process.on('SIGINT', utils.handle);
 port = Number(process.env.PORT) || 3000;
 
 /**
@@ -48,6 +33,6 @@ mongodb.connect(process.env.MONGO_URI ||
 		app = require(path.resolve('app'));
 
 		app.set('port', port);
-		app.on('error', onErr);
+		app.on('error', utils.handle);
 		app.listen(port);
 	});
