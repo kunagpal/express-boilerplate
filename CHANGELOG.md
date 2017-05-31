@@ -1,5 +1,11 @@
 # Express Boilerplate Changelog
 
+## v0.1.5 (01 June 2017)
+
+* Node v8 support. #373
+* NODE_ENV is explicitly set to test in unit tests. #363
+* Compacted project structural tests,updated test lint rules. #363
+
 ## v0.1.4 (21 May 2017)
 
 * Added generic SIGINT cum error event handler to utils #362
