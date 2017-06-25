@@ -36,6 +36,7 @@ fs.readdirSync('database').forEach(function (model) {
 		// Update
 		.put(function (req, res, next) {
 			req.params.id && (req.query._id = req.params.id);
+			req.body.updatedAt = new Date().toISOString();
 
 			model.updateMany(req.query, req.body, function (err, result) {
 				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });

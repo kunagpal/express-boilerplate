@@ -51,7 +51,7 @@ exports.makeModel = function (model, meta, helpers) {
 			return model
 				.insertOne(_(data)
 					.pick(meta.fields)
-					.defaults(meta.defaults)
+					.defaults(_.defaults(meta.defaults, { createdAt: new Date().toISOString() }))
 					.value(), callback);
 		},
 		updateMany: function (query, data, callback) {

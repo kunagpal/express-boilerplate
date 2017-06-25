@@ -5,7 +5,7 @@
 var model = db.collection(_.toLower(path.parse(__filename).name));
 
 module.exports = utils.makeModel(model, {
-	defaults: { settings: {}, authStrategy: 'local', createdAt: new Date().toISOString() },
+	defaults: { settings: {}, authStrategy: 'local' }, // createdAt comes implicitly
 	fields: ['_id', 'name', 'passwordHash', 'authStrategy', 'settings', 'profile', 'token', 'refreshToken',
 		'resetToken']
 });
