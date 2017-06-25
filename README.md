@@ -12,6 +12,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 ![](https://img.shields.io/badge/node-%3E=%20v4.8.0-brightgreen.svg)
 ![](https://img.shields.io/badge/npm-%3E=%20v2.15.0-brightgreen.svg)
+[![NSP Status](https://nodesecurity.io/orgs/kunagpal/projects/a1c7ab5f-dd68-4144-86f4-c82ae2b7e04d/badge)](https://nodesecurity.io/orgs/kunagpal/projects/a1c7ab5f-dd68-4144-86f4-c82ae2b7e04d)
 
 # express-boilerplate
 
