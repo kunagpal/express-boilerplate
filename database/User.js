@@ -2,11 +2,10 @@
  * @file Provides an abstraction (data definition and helpers) over the User collection.
  */
 
-var model = db.collection(path.basename(__filename).split('.')[0].toLowerCase());
+var model = db.collection(_.toLower(path.parse(__filename).name));
 
-module.exports = utils.makeModel(function (data) {
-	return _(data)
-		.pick(['_id', 'name', 'passwordHash', 'authStrategy', 'settings', 'profile', 'token', 'refreshToken'])
-		.defaults({ settings: {}, authStrategy: 'local', createdAt: new Date().toISOString() })
-		.value();
-}, model);
+module.exports = utils.makeModel(model, {
+	defaults: { settings: {}, authStrategy: 'local', createdAt: new Date().toISOString() },
+	fields: ['_id', 'name', 'passwordHash', 'authStrategy', 'settings', 'profile', 'token', 'refreshToken',
+		'resetToken']
+});
