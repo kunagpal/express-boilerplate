@@ -31,7 +31,7 @@ exports.checkVars = function () {
 		missingVars = _.difference(REQUIRED_VARS, subset).toString();
 
 	if (!_.isEmpty(missingVars)) {
-		throw new Error(`${missingVars.toString()} environment variables are missing!`);
+		throw new Error(`${missingVars.toString()} environment variable(s) missing!`);
 	}
 };
 

@@ -38,9 +38,7 @@ fs.readdirSync('database').forEach(function (model) {
 			req.params.id && (req.query._id = req.params.id);
 
 			model.updateMany(req.query, req.body, function (err, result) {
-				if (err) { return next(err); }
-
-				return res.json({ [req.query._id ? lCase : plural]: result });
+				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
 			});
 		})
 		// Delete
@@ -48,9 +46,7 @@ fs.readdirSync('database').forEach(function (model) {
 			req.params.id && (req.query._id = req.params.id);
 
 			model.removeMany(req.query, function (err, result) {
-				if (err) { return next(err); }
-
-				return res.json({ [req.query._id ? lCase : plural]: result });
+				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
 			});
 		});
 });
