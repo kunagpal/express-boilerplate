@@ -39,8 +39,8 @@ module.exports = function (done) {
 			}
 		},
 		function (next) {
-			command.create('check-coverage').run(['--statements', '70', '--branches', '30', '--functions', '60',
-				'--lines', '70'], next);
+			command.create('check-coverage').run(['--statements', '80', '--branches', '45', '--functions', '80',
+				'--lines', '80'], next);
 		}
 	], function (err) { // done cannot be passed directly as the default callback might not
 		err && console.error(chalk.red(err));
