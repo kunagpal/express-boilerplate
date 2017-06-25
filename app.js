@@ -5,6 +5,7 @@
 /* eslint-disable no-process-env */
 global._ = require('lodash');
 global.path = require('path');
+global.utils = require('./utils/misc');
 
 var cors = require('cors'),
 	csurf = require('csurf'),
@@ -17,28 +18,31 @@ var cors = require('cors'),
 	compression = require('compression'),
 	cookieParser = require('cookie-parser'),
 	expressSession = require('express-session'),
+	errorHandler = require('raven').errorHandler,
 
-	routes = load(path.resolve('routes')),
-	onError = require('raven').errorHandler(process.env.SENTRY_DSN),
+	routes,
+	app = express(),
 	name = process.env.npm_package_name || require('./package').name, // eslint-disable-line global-require
-
-	app = express();
+	isLive = process.env.NODE_ENV && !_.includes(['development', 'test'], process.env.NODE_ENV);
 
 // eslint-disable-next-line global-require
-global.utils = require('./utils/misc'); // inject utils into the global namespace
 _.merge(global, load(path.resolve('database'))); // inject models into the global namespace
+routes = load(path.resolve('routes'));
 
 // view engine setup
 app.set('title', name);
 app.set('view engine', 'ejs');
 app.enable('trust proxy');
 app.set('views', 'views');
+app.set('port', Number(process.env.PORT) || 3000);
+
+app.on('error', utils.handle);
 
 app.use(helmet());
 app.use(compression());
 app.use('/api', cors({ origin: false }));
 
-app.use(logger('dev'));
+(process.env.NODE_ENV !== 'test') && app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -46,7 +50,6 @@ app.use(cookieParser(process.env.COOKIE_SECRET, { signed: true }));
 app.use(express.static(path.resolve('public')));
 
 app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
-app.use(csurf());
 
 app.use(function (req, res, next) {
 	!req.session.flash && (req.session.flash = []);
@@ -67,12 +70,11 @@ app.use(function (req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', routes.index);
-
-delete routes.index;
+app.use('/api', routes.api) && delete routes.api;
+app.use(csurf());
 
 _.forEach(routes, function (router, mountPoint) {
-	app.use(`/${mountPoint}`, router);
+	app.use(`/${mountPoint === 'index' ? '' : mountPoint}`, router);
 });
 
 // catch 404 and forward to error handler
@@ -84,22 +86,13 @@ app.use(function (req, res, next) {
 });
 
 // error handlers
-process.env.NODE_ENV && app.use(onError);
+isLive && app.use(errorHandler(process.env.SENTRY_DSN));
 
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) { // the last argument is necessary
 	res.status(err.status = err.status || utils.INTERNAL_SERVER_ERROR);
 
-	if (err.code === utils.CSRF_TOKEN_ERROR) {
-		return res.redirect(req.headers.referer);
-	}
-
-	if (process.env.NODE_ENV) {
-		delete err.stack;
-		delete err.message;
-	}
-
-	return res.render('error', err);
+	return res.render('error', { error: _.omit(err, isLive && ['stack', 'message']) });
 });
 
 module.exports = app;
