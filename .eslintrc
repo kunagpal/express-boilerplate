@@ -294,7 +294,7 @@ rules:
   prefer-numeric-literals: 0
   prefer-rest-params: 0
   prefer-spread: 2
-  prefer-template: 2
+  prefer-template: 0
   require-yield: 2
   rest-spread-spacing: 2
   sort-imports: 2

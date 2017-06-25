@@ -1,29 +1,36 @@
-var supertest = require('supertest'),
+var dotenv = require('dotenv'),
+	supertest = require('supertest'),
 	mongo = require('mongodb').MongoClient;
 
 /* eslint-disable no-process-env*/
 before(function (done) {
-	process.env.MONGO_URI = `mongodb://127.0.0.1:27017/${_.kebabCase(process.env.npm_package_name ||
-		require(path.resolve('package')).name)}-test`; // eslint-disable-line global-require
+	dotenv.load();
 
-	mongo.connect(process.env.MONGO_URI, { w: 1 }, function (err, database) {
+	// eslint-disable-next-line global-require
+	var packageName = _.kebabCase(process.env.npm_package_name || require(path.resolve('package').name));
+
+	mongo.connect(`mongodb://127.0.0.1:27017/${packageName}-test`, { w: 1 }, function (err, database) {
 		if (err) { return done(err); }
 
 		global.db = database;
+		process.env.NODE_ENV = 'test';
+
+		var app = require(path.resolve('app')); // eslint-disable-line global-require
+
+		app.listen(Number(process.env.PORT) || 3000);
 
 		// eslint-disable-next-line global-require
-		global.test = supertest(require(path.resolve('app'))); // to be used in route based tests
+		global.test = supertest(`http://localhost:${app.get('port')}`);
 		process.on('SIGINT', utils.handle); // utils is exposed as a global in app.js
-		process.env.NODE_ENV = 'test';
 
 		return done();
 	});
 });
 
 after(function (done) {
-	db.close(function (err) {
+	global.db && db.close ? db.close(function (err) {
 		delete process.env.NODE_ENV;
 		delete global.db;
 		done(err);
-	});
+	}) : done();
 });
