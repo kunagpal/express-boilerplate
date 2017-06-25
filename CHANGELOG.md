@@ -1,5 +1,10 @@
 # Express Boilerplate Changelog
 
+## v0.2.0 (26 June 2017)
+* Updated dependencies #375-#389
+* Removed NSP checks from the test suite #391
+* Added REST router for database models #390
+
 ## v0.1.5 (01 June 2017)
 
 * Node v8 support. #373
