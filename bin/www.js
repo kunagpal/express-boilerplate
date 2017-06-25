@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * @file Handles the creation of a HTTP server on process.env.PORT, and consumes the provided app instance.
  */
@@ -9,14 +11,12 @@ var path = require('path'),
 	mongodb = require('mongodb').MongoClient,
 
 	app,
-	port,
 	mongoUri,
-	packageName;
+	packageName,
+	env = process.env.NODE_ENV,
+	utils = require('../utils/misc');
 
-process.env.NODE_ENV ? utils.checkVars() : require('dotenv').load();
-
-process.on('SIGINT', utils.handle);
-port = Number(process.env.PORT) || 3000;
+env && !_.includes(['development', 'test'], env) ? utils.checkVars() : require('dotenv').load();
 
 // eslint-disable-next-line global-require
 packageName = _.kebabCase(process.env.npm_package_name || require(path.resolve('package')).name);
@@ -34,8 +34,7 @@ mongodb.connect(mongoUri, { w: 1 }, function (err, database) {
 
 	// eslint-disable-next-line global-require
 	app = require(path.resolve('app'));
+  process.on('SIGINT', utils.handle);
 
-	app.set('port', port);
-	app.on('error', utils.handle);
-	app.listen(port);
+	app.listen(app.get('port'));
 });

@@ -16,7 +16,6 @@ var path = require('path'),
 
 	esLint = require(path.join(__dirname, 'esLint')),
 	cssLint = require(path.join(__dirname, 'cssLint')),
-	security = require(path.join(__dirname, 'security')),
 	unit = require(path.join(__dirname, '..', 'misc', 'test')),
 
 	// eslint-disable-next-line global-require
@@ -37,7 +36,7 @@ module.exports = function (done) {
 	console.info(chalk.yellow.bold(figlet.textSync(name))); // eslint-disable-line no-sync
 
 	// eslint-disable-next-line max-len
-	return async.series([esLint, cssLint, async.apply(run, 'structure'), security, unit, async.apply(run, 'e2e')], done);
+	return async.series([esLint, cssLint, async.apply(run, 'structure'), unit, async.apply(run, 'e2e')], done);
 };
 
 !module.parent && module.exports(process.exit); // Directly call the exported function if used via the CLI.
