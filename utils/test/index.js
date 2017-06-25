@@ -13,6 +13,8 @@ var fs = require('fs'),
 	ENCODING = 'utf-8',
 	PACKAGES = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies'];
 
+exports.db = require('./database');
+
 /**
  * Checks whether the provided object is a non-empty array.
  *

@@ -12,6 +12,10 @@ describe(APPVEYOR_PATH, function () {
 			'git config --global core.eol lf'], 'Invalid init script');
 	});
 
+	it('should have the SESSION_SECRET environment variable defined', function () {
+		assert(appveyorYAML.environment.SESSION_SECRET, 'The SESSION_SECRET environment variable must be defined');
+	});
+
 	it('should have builds set for Node v5, and v6', function () {
 		assert.deepStrictEqual(_.map(appveyorYAML.environment.matrix, 'node'), ['4', '6', '8'],
 			'Builds might not be set on Node v4, v6, and v8 only');
