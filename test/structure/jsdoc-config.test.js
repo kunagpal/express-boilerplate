@@ -27,7 +27,7 @@ describe('JSDoc configuration', function () {
 
 	describe('source', function () {
 		it('should include relevant project directories', function () {
-			assert.deepStrictEqual(json.source.include, ['bin', 'database', 'routes', 'scripts', 'utils', 'app.js'],
+			assert.deepStrictEqual(json.source.include, ['database', 'routes', 'scripts', 'utils', 'app.js'],
 				'Included files may be invalid!');
 		});
 

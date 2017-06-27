@@ -8,7 +8,6 @@ describe('Inch CI configuration', function () {
 	it('should have a valid set of included files', function () {
 		assert.deepStrictEqual(inch.files.included, [
 			'app.js',
-			'bin/**/*.js',
 			'database/**/*.js',
 			'scripts/**/*.js',
 			'utils/**/*.js',
