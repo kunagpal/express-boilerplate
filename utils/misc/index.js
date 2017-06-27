@@ -38,13 +38,17 @@ exports.checkVars = function () {
 /**
  * Creates an exportable model pseudo class that can be stubbed with helpers.
  *
- * @param {Object} model - An instance of a MongoDB collection that can be used for making queries.
+ * @param {Object} fileName - The name of the model to be created.
+ * @param {Object} db - An instance of a MongoDB connection that can be used for making queries.
  * @param {Object?} [meta={}] - A set of details about the model fields and default values.
  * @param {?Object} [helpers={}] - An optional object containing the helper methods specific to the current model.
  * @returns {Object} A model pseudo class that can be used for various CRUD operations.
  */
-exports.makeModel = function (model, meta, helpers) {
+exports.makeModel = function (fileName, db, meta, helpers) {
+	if (!fileName || !db) { return; }
 	!meta && (meta = {});
+
+	var model = db.collection(_.toLower(path.parse(fileName).name));
 
 	return !_.isEmpty(model) && _.assignIn({}, model, _.defaults(helpers, {
 		insertOne: function (data, callback) {
