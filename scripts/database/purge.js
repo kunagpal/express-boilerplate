@@ -15,8 +15,6 @@ var chalk = require('chalk'),
  * @returns {*} N.A.
  */
 module.exports = function (done) {
-	if (global.db && db.dropDatabase) {	return db.dropDatabase(done); }
-
 	var mongoUri,
 		env = process.env.NODE_ENV;
 

@@ -29,6 +29,8 @@ var path = require('path'),
  * @returns {*} - The callback stub for the unit test worker.
  */
 module.exports = function (done) {
+	process.env.NODE_ENV = 'test';
+
 	if (cluster.isWorker) {
 		return unit(done);
 	}
