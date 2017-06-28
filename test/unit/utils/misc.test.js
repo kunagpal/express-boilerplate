@@ -23,7 +23,7 @@ describe('Miscellaneous helpers', function () {
 		it('should not throw an error for valid environment variables', function () {
 			var requiredVars = {
 				GOOGLE_ID: true, GOOGLE_KEY: true, FACEBOOK_ID: true, FACEBOOK_KEY: true, COOKIE_SECRET: true,
-				MONGO_URI: true, SENTRY_DSN: true, SESSION_SECRET: true, PORT: true
+				SENTRY_DSN: true, PORT: true
 			};
 
 			_.merge(process.env, requiredVars); // eslint-disable-line no-process-env

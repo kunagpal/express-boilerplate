@@ -30,6 +30,8 @@ var path = require('path'),
  */
 module.exports = function (done) {
 	process.env.NODE_ENV = 'test';
+	process.env.MONGO_URI = `mongodb://127.0.0.1/${name}-test`;
+	process.env.SESSION_SECRET = 'randomSecretString';
 
 	if (cluster.isWorker) {
 		return unit(done);

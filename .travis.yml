@@ -6,10 +6,6 @@ os:
 #  - linux
   - osx
 
-env:
-- SESSION_SECRET=randomSecretString
-- MONGO_URI=mongodb://127.0.0.1/test
-
 node_js:
   - "4"
   - "6"
