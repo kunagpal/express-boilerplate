@@ -34,7 +34,7 @@ describe('Miscellaneous helpers', function () {
 
 	describe('makeModel', function () {
 		it('should correctly handle invalid parameters', function () {
-			assert.strictEqual(miscUtils.makeModel(), undefined, 'Invalid input is not handled correctly');
+			assert.deepStrictEqual(miscUtils.makeModel(), {}, 'Invalid input is not handled correctly');
 		});
 	});
 });

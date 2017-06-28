@@ -45,7 +45,7 @@ exports.checkVars = function () {
  * @returns {Object} A model pseudo class that can be used for various CRUD operations.
  */
 exports.makeModel = function (fileName, db, meta, helpers) {
-	if (!fileName || !db) { return; }
+	if (!fileName || !db) { return {}; }
 	!meta && (meta = {});
 
 	var model = db.collection(_.toLower(path.parse(fileName).name));
