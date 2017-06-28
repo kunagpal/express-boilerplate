@@ -11,6 +11,7 @@ skip_branch_with_pr: true
 
 environment:
   SESSION_SECRET: randomSecretString
+  MONGO_URI: mongodb://127.0.0.1/test
   matrix:
     - node: "4"
     - node: "6"

@@ -1,4 +1,4 @@
-var APPVEYOR_PATH = 'appveyor.yml';
+var APPVEYOR_PATH = '.appveyor.yml';
 
 describe(APPVEYOR_PATH, function () {
 	var appveyorYAML = testUtils.ymlToJson(APPVEYOR_PATH);
@@ -12,8 +12,9 @@ describe(APPVEYOR_PATH, function () {
 			'git config --global core.eol lf'], 'Invalid init script');
 	});
 
-	it('should have the SESSION_SECRET environment variable defined', function () {
+	it('should have the SESSION_SECRET and MONGO_URI environment variable defined', function () {
 		assert(appveyorYAML.environment.SESSION_SECRET, 'The SESSION_SECRET environment variable must be defined');
+		assert(appveyorYAML.environment.MONGO_URI, 'The MONGO_URI environment variable must be defined');
 	});
 
 	it('should have builds set for Node v5, and v6', function () {
