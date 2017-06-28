@@ -1,6 +1,11 @@
 # Express Boilerplate Changelog
 
+## v0.2.1 (28 June 2017)
+
+* Updated model instantiation mechanisms to not rely ona globaldb #394
+
 ## v0.2.0 (26 June 2017)
+
 * Updated dependencies #375-#389
 * Removed NSP checks from the test suite #391
 * Added REST router for database models #390
