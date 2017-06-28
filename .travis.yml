@@ -6,9 +6,6 @@ os:
 #  - linux
   - osx
 
-env:
-- SESSION_SECRET=randomSecretString
-
 node_js:
   - "4"
   - "6"

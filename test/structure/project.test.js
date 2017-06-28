@@ -17,7 +17,7 @@ describe('Project structure', function () {
 	});
 
 	describe('directories', function () {
-		['.git', 'bin', 'node_modules', 'public', 'routes', 'scripts', 'test', 'utils', 'views'].forEach(function (d) {
+		['.git', 'node_modules', 'public', 'routes', 'scripts', 'test', 'utils', 'views'].forEach(function (d) {
 			it(`should have a valid ${d}`, function (done) {
 				fs.readdir(d, function (err, contents) {
 					assert.strictEqual(err, null, `${d} might not exist as a directory`);

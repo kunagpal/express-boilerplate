@@ -15,7 +15,7 @@ module.exports = function (done) {
 	// eslint-disable-next-line no-sync, no-empty, brace-style
 	try { fs.mkdirSync('out/wiki'); } catch (e) {}
 
-	jsdoc2md.render({ files: ['bin/**/*.js', 'database/**/*.js', 'scripts/**/*.js', 'utils/**/*.js'] })
+	jsdoc2md.render({ files: ['database/**/*.js', 'scripts/**/*.js', 'utils/**/*.js'] })
 		.then(function (markdown) {
 			fs.writeFile('out/wiki/REFERENCE.md', markdown, done);
 		}, done)

@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://waffle.io/kunagpal/express-boilerplate"
   },
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "archive": "node scripts/package/archive.js",
@@ -34,7 +34,7 @@
   },
   "author": "Kunal Nagpal <kunagpal@gmail.com>",
   "dependencies": {
-    "async": "2.4.1",
+    "async": "2.5.0",
     "body-parser": "1.17.2",
     "bower": "1.8.0",
     "clean-css": "4.1.3",
