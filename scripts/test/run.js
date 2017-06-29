@@ -36,9 +36,7 @@ module.exports = function (testDir, done) {
 		 *
 		 * @param {Function} next - The callback that marks the end of the test directory traversal.
 		 */
-		function (next) {
-			readDir(path.resolve('test', testDir), next);
-		},
+		async.apply(readDir, path.resolve('test', testDir)),
 
 		/**
 		 * Picks files matching TEST_FILE_PATTERN and passes them on.

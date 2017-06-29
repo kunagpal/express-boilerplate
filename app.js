@@ -78,14 +78,25 @@ module.exports = function (done) {
 		{ w: 1 }, function (error, db) {
 			if (error) { throw error; }
 
-			_.merge(global, load({
-				dirname: path.resolve('database'),
-				resolve: function (stub) {
-					return stub(db);
-				}
-			}));
+			var routes,
+				models = load({
+					dirname: path.resolve('database'),
+					resolve: function (stub) {
+						return stub(db);
+					}
+				});
 
-			var routes = load(path.resolve('routes'));
+			_.forEach(models, function (value, model) {
+				// This ensures that the models can be messed with.
+				Object.defineProperty(global, model, {
+					value: value,
+					configurable: false,
+					writable: false,
+					enumerable: true
+				});
+			});
+
+			routes = load(path.resolve('routes'));
 
 			app.use('/api', routes.api) && delete routes.api;
 			app.use(csurf());
