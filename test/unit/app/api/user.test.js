@@ -5,6 +5,12 @@ describe('User', function () {
 	it('should be valid', function () {
 		assert(_.isObject(global.User), 'User might not be a valid model');
 		assert(!_.isEmpty(global.User), 'User is empty');
+
+		assert.deepStrictEqual(_.omit(Object.getOwnPropertyDescriptor(global, 'User'), 'value'), {
+			configurable: false,
+			enumerable: true,
+			writable: false
+		}, 'User is empty');
 	});
 
 	it('should POST records correctly', function (done) {
