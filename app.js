@@ -42,7 +42,7 @@ app.use(helmet());
 app.use(compression());
 app.use('/api', cors({ origin: false }));
 
-(process.env.NODE_ENV !== 'test') && app.use(logger('dev'));
+(env !== 'test') && app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
