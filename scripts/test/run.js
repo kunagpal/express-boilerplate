@@ -1,17 +1,22 @@
 #!/usr/bin/env node
 
-var path = require('path'),
+/* eslint-disable global-require, no-process-env */
+var fs = require('fs'),
+	path = require('path'),
 
+	NYC = require('nyc'),
 	_ = require('lodash'),
 	chalk = require('chalk'),
 	async = require('async'),
 	Mocha = require('mocha'),
-	cluster = require('cluster'),
 	readDir = require('recursive-readdir'),
 
-	TEST_FILE_PATTERN = 'test.js',
+	UNIT = 'unit',
+	COVERAGE_DIR = '.coverage',
+	TEST_FILE_PATTERN = '.test.js',
 
-	root = path.join(__dirname, '..', '..');
+	root = path.join(__dirname, '..', '..'),
+	name = process.env.npm_package_name || require(path.join(root, 'package')).name;
 
 /**
  * Runs tests from a given directory.
@@ -27,7 +32,20 @@ module.exports = function (testDir, done) {
 		return done(new Error('A valid test directory is required'));
 	}
 
-	cluster.isMaster && console.info(chalk.blue.bold(`Running ${testDir} tests`));
+	console.info(chalk.blue.bold(`Running ${testDir} tests`));
+
+	process.env.NODE_ENV = 'test';
+	process.env.MONGO_URI = `mongodb://127.0.0.1/${name}-test`;
+	process.env.SESSION_SECRET = 'randomSecretString';
+
+	var nyc,
+		isUnit = testDir === UNIT;
+
+	isUnit && (nyc = new NYC({
+		reporter: ['text', 'lcov'],
+		reportDir: COVERAGE_DIR,
+		tempDirectory: COVERAGE_DIR
+	})).wrap();
 
 	return async.waterfall([
 
@@ -73,13 +91,40 @@ module.exports = function (testDir, done) {
 		function (mocha, next) {
 			_.assign(global, {
 				_: _,
-				fs: require('fs'), // eslint-disable-line global-require
 				path: path,
-				assert: require('assert'), // eslint-disable-line global-require
-				testUtils: require(path.join(root, 'utils', 'test')) // eslint-disable-line global-require
+				fs: require('fs'),
+				assert: require('assert'),
+				testUtils: require(path.join(root, 'utils', 'test'))
 			});
 
+			// Make purge a test util, so that the test database connection can be reused
+			isUnit && (global.purge = require(path.join(root, 'scripts', 'database', 'purge')));
 			mocha.run(next);
+		},
+
+		function (next) {
+			if (!isUnit) { return next(); }
+
+			try {
+				fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
+			}
+			catch (e) {} // eslint-disable-line no-empty
+
+			try {
+				nyc.writeCoverageFile();
+				nyc.report();
+				nyc.checkCoverage({
+					lines: 80,
+					branches: 50,
+					functions: 65,
+					statements: 80
+				});
+			}
+			catch (e) {
+				console.error(e);
+			}
+
+			return next(process.exitCode); // Useful when there are tests to be run after unit tests
 		}
 	], done);
 };
