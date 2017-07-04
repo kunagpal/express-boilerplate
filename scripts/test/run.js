@@ -103,7 +103,7 @@ module.exports = function (testDir, done) {
 		},
 
 		function (next) {
-			if (!isUnit) { return next(); }
+			if (!isUnit) { return next(process.exitCode); }
 
 			try {
 				fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
