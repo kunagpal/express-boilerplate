@@ -7,9 +7,12 @@ exports.user = function (n, done) {
 	if (!_.isSafeInteger(n)) { return done(); }
 
 	return User.insertMany(Array.apply(null, Array(n)).map(function () { // eslint-disable-line prefer-spread
+		var first = faker.name.firstName(),
+			last = faker.name.lastName();
+
 		return {
-			_id: faker.internet.email(),
-			name: faker.name.findName()
+			_id: faker.internet.email(first, last),
+			name: first + ' ' + last
 		};
 	}), done);
 };
