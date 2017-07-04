@@ -53,10 +53,21 @@ exports.makeModel = function (fileName, db, meta, helpers) {
 	return !_.isEmpty(model) && _.assignIn({}, model, _.defaults(helpers, {
 		insertOne: function (data, callback) {
 			return model
-				.insertOne(_(data)
-					.pick(meta.fields)
-					.defaults(_.defaults(meta.defaults, { createdAt: new Date().toISOString() }))
-					.value(), callback);
+				.insertOne(_(data).pick(meta.fields).defaults(meta.defaults).value(), callback);
+		},
+		insertMany: function (data, callback) {
+			_.set(meta, 'defaults.createdAt', new Date().toISOString());
+
+			return model
+				.insertMany(_.map(data, function (datum) {
+					return _(datum).pick(meta.fields).defaults(meta.defaults).value();
+				}), callback);
+		},
+		updateOne: function (query, data, callback) {
+			return model
+				.updateOne(query, {
+					$set: _.pick(data, meta.fields)
+				}, callback);
 		},
 		updateMany: function (query, data, callback) {
 			return model
