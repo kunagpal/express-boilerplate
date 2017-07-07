@@ -5,6 +5,12 @@ describe('User', function () {
 	it('should be valid', function () {
 		assert(_.isObject(global.User), 'User might not be a valid model');
 		assert(!_.isEmpty(global.User), 'User is empty');
+
+		assert.deepStrictEqual(_.omit(Object.getOwnPropertyDescriptor(global, 'User'), 'value'), {
+			configurable: false,
+			enumerable: true,
+			writable: false
+		}, 'User is empty');
 	});
 
 	it('should POST records correctly', function (done) {
@@ -29,15 +35,69 @@ describe('User', function () {
 			});
 	});
 
-	it('should GET all records correctly', function (done) {
-		test
-			.get('/api/users')
-			.expect(200, function (err, res) {
-				assert.strictEqual(err, null);
-				assert.strictEqual(res.body.users.length, 1);
+	describe('GET', function () {
+		it('should GET all records correctly', function (done) {
+			test
+				.get('/api/users')
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.strictEqual(res.body.users.length, 1);
 
-				done();
+					done();
+				});
+		});
+
+		it('should correctly pick desired fields only', function (done) {
+			test
+				.get('/api/users/')
+				.send({ authStrategy: 1 })
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+
+					_.forEach(res.body.users, function (user) {
+						assert.deepStrictEqual(Object.keys(user), ['_id', 'authStrategy'],
+							'field filtering must work correctly');
+					});
+					done();
+				});
+		});
+
+		describe('special cases', function () {
+			beforeEach(function (done) {
+				User.insertOne({
+					_id: 'someone.else@example.com',
+					name: 'Some One Else'
+				}, done);
 			});
+
+			it('should correctly format responses where id\'s are provided', function (done) {
+				test
+					.get('/api/users/someone@example.com')
+					.expect(200, function (err, res) {
+						assert.strictEqual(err, null);
+
+						var user = res.body.user;
+
+						assert(user, 'GET API must format results correctly when a version is provided');
+						assert(user, 1);
+						done();
+					});
+			});
+
+			it('should correctly pick desired fields only', function (done) {
+				test
+					.get('/api/users/someone.else@example.com')
+					.send({ authStrategy: 1 })
+					.expect(200, function (err, res) {
+						assert.strictEqual(err, null);
+						assert.deepStrictEqual(res.body.user, {
+							_id: 'someone.else@example.com',
+							authStrategy: 'local'
+						});
+						done();
+					});
+			});
+		});
 	});
 
 	it('should PUT records correctly', function (done) {

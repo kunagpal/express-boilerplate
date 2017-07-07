@@ -5,9 +5,9 @@ describe('.ignore files', function () {
 
 	describe(gitignorePath, function () {
 		var gitignore = parseIgnore(gitignorePath),
-			ignored = ['logs', '*.log', 'npm-debug.log*', 'pids', '*.pid', '*.seed', 'lib-cov', 'coverage',
-				'.nyc_output', '.grunt', '.lock-wscript', 'build/Release', 'node_modules', 'public/bower', '.npm',
-				'.node_repl_history', '.idea/**', '.env', 'public/min', 'out'];
+			ignored = ['logs', '*.log', 'npm-debug.log*', 'pids', '*.pid', '*.seed', 'lib-cov', '.coverage', '.grunt',
+				'.lock-wscript', 'build/Release', 'node_modules', 'public/bower', '.npm', '.node_repl_history',
+				'.idea/**', '.env', 'public/min', 'out'];
 
 		it('should exist', function (done) {
 			fs.stat(gitignorePath, done);

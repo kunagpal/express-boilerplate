@@ -38,21 +38,36 @@ exports.checkVars = function () {
 /**
  * Creates an exportable model pseudo class that can be stubbed with helpers.
  *
- * @param {Object} model - An instance of a MongoDB collection that can be used for making queries.
+ * @param {Object} fileName - The name of the model to be created.
+ * @param {Object} db - An instance of a MongoDB connection that can be used for making queries.
  * @param {Object?} [meta={}] - A set of details about the model fields and default values.
  * @param {?Object} [helpers={}] - An optional object containing the helper methods specific to the current model.
  * @returns {Object} A model pseudo class that can be used for various CRUD operations.
  */
-exports.makeModel = function (model, meta, helpers) {
+exports.makeModel = function (fileName, db, meta, helpers) {
+	if (!fileName || !db) { return {}; }
 	!meta && (meta = {});
+
+	var model = db.collection(_.toLower(path.parse(fileName).name));
 
 	return !_.isEmpty(model) && _.assignIn({}, model, _.defaults(helpers, {
 		insertOne: function (data, callback) {
 			return model
-				.insertOne(_(data)
-					.pick(meta.fields)
-					.defaults(_.defaults(meta.defaults, { createdAt: new Date().toISOString() }))
-					.value(), callback);
+				.insertOne(_(data).pick(meta.fields).defaults(meta.defaults).value(), callback);
+		},
+		insertMany: function (data, callback) {
+			_.set(meta, 'defaults.createdAt', new Date().toISOString());
+
+			return model
+				.insertMany(_.map(data, function (datum) {
+					return _(datum).pick(meta.fields).defaults(meta.defaults).value();
+				}), callback);
+		},
+		updateOne: function (query, data, callback) {
+			return model
+				.updateOne(query, {
+					$set: _.pick(data, meta.fields)
+				}, callback);
 		},
 		updateMany: function (query, data, callback) {
 			return model

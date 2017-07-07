@@ -8,7 +8,7 @@ var chalk = require('chalk'),
 	async = require('async'),
 	ESLint = require('eslint').CLIEngine,
 
-	LINT_SCOPE = ['bin', 'database', 'public/javascripts', 'routes', 'scripts', 'test', 'utils', 'app.js'];
+	LINT_SCOPE = ['database', 'public/javascripts', 'routes', 'scripts', 'test', 'utils', 'app.js'];
 
 /**
  * Checks project code for style inconsistencies.

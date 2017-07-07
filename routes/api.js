@@ -27,7 +27,7 @@ fs.readdirSync('database').forEach(function (model) {
 		.get(function (req, res, next) {
 			req.params.id && (req.query._id = req.params.id);
 
-			model.find(req.query, req.body).toArray(function (err, result) {
+			model.find(req.query).project(req.body).toArray(function (err, result) {
 				if (err) { return next(err); }
 
 				return res.json(req.query._id ? { [lCase]: result && result[0] || {} } : { [plural]: result });

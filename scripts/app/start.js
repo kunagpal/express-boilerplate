@@ -26,7 +26,7 @@ module.exports = function (options, done) {
 		 *
 		 * @param {Function} next - The callback invoked to mark the end of the app start routine.
 		 */
-		async.apply(pm2.start.bind(pm2), _.defaults(options, { script: 'bin/www.js' }))
+		async.apply(pm2.start.bind(pm2), _.defaults(options, { script: 'app.js' }))
 	],
 
 	/**

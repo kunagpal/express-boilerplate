@@ -1,6 +1,17 @@
 # Express Boilerplate Changelog
 
+## v0.2.2 (05 July 2017)
+
+* :white_check_mark: Improved GET API tests #406
+* :tada: Swapped out Istanbul with NYC for code coverage #404
+* :lock: Updated model globals to be immutble #397
+
+## v0.2.1 (28 June 2017)
+
+* Updated model instantiation mechanisms to not rely on a global `db` #394
+
 ## v0.2.0 (26 June 2017)
+
 * Updated dependencies #375-#389
 * Removed NSP checks from the test suite #391
 * Added REST router for database models #390

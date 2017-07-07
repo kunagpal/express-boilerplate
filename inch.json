@@ -2,7 +2,6 @@
   "files": {
     "included": [
       "app.js",
-      "bin/**/*.js",
       "database/**/*.js",
       "scripts/**/*.js",
       "utils/**/*.js",

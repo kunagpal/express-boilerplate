@@ -17,24 +17,24 @@ var cors = require('cors'),
 	bodyParser = require('body-parser'),
 	compression = require('compression'),
 	cookieParser = require('cookie-parser'),
+	mongodb = require('mongodb').MongoClient,
 	expressSession = require('express-session'),
 	errorHandler = require('raven').errorHandler,
 
-	routes,
+	port,
 	app = express(),
-	name = process.env.npm_package_name || require('./package').name, // eslint-disable-line global-require
-	isLive = process.env.NODE_ENV && !_.includes(['development', 'test'], process.env.NODE_ENV);
+	env = process.env.NODE_ENV,
+	isLive = env && !_.includes(['development', 'test'], env),
+	name = process.env.npm_package_name || require('./package').name; // eslint-disable-line global-require
 
-// eslint-disable-next-line global-require
-_.merge(global, load(path.resolve('database'))); // inject models into the global namespace
-routes = load(path.resolve('routes'));
+isLive ? utils.checkVars() : require('dotenv').load();
 
 // view engine setup
 app.set('title', name);
 app.set('view engine', 'ejs');
 app.enable('trust proxy');
 app.set('views', 'views');
-app.set('port', Number(process.env.PORT) || 3000);
+app.set('port', port = Number(process.env.PORT) || 3000);
 
 app.on('error', utils.handle);
 
@@ -42,7 +42,7 @@ app.use(helmet());
 app.use(compression());
 app.use('/api', cors({ origin: false }));
 
-(process.env.NODE_ENV !== 'test') && app.use(logger('dev'));
+(env !== 'test') && app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -70,29 +70,61 @@ app.use(function (req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api', routes.api) && delete routes.api;
-app.use(csurf());
+process.on('SIGINT', utils.handle);
+process.on('uncaughtException', utils.handle);
 
-_.forEach(routes, function (router, mountPoint) {
-	app.use(`/${mountPoint === 'index' ? '' : mountPoint}`, router);
-});
+module.exports = function (done) {
+	mongodb.connect(process.env.MONGO_URI || `mongodb://127.0.0.1:27017/${_.kebabCase(name)}${env ? '-' + env : ''}`,
+		{ w: 1 }, function (error, db) {
+			if (error) { throw error; }
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-	var err = new Error('Not Found');
+			var routes,
+				models = load({
+					dirname: path.resolve('database'),
+					resolve: function (stub) {
+						return stub(db);
+					}
+				});
 
-	err.status = utils.NOT_FOUND;
-	next(err);
-});
+			_.forEach(models, function (value, model) {
+				// This ensures that the models can be messed with.
+				Object.defineProperty(global, model, {
+					value: value,
+					configurable: false,
+					writable: false,
+					enumerable: true
+				});
+			});
 
-// error handlers
-isLive && app.use(errorHandler(process.env.SENTRY_DSN));
+			routes = load(path.resolve('routes'));
 
-// eslint-disable-next-line no-unused-vars
-app.use(function (err, req, res, next) { // the last argument is necessary
-	res.status(err.status = err.status || utils.INTERNAL_SERVER_ERROR);
+			app.use('/api', routes.api) && delete routes.api;
+			app.use(csurf());
 
-	return res.render('error', { error: _.omit(err, isLive && ['stack', 'message']) });
-});
+			_.forEach(routes, function (router, mountPoint) {
+				app.use(`/${mountPoint === 'index' ? '' : mountPoint}`, router);
+			});
 
-module.exports = app;
+			// catch 404 and forward to error handler
+			app.use(function (req, res, next) {
+				var err = new Error('Not Found');
+
+				err.status = utils.NOT_FOUND;
+				next(err);
+			});
+
+			// error handlers
+			isLive && app.use(errorHandler(process.env.SENTRY_DSN));
+
+			// eslint-disable-next-line no-unused-vars
+			app.use(function (err, req, res, next) { // the last argument is necessary
+				res.status(err.status = err.status || utils.INTERNAL_SERVER_ERROR);
+
+				return res.render('error', { error: _.omit(err, isLive && ['stack', 'message']) });
+			});
+
+			app.listen(port, done);
+		});
+};
+
+!module.parent && module.exports(_.noop);

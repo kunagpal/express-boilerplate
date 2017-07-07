@@ -6,9 +6,6 @@ os:
 #  - linux
   - osx
 
-env:
-- SESSION_SECRET=randomSecretString
-
 node_js:
   - "4"
   - "6"
@@ -43,4 +40,4 @@ cache:
 
 after_script:
   - npm install codeclimate-test-reporter
-  - node node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info
+  - node node_modules/.bin/codeclimate-test-reporter < .coverage/lcov.info

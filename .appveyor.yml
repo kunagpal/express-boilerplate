@@ -10,7 +10,6 @@ branches:
 skip_branch_with_pr: true
 
 environment:
-  SESSION_SECRET: randomSecretString
   matrix:
     - node: "4"
     - node: "6"

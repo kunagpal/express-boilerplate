@@ -1,4 +1,4 @@
-var APPVEYOR_PATH = 'appveyor.yml';
+var APPVEYOR_PATH = '.appveyor.yml';
 
 describe(APPVEYOR_PATH, function () {
 	var appveyorYAML = testUtils.ymlToJson(APPVEYOR_PATH);
@@ -10,10 +10,6 @@ describe(APPVEYOR_PATH, function () {
 	it('should have an init script for git line ending config', function () {
 		assert.deepStrictEqual(appveyorYAML.init, ['git config --global core.autocrlf input',
 			'git config --global core.eol lf'], 'Invalid init script');
-	});
-
-	it('should have the SESSION_SECRET environment variable defined', function () {
-		assert(appveyorYAML.environment.SESSION_SECRET, 'The SESSION_SECRET environment variable must be defined');
 	});
 
 	it('should have builds set for Node v5, and v6', function () {

@@ -21,7 +21,7 @@ module.exports = function (done) {
 		 *
 		 * @param {Function} next The callback invoked to indicate the app has been stopped.
 		 */
-		async.apply(pm2.stop.bind(pm2), 'bin/www.js')
+		async.apply(pm2.stop.bind(pm2), 'app.js')
 	],
 
 	/**

@@ -52,7 +52,7 @@ describe(TRAVIS_PATH, function () {
 	it('should correctly publish code coverge to CodeClimate', function () {
 		assert.deepStrictEqual(travisYAML.after_script, [
 			'npm install codeclimate-test-reporter',
-			'node node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info'
+			'node node_modules/.bin/codeclimate-test-reporter < .coverage/lcov.info'
 		], 'Invalid post build sequence');
 	});
 });
