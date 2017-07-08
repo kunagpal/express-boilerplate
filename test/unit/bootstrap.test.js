@@ -12,9 +12,10 @@ before(function (done) {
 });
 
 after(function (done) {
+	delete process.env.NODE_ENV;
+	delete global.db;
+
 	global.db && db.close ? db.close(function (err) {
-		delete process.env.NODE_ENV;
-		delete global.db;
 		done(err);
 	}) : done();
 });
