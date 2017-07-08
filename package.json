@@ -58,7 +58,7 @@
     "pm2": "2.5.0",
     "raven": "2.1.0",
     "require-all": "2.1.0",
-    "uglify-js": "3.0.23"
+    "uglify-js": "3.0.24"
   },
   "devDependencies": {
     "chalk": "2.0.1",
