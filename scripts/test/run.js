@@ -100,33 +100,31 @@ module.exports = function (testDir, done) {
 			// Make purge a test util, so that the test database connection can be reused
 			isUnit && (global.purge = require(path.join(root, 'scripts', 'database', 'purge')));
 			mocha.run(next);
-		},
-
-		function (next) {
-			if (!isUnit) { return next(process.exitCode); }
-
-			try {
-				fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
-			}
-			catch (e) {} // eslint-disable-line no-empty
-
-			try {
-				nyc.writeCoverageFile();
-				nyc.report();
-				nyc.checkCoverage({
-					lines: 80,
-					branches: 50,
-					functions: 65,
-					statements: 80
-				});
-			}
-			catch (e) {
-				console.error(e);
-			}
-
-			return next(process.exitCode); // Useful when there are tests to be run after unit tests
 		}
-	], done);
+	], function (err) {
+		if (!isUnit) { return done(err); }
+
+		try {
+			fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
+		}
+		catch (e) {} // eslint-disable-line no-empty
+
+		try {
+			nyc.writeCoverageFile();
+			nyc.report();
+			nyc.checkCoverage({
+				lines: 80,
+				branches: 50,
+				functions: 65,
+				statements: 80
+			});
+		}
+		catch (e) {
+			console.error(e);
+		}
+
+		return done(err); // Useful when there are tests to be run after unit tests
+	});
 };
 
 !module.parent && module.exports(process.exit); // directly call the exported function if used via the CLI
