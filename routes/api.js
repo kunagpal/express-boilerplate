@@ -34,7 +34,7 @@ fs.readdirSync('database').forEach(function (model) {
 			});
 		})
 		// Update
-		.put(function (req, res, next) {
+		.patch(function (req, res, next) {
 			req.params.id && (req.query._id = req.params.id);
 			req.body.updatedAt = new Date().toISOString();
 
