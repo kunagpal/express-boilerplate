@@ -13,9 +13,5 @@ before(function (done) {
 
 after(function (done) {
 	delete process.env.NODE_ENV;
-	delete global.db;
-
-	global.db && db.close ? db.close(function (err) {
-		done(err);
-	}) : done();
+	global.testUtils && testUtils.db.close(true, done);
 });
