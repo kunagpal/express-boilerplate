@@ -40,7 +40,7 @@
     "clean-css": "4.1.6",
     "compression": "1.7.0",
     "cookie-parser": "1.4.3",
-    "cors": "2.8.3",
+    "cors": "2.8.4",
     "csurf": "1.9.0",
     "debug": "2.6.8",
     "ejs": "2.5.6",
