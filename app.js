@@ -86,6 +86,12 @@ module.exports = function (done) {
 					}
 				});
 
+			(env === 'test') && global && global.testUtils && global.testUtils.db && _.assign(global.testUtils.db, {
+				close: db.close.bind(db),
+				purge: function (next) {
+					db.dropDatabase(next);
+				}
+			});
 			_.forEach(models, function (value, model) {
 				// This ensures that the models can be messed with.
 				Object.defineProperty(global, model, {

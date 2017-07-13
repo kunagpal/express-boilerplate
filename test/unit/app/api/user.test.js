@@ -1,6 +1,8 @@
 describe('User', function () {
 	beforeEach(testUtils.db.user);
-	afterEach(purge);
+	afterEach(function (done) {
+		testUtils.db.purge(done);
+	});
 
 	it('should be valid', function () {
 		assert(_.isObject(global.User), 'User might not be a valid model');
@@ -100,32 +102,79 @@ describe('User', function () {
 		});
 	});
 
-	it('should PUT records correctly', function (done) {
-		test
-			.put('/api/users')
-			.send({
-				name: 'Someone Else'
-			})
-			.expect(200, function (err, res) {
-				assert.strictEqual(err, null);
-				assert.deepStrictEqual(res.body, {
-					users: { n: 1, nModified: 1, ok: 1 }
-				});
+	describe('PATCH', function () {
+		beforeEach(function (done) {
+			User.insertOne({
+				_id: 'someone@example.com',
+				name: 'Some One'
+			}, done);
+		});
 
-				done();
-			});
+		it('should PATCH records correctly', function (done) {
+			test
+				.patch('/api/users')
+				.send({
+					name: 'Someone Else'
+				})
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.deepStrictEqual(res.body, {
+						users: { n: 2, nModified: 2, ok: 1 }
+					});
+
+					done();
+				});
+		});
+
+		it('should PATCH records by id', function (done) {
+			test
+				.patch('/api/users/someone@example.com')
+				.send({
+					name: 'Someone Else'
+				})
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.deepStrictEqual(res.body, {
+						user: { n: 1, nModified: 1, ok: 1 }
+					});
+
+					done();
+				});
+		});
 	});
 
-	it('should DELETE all records correctly', function (done) {
-		test
-			.del('/api/users')
-			.expect(200, function (err, res) {
-				assert.strictEqual(err, null);
-				assert.deepStrictEqual(res.body, {
-					users: { n: 1, ok: 1 }
-				});
+	describe('DELETE', function () {
+		beforeEach(function (done) {
+			User.insertOne({
+				_id: 'someone@example.com',
+				name: 'Some One'
+			}, done);
+		});
 
-				done();
-			});
+		it('should DELETE all records correctly', function (done) {
+			test
+				.del('/api/users')
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.deepStrictEqual(res.body, {
+						users: { n: 2, ok: 1 }
+					});
+
+					done();
+				});
+		});
+
+		it('should DELETE with an id correctly', function (done) {
+			test
+				.del('/api/users/someone@example.com')
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.deepStrictEqual(res.body, {
+						user: { n: 1, ok: 1 }
+					});
+
+					done();
+				});
+		});
 	});
 });
