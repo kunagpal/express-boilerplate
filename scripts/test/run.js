@@ -97,8 +97,6 @@ module.exports = function (testDir, done) {
 				testUtils: require(path.join(root, 'utils', 'test'))
 			});
 
-			// Make purge a test util, so that the test database connection can be reused
-			isUnit && (global.purge = require(path.join(root, 'scripts', 'database', 'purge')));
 			mocha.run(next);
 		}
 	], function (err) {
