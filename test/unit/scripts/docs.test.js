@@ -17,12 +17,12 @@ describe('Documentation scripts', function () {
 				dir = `out/${scope.dir}`;
 
 				make[scope.dir](function (err) {
-					if (err) { return done(err); }
+					assert(!err, `${scope.name} should be generated correctly`);
 
 					var file = `${dir}/${scope.file}`;
 
 					return fs.readFile(file, 'utf8', function (error, data) {
-						if (error) { return done(error); }
+						assert.strictEqual(error, null, `${scope.name} files should be generated correctly`);
 						assert(data.length, `Documentation index at ${file} is invalid`);
 
 						return done();

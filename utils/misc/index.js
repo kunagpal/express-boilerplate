@@ -38,56 +38,105 @@ exports.checkVars = function () {
 /**
  * Creates an exportable model pseudo class that can be stubbed with helpers.
  *
- * @param {Object} fileName - The name of the model to be created.
+ * @param {Object} modelName - The name of the model to be created.
  * @param {Object} db - An instance of a MongoDB connection that can be used for making queries.
- * @param {Object?} [meta={}] - A set of details about the model fields and default values.
- * @param {?Object} [helpers={}] - An optional object containing the helper methods specific to the current model.
  * @returns {Object} A model pseudo class that can be used for various CRUD operations.
  */
-exports.makeModel = function (fileName, db, meta, helpers) {
-	if (!fileName || !db) { return {}; }
-	!meta && (meta = {});
+exports.makeModel = function (modelName, db) {
+	if (!(modelName && db)) { return {}; }
 
-	var model = db.collection(_.toLower(path.parse(fileName).name));
+	var defaults = {},
+		attributes = [],
+		model = require(path.resolve(`./database/${modelName}`)), // eslint-disable-line global-require
+		config = model && model.config,
+		autoEditedAt = config && config.autoEditedAt,
+		autoCreatedAt = config && config.autoCreatedAt,
+		collection = db.collection(_.toLower(modelName));
 
-	return !_.isEmpty(model) && _.assignIn({}, model, _.defaults(helpers, {
-		insertOne: function (data, callback) {
-			return model
-				.insertOne(_(data).pick(meta.fields).defaults(meta.defaults).value(), callback);
+	Object.freeze(config);
+	Object.freeze(config && config.rest);
+
+	_.forEach(model.fields, function (field) {
+		var name = field && field.key || field;
+
+		// Consider adding support for mandatory fields as well, although that is kind of anti noSQL
+		_.isString(name) && attributes.push(name);
+
+		// eslint-disable-next-line security/detect-object-injection
+		field && field.default && (defaults[name] = field.default);
+	});
+
+	return !_.isEmpty(model) && _.assignIn(_.pick(model, 'config'), collection, _.defaults(model.helpers, {
+
+		/**
+		 * Asynchronously inserts one record for the current model into it's corresponding collection.
+		 *
+		 * @param {Object} datum - The record to be inserted.
+		 * @param {?Function} callback - The function invoked to mark the end of record insertion.
+		 * @returns {Promise|*} A promise that can be used to resolve further tasks.
+		 */
+		insertOne: function (datum, callback) {
+			var obj = _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
+				createdAt: new Date().toISOString()
+			}).value();
+
+			return collection.insertOne(obj, callback);
 		},
-		insertMany: function (data, callback) {
-			_.set(meta, 'defaults.createdAt', new Date().toISOString());
 
-			return model
+		/**
+		 * Inserts multiple records for the current model into it's corresponding collection.
+		 *
+		 * @param {Object[]} data - The Array of records to be inserted.
+		 * @param {Function} callback - The function invoked to mark the end of the record creation process.
+		 * @returns {Promise} - A Promise to handle task chaning.
+		 */
+		insertMany: function (data, callback) {
+			return collection
 				.insertMany(_.map(data, function (datum) {
-					return _(datum).pick(meta.fields).defaults(meta.defaults).value();
+					return _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
+						createdAt: new Date().toISOString()
+					}).value();
 				}), callback);
 		},
-		updateOne: function (query, data, callback) {
-			return model
-				.updateOne(query, {
-					$set: _.pick(data, meta.fields)
-				}, callback);
+
+		/**
+		 * Updates the first record that matches the provided query.
+		 *
+		 * @param {Object} filter - The set of attributes to filter by.
+		 * @param {Object} datum - The set of changes to be made to the matched record in the current collection.
+		 * @param {?Object} datum.$set - Sets to be made to the matched record in the current collection.
+		 * @param {?Object} datum.$unset - Unsets to be made to the matched record in the current collection.
+		 * @param {?Object} datum.$rename - Renames to be made to the matched record in the current collection.
+		 * @param {?Object} options - The options for the current updateOne operation.
+		 * @param {?Function} callback - The function invoked to mark the completion of the update process.
+		 * @returns {Promise|*} - The promise instance for further task chaining.
+		 */
+		updateOne: function (filter, datum, options, callback) {
+			_.set(datum, '$set', _(datum && datum.$set).pick(attributes).merge(autoEditedAt && {
+				editedAt: new Date().toISOString()
+			}).value());
+
+			return collection.updateOne(filter, datum, options, callback);
 		},
-		updateMany: function (query, data, callback) {
-			return model
-				.updateMany(query, {
-					$set: _.pick(data, meta.fields)
-				}, callback);
+
+		/**
+		 * Updates all records that match the provided query.
+		 *
+		 * @param {Object} filter - The set of attributes to filter by.
+		 * @param {Object} data - The set of changes to be made to the matched records in the current collection.
+		 * @param {?Object} data.$set - Sets to be made to the matched records in the current collection.
+		 * @param {?Object} data.$unset - Unsets to be made to the matched records in the current collection.
+		 * @param {?Object} data.$rename - Renames to be made to the matched records in the current collection.
+		 * @param {?Object} options - The options for the current updateMany operation.
+		 * @param {?Function} callback - The function invoked to mark the completion of the update process.
+		 * @returns {Promise|*} - The promise instance for further task chaining.
+		 */
+		updateMany: function (filter, data, options, callback) {
+			_.set(data, '$set', _(data && data.$set).pick(attributes).merge(autoEditedAt && {
+				editedAt: new Date().toISOString()
+			}).value());
+
+			return collection.updateMany.apply(filter, data, options, callback);
 		}
 	}));
-};
-
-/**
- * Handles error and SIGINT events.
- *
- * @param {?Error} err - An error object, optionally passed on from the error event.
- */
-exports.handle = function (err) {
-	global.db && db.close && db.close(function (error) {
-		var e = err || error; // prioritize the unhandled error over the db connection close error
-
-		if (e) { throw e; }
-		process.exit(0);
-	});
 };

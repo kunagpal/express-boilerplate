@@ -113,10 +113,10 @@ module.exports = function (testDir, done) {
 			nyc.writeCoverageFile();
 			nyc.report();
 			nyc.checkCoverage({
-				lines: 80,
+				lines: 60,
 				branches: 50,
-				functions: 65,
-				statements: 80
+				functions: 30,
+				statements: 60
 			});
 		}
 		catch (e) {
