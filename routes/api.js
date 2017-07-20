@@ -46,7 +46,8 @@ fs.readdirSync('database').forEach(function (modelName) {
 
 			req.params.id && (req.query._id = req.params.id);
 
-			return model.updateOne(req.query, { $set: req.body }, function (err, result) {
+			// eslint-disable-next-line max-len
+			return model[`update${multiUpdate ? 'Many' : 'One'}`](req.query, { $set: req.body }, function (err, result) {
 				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
 			});
 		})
@@ -60,7 +61,7 @@ fs.readdirSync('database').forEach(function (modelName) {
 
 			req.params.id && (req.query._id = req.params.id);
 
-			return model.removeOne(req.query, function (err, result) {
+			return model[`remove${multiDelete ? 'Many' : 'One'}`](req.query, function (err, result) {
 				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
 			});
 		});
