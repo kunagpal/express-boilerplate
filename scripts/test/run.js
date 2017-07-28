@@ -28,9 +28,7 @@ var fs = require('fs'),
 module.exports = function (testDir, done) {
 	_.isFunction(testDir) && (done = testDir) && (testDir = process.argv.splice(2)[0]);
 
-	if (!testDir) {
-		return done(new Error('A valid test directory is required'));
-	}
+	if (!testDir) { return done(new Error('A valid test directory is required')); }
 
 	console.info(chalk.blue.bold(`Running ${testDir} tests`));
 
@@ -75,7 +73,7 @@ module.exports = function (testDir, done) {
 		 * @param {Function} next - The callback that marks the end of the test instance compilation.
 		 */
 		function (tests, next) {
-			var mocha = new Mocha({ timeout: 5000 });
+			var mocha = new Mocha({ timeout: 1e4 });
 
 			_.forEach(tests, mocha.addFile.bind(mocha));
 
