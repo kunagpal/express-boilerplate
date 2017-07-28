@@ -1,3 +1,5 @@
 <h1>Error</h1>
 <h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<% if (error.name) { %><h2><%= error.name %></h2><% } %>
+<% if (error.message) { %><h2><%= error.message %></h2><% } %>
+<% if (error.stack) { %><pre><%= error.stack %></pre><% } %>
