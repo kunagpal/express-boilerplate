@@ -75,7 +75,7 @@ module.exports = function (done) {
 		{ w: 1 }, function (mongoError, db) {
 			if (mongoError) { throw mongoError; }
 
-			(env === 'test') && global && global.testUtils && global.testUtils.db && _.assign(global.testUtils.db, {
+			(env === 'test') && _.set(global, 'testUtils.db', {
 				close: db.close.bind(db),
 				purge: function (next) {
 					db.dropDatabase(next); // bind has not been used here for test performance reasons
@@ -99,7 +99,7 @@ module.exports = function (done) {
 				 * @param {?Error} err - An error object, optionally passed on from the error event.
 				 */
 				handle = function (err) {
-					global.db && db.close && db.close(function (error) {
+					db && db.close && db.close(function (error) {
 						var e = err || error; // prioritize the unhandled error over the db connection close error
 
 						if (e) { throw e; }
@@ -131,9 +131,20 @@ module.exports = function (done) {
 
 			// eslint-disable-next-line no-unused-vars
 			app.use(function (err, req, res, next) { // the last argument is necessary
-				res.status(err.status = err.status || utils.INTERNAL_SERVER_ERROR);
+				var error = {
+					status: err.status || utils.INTERNAL_SERVER_ERROR
+				};
 
-				return res.render('error', { error: _.omit(err, isLive && ['stack', 'message']) });
+				err.name && (error.name = err.name);
+				res.status(error.status);
+
+				if (!isLive) {
+					error.stack = err.stack;
+					error.message = err.message;
+				}
+
+				// can't use conditional _.omit on err here as details will be lost
+				return res.render('error', { error: error });
 			});
 
 			app.listen(port, done);

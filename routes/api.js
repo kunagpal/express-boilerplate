@@ -5,7 +5,9 @@
 var fs = require('fs'),
 
 	_ = require('lodash'),
-	router = require('express').Router();
+	router = require('express').Router(),
+
+	sortClause = ['asc', 'desc'];
 
 // eslint-disable-next-line no-sync
 fs.readdirSync('database').forEach(function (modelName) {
@@ -30,7 +32,15 @@ fs.readdirSync('database').forEach(function (modelName) {
 		.get(function (req, res, next) {
 			req.params.id && (req.query._id = req.params.id);
 
-			model.find(req.query).project(req.body).toArray(function (err, result) {
+			var skip = Number(req.headers['x-api-skip']),
+				limit = Number(req.headers['x-api-limit']),
+				sort = _(req.headers['x-api-sort']).split(', ').transform(function (result, header) {
+					var arr = _.split(header, '=');
+
+					arr[0] && _.includes(sortClause, arr[1]) && result.push(arr);
+				}, []).value();
+
+			model.find(req.query).sort(sort).skip(skip).limit(limit).project(req.body).toArray(function (err, result) {
 				if (err) { return next(err); }
 
 				return res.json(req.query._id ? { [lCase]: result && result[0] || {} } : { [plural]: result });

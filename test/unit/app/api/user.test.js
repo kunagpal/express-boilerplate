@@ -100,6 +100,117 @@ describe('User', function () {
 					});
 			});
 		});
+
+		describe('api headers', function () {
+			describe('x-api-limit', function () {
+				it('should be respected', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-limit', '1')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-limit requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+
+				it('should return one record by default if the header is invalid', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-limit', 'random')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-limit requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+			});
+
+			describe('x-api-sort', function () {
+				it('should be respected', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-sort', 'name=desc')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-sort requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+
+				it('should handle multiple header values correctly', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-sort', 'name=asc')
+						.set('x-api-sort', 'createdAt=desc')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-sort requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+
+				it('should return all valid records if the header is invalid', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-sort', 'random')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-sort requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+			});
+
+			describe('x-api-skip', function () {
+				it('should be respected', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-skip', '1')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-skip requests must work correctly');
+							assert.deepStrictEqual(res.body, { users: [] }, 'no users should be returned');
+
+							done();
+						});
+				});
+
+				it('should return all valid records if the header is invalid', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-skip', 'random')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-skip requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+			});
+		});
 	});
 
 	describe('PATCH', function () {
