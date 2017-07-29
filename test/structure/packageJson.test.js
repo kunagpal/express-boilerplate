@@ -37,7 +37,55 @@ describe('package.json', function () {
 		});
 	});
 
-	describe('dependencies', testUtils.checkDependencies(packageJSON));
+	describe('dependencies', function () {
+		var packageDependencies = _.pick(packageJSON,
+			['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies']);
+
+		it('should exist and be an object', function () {
+			assert(!_.isEmpty(packageDependencies) && _.isObject(packageDependencies), 'Project has no dependencies');
+		});
+
+		it('should have precise dependency versions', function () {
+			_.forEach(packageDependencies, function (dependencies, type) {
+				_.forEach(dependencies, function (version, name) {
+					assert(/^\d/.test(version), `${type}: ${name}@${version} is invalid`);
+				});
+			});
+		});
+
+		it('should be mutually exclusive', function () {
+			var intersection = [];
+
+			_.forEach(packageDependencies, function (packages) {
+				intersection = _.intersection(intersection, Object.keys(packages));
+			});
+
+			assert.deepStrictEqual(intersection, [], `The dependencies ${intersection.join(', ')} are duplicated`);
+		});
+
+		it('should have the same versions across package.json and node_modules', function () {
+			var present = {},
+				required = {},
+				isWindows = process.platform === 'win32',
+				dependencyPath = path.join(path.resolve('node_modules'));
+
+			_.forEach(packageDependencies, function (dependencies) {
+				required = _.assign(required, dependencies);
+
+				_.forEach(dependencies, function (specified, dependency) {
+					if (!(dependency === 'bcrypt' && isWindows)) {
+						// eslint-disable-next-line global-require
+						var installed = require(path.join(dependencyPath, dependency, 'package.json')).version;
+
+						present[dependency] = installed; // eslint-disable-line security/detect-object-injection
+					}
+				});
+			});
+
+			assert.deepStrictEqual(_.omit(required, isWindows && 'bcrypt'), present,
+				'The specified and present dependency versions are different!');
+		});
+	});
 
 	describe('repository', function () {
 		var packageRepository = packageJSON.repository;
