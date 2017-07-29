@@ -1,31 +1,19 @@
-var make = {
-	docs: require(path.resolve('./scripts/docs/make-docs')), // eslint-disable-line global-require
-	wiki: require(path.resolve('./scripts/docs/make-wiki')) // eslint-disable-line global-require
-};
+var rm = require('shelljs').rm,
+	makeWiki = require(path.resolve('./scripts/docs/make-wiki'));
 
+// JSDoc generation can't be tested without using cluster as it kills the process after generating docs.
 describe('Documentation scripts', function () {
-	var dir;
+	beforeEach(function () { rm('-rf', 'out'); });
+	afterEach(function () { rm('-rf', 'out'); });
 
-	beforeEach(function () { testUtils.clearDir(dir); });
-	afterEach(function () { testUtils.clearDir(dir); });
+	it('should generate the wiki correctly', function (done) {
+		makeWiki(function (err) {
+			assert(!err, 'Wiki generation failed');
 
-	describe('Wiki generation', function () {
-		it('should work correctly', function (done) {
-			dir = 'out/wiki';
+			// eslint-disable-next-line no-sync
+			assert(fs.readFileSync('out/wiki/REFERENCE.md', 'utf8').length, 'Invalid wiki file');
 
-			make.wiki(function (err) {
-				if (err) { return done(err); }
-
-				var file = `${dir}/REFERENCE.md`;
-
-				return fs.readFile(file, 'utf8', function (error, data) {
-					if (error) { return done(error); }
-
-					assert(data.length, `Documentation index at ${file} is invalid`);
-
-					return done();
-				});
-			});
+			done();
 		});
 	});
 });

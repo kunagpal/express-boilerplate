@@ -1,10 +1,11 @@
-var archive = require(path.resolve('./scripts/package/archive'));
+var rm = require('shelljs').rm,
+	archive = require(path.resolve('./scripts/package/archive'));
 
 describe('Package scripts', function () {
 	var dir = 'out/archive';
 
-	beforeEach(function () { testUtils.clearDir(dir); });
-	afterEach(function () {	testUtils.clearDir(dir); });
+	beforeEach(function () { rm('-rf', dir); });
+	afterEach(function () {	rm('-rf', dir); });
 
 	it('should archive the project correctly', function (done) {
 		archive(function (err) {
