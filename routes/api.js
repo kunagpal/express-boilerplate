@@ -3,17 +3,22 @@
  */
 
 var fs = require('fs'),
-	router = require('express').Router();
+
+	_ = require('lodash'),
+	router = require('express').Router(),
+
+	sortClause = ['asc', 'desc'];
 
 // eslint-disable-next-line no-sync
-fs.readdirSync('database').forEach(function (model) {
-	model = path.parse(model).name;
+fs.readdirSync('database').forEach(function (modelName) {
+	// bail out if the model does not exist or has restful routing disabled
+	if (!_.get(global, [modelName = path.parse(modelName).name, 'config', 'rest', 'enabled'])) { return; }
 
-	var lCase = _.toLower(model),
-		plural = utils.pluralize(lCase);
-
-	model = global[model]; // eslint-disable-line security/detect-object-injection
-	if (!model) { return; }
+	var model = global[modelName], // eslint-disable-line security/detect-object-injection
+		lCase = _.toLower(modelName),
+		plural = utils.pluralize(lCase),
+		multiUpdate = _.get(model, 'config.rest.multiUpdate'),
+		multiDelete = _.get(model, 'config.rest.multiDelete');
 
 	router
 		.route('/' + plural + '/:id?')
@@ -27,26 +32,46 @@ fs.readdirSync('database').forEach(function (model) {
 		.get(function (req, res, next) {
 			req.params.id && (req.query._id = req.params.id);
 
-			model.find(req.query).project(req.body).toArray(function (err, result) {
+			var skip = Number(req.headers['x-api-skip']),
+				limit = Number(req.headers['x-api-limit']),
+				sort = _(req.headers['x-api-sort']).split(', ').transform(function (result, header) {
+					var arr = _.split(header, '=');
+
+					arr[0] && _.includes(sortClause, arr[1]) && result.push(arr);
+				}, []).value();
+
+			model.find(req.query).sort(sort).skip(skip).limit(limit).project(req.body).toArray(function (err, result) {
 				if (err) { return next(err); }
 
 				return res.json(req.query._id ? { [lCase]: result && result[0] || {} } : { [plural]: result });
 			});
 		})
 		// Update
-		.put(function (req, res, next) {
-			req.params.id && (req.query._id = req.params.id);
-			req.body.updatedAt = new Date().toISOString();
+		.patch(function (req, res, next) {
+			if (!(multiUpdate || req.params.id)) {
+				return res.status(400).json({
+					error: { name: 'missingId', message: 'A valid id is required in the url path' }
+				});
+			}
 
-			model.updateMany(req.query, req.body, function (err, result) {
+			req.params.id && (req.query._id = req.params.id);
+
+			// eslint-disable-next-line max-len
+			return model[`update${multiUpdate ? 'Many' : 'One'}`](req.query, { $set: req.body }, function (err, result) {
 				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
 			});
 		})
 		// Delete
 		.delete(function (req, res, next) {
+			if (!(multiDelete || req.params.id)) {
+				return res.status(400).json({
+					error: { name: 'missingId', message: 'A valid id is required in the url path' }
+				});
+			}
+
 			req.params.id && (req.query._id = req.params.id);
 
-			model.removeMany(req.query, function (err, result) {
+			return model[`remove${multiDelete ? 'Many' : 'One'}`](req.query, function (err, result) {
 				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
 			});
 		});

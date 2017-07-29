@@ -3,18 +3,20 @@ var app = require('../../app'),
 
 /* eslint-disable no-process-env*/
 before(function (done) {
-	app(function () {
+	app(function (err) {
+		if (err) { return done(err); }
+
 		// Type safety checks on the next line have been avoided to ensure that the tests react to changes in the app
 		// bootstrapping mechanism.
 		global.test = supertest(`http://localhost:${this.address().port}`);
-		done();
+
+		return done();
 	});
 });
 
 after(function (done) {
-	global.db && db.close ? db.close(function (err) {
-		delete process.env.NODE_ENV;
-		delete global.db;
-		done(err);
-	}) : done();
+	delete global.test;
+	delete process.env.NODE_ENV;
+
+	global.testUtils && testUtils.db.close(true, done);
 });

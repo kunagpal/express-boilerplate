@@ -7,7 +7,9 @@ global._ = require('lodash');
 global.path = require('path');
 global.utils = require('./utils/misc');
 
-var cors = require('cors'),
+var fs = require('fs'),
+
+	cors = require('cors'),
 	csurf = require('csurf'),
 	logger = require('morgan'),
 	helmet = require('helmet'),
@@ -35,8 +37,6 @@ app.set('view engine', 'ejs');
 app.enable('trust proxy');
 app.set('views', 'views');
 app.set('port', port = Number(process.env.PORT) || 3000);
-
-app.on('error', utils.handle);
 
 app.use(helmet());
 app.use(compression());
@@ -70,33 +70,46 @@ app.use(function (req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-process.on('SIGINT', utils.handle);
-process.on('uncaughtException', utils.handle);
-
 module.exports = function (done) {
 	mongodb.connect(process.env.MONGO_URI || `mongodb://127.0.0.1:27017/${_.kebabCase(name)}${env ? '-' + env : ''}`,
-		{ w: 1 }, function (error, db) {
-			if (error) { throw error; }
+		{ w: 1 }, function (mongoError, db) {
+			if (mongoError) { throw mongoError; }
 
-			var routes,
-				models = load({
-					dirname: path.resolve('database'),
-					resolve: function (stub) {
-						return stub(db);
-					}
-				});
-
-			_.forEach(models, function (value, model) {
-				// This ensures that the models can be messed with.
-				Object.defineProperty(global, model, {
-					value: value,
+			(env === 'test') && _.set(global, 'testUtils.db', {
+				close: db.close.bind(db),
+				purge: function (next) {
+					db.dropDatabase(next); // bind has not been used here for test performance reasons
+				}
+			});
+			_.forEach(fs.readdirSync('database'), function (model) { // eslint-disable-line no-sync
+				// This ensures that the models can't be messed with.
+				(model = path.parse(model).name) && Object.defineProperty(global, model, {
+					value: utils.makeModel(model, db), // eslint-disable-line global-require
 					configurable: false,
 					writable: false,
 					enumerable: true
 				});
 			});
 
-			routes = load(path.resolve('routes'));
+			var routes = load(path.resolve('routes')),
+
+				/**
+				 * Handles error and SIGINT events.
+				 *
+				 * @param {?Error} err - An error object, optionally passed on from the error event.
+				 */
+				handle = function (err) {
+					db && db.close && db.close(function (error) {
+						var e = err || error; // prioritize the unhandled error over the db connection close error
+
+						if (e) { throw e; }
+						process.exit(0);
+					});
+				};
+
+			app.on('error', handle);
+			process.on('SIGINT', handle);
+			process.on('uncaughtException', handle);
 
 			app.use('/api', routes.api) && delete routes.api;
 			app.use(csurf());
@@ -118,9 +131,20 @@ module.exports = function (done) {
 
 			// eslint-disable-next-line no-unused-vars
 			app.use(function (err, req, res, next) { // the last argument is necessary
-				res.status(err.status = err.status || utils.INTERNAL_SERVER_ERROR);
+				var error = {
+					status: err.status || utils.INTERNAL_SERVER_ERROR
+				};
 
-				return res.render('error', { error: _.omit(err, isLive && ['stack', 'message']) });
+				err.name && (error.name = err.name);
+				res.status(error.status);
+
+				if (!isLive) {
+					error.stack = err.stack;
+					error.message = err.message;
+				}
+
+				// can't use conditional _.omit on err here as details will be lost
+				return res.render('error', { error: error });
 			});
 
 			app.listen(port, done);

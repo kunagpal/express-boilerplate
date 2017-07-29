@@ -1,6 +1,8 @@
 describe('User', function () {
 	beforeEach(testUtils.db.user);
-	afterEach(purge);
+	afterEach(function (done) {
+		testUtils.db.purge(done);
+	});
 
 	it('should be valid', function () {
 		assert(_.isObject(global.User), 'User might not be a valid model');
@@ -98,34 +100,184 @@ describe('User', function () {
 					});
 			});
 		});
-	});
 
-	it('should PUT records correctly', function (done) {
-		test
-			.put('/api/users')
-			.send({
-				name: 'Someone Else'
-			})
-			.expect(200, function (err, res) {
-				assert.strictEqual(err, null);
-				assert.deepStrictEqual(res.body, {
-					users: { n: 1, nModified: 1, ok: 1 }
+		describe('api headers', function () {
+			describe('x-api-limit', function () {
+				it('should be respected', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-limit', '1')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-limit requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
 				});
 
-				done();
-			});
-	});
+				it('should return one record by default if the header is invalid', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-limit', 'random')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-limit requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
 
-	it('should DELETE all records correctly', function (done) {
-		test
-			.del('/api/users')
-			.expect(200, function (err, res) {
-				assert.strictEqual(err, null);
-				assert.deepStrictEqual(res.body, {
-					users: { n: 1, ok: 1 }
+							done();
+						});
+				});
+			});
+
+			describe('x-api-sort', function () {
+				it('should be respected', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-sort', 'name=desc')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-sort requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
 				});
 
-				done();
+				it('should handle multiple header values correctly', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-sort', 'name=asc')
+						.set('x-api-sort', 'createdAt=desc')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-sort requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+
+				it('should return all valid records if the header is invalid', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-sort', 'random')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-sort requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
 			});
+
+			describe('x-api-skip', function () {
+				it('should be respected', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-skip', '1')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-skip requests must work correctly');
+							assert.deepStrictEqual(res.body, { users: [] }, 'no users should be returned');
+
+							done();
+						});
+				});
+
+				it('should return all valid records if the header is invalid', function (done) {
+					test
+						.get('/api/users')
+						.set('x-api-skip', 'random')
+						.expect(200, function (err, res) {
+							assert.strictEqual(err, null, 'x-api-skip requests must work correctly');
+							assert.strictEqual(res.body.users.length, 1, 'only one user should be returned');
+							assert.deepStrictEqual(_.keys(res.body.users[0]), [
+								'_id', 'name', 'authStrategy', 'settings', 'createdAt'
+							], 'the returned user record should have all keys');
+
+							done();
+						});
+				});
+			});
+		});
+	});
+
+	describe('PATCH', function () {
+		beforeEach(function (done) {
+			User.insertOne({
+				_id: 'someone@example.com',
+				name: 'Some One'
+			}, done);
+		});
+
+		it('should not PATCH all records if id is missing', function (done) {
+			test
+				.patch('/api/users')
+				.send({
+					name: 'Someone Else'
+				})
+				.expect(400, {
+					error: { name: 'missingId', message: 'A valid id is required in the url path' }
+				})
+				.end(done);
+		});
+
+		it('should PATCH records by id', function (done) {
+			test
+				.patch('/api/users/someone@example.com')
+				.send({
+					name: 'Someone Else'
+				})
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.deepStrictEqual(res.body, {
+						user: { n: 1, nModified: 1, ok: 1 }
+					});
+
+					done();
+				});
+		});
+	});
+
+	describe('DELETE', function () {
+		beforeEach(function (done) {
+			User.insertOne({
+				_id: 'someone@example.com',
+				name: 'Some One'
+			}, done);
+		});
+
+		it('should not DELETE all records if id is missing', function (done) {
+			test
+				.del('/api/users')
+				.expect(400, {
+					error: { name: 'missingId', message: 'A valid id is required in the url path' }
+				})
+				.end(done);
+		});
+
+		it('should DELETE with an id correctly', function (done) {
+			test
+				.del('/api/users/someone@example.com')
+				.expect(200, function (err, res) {
+					assert.strictEqual(err, null);
+					assert.deepStrictEqual(res.body, {
+						user: { n: 1, ok: 1 }
+					});
+
+					done();
+				});
+		});
 	});
 });

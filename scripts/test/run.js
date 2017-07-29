@@ -28,9 +28,7 @@ var fs = require('fs'),
 module.exports = function (testDir, done) {
 	_.isFunction(testDir) && (done = testDir) && (testDir = process.argv.splice(2)[0]);
 
-	if (!testDir) {
-		return done(new Error('A valid test directory is required'));
-	}
+	if (!testDir) { return done(new Error('A valid test directory is required')); }
 
 	console.info(chalk.blue.bold(`Running ${testDir} tests`));
 
@@ -75,7 +73,7 @@ module.exports = function (testDir, done) {
 		 * @param {Function} next - The callback that marks the end of the test instance compilation.
 		 */
 		function (tests, next) {
-			var mocha = new Mocha({ timeout: 5000 });
+			var mocha = new Mocha({ timeout: 1e4 });
 
 			_.forEach(tests, mocha.addFile.bind(mocha));
 
@@ -97,36 +95,32 @@ module.exports = function (testDir, done) {
 				testUtils: require(path.join(root, 'utils', 'test'))
 			});
 
-			// Make purge a test util, so that the test database connection can be reused
-			isUnit && (global.purge = require(path.join(root, 'scripts', 'database', 'purge')));
 			mocha.run(next);
-		},
-
-		function (next) {
-			if (!isUnit) { return next(process.exitCode); }
-
-			try {
-				fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
-			}
-			catch (e) {} // eslint-disable-line no-empty
-
-			try {
-				nyc.writeCoverageFile();
-				nyc.report();
-				nyc.checkCoverage({
-					lines: 80,
-					branches: 50,
-					functions: 65,
-					statements: 80
-				});
-			}
-			catch (e) {
-				console.error(e);
-			}
-
-			return next(process.exitCode); // Useful when there are tests to be run after unit tests
 		}
-	], done);
+	], function (err) {
+		if (!isUnit) { return done(err); }
+
+		try {
+			fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
+		}
+		catch (e) {} // eslint-disable-line no-empty
+
+		try {
+			nyc.writeCoverageFile();
+			nyc.report();
+			nyc.checkCoverage({
+				lines: 60,
+				branches: 50,
+				functions: 30,
+				statements: 60
+			});
+		}
+		catch (e) {
+			console.error(e);
+		}
+
+		return done(err); // Useful when there are tests to be run after unit tests
+	});
 };
 
 !module.parent && module.exports(process.exit); // directly call the exported function if used via the CLI

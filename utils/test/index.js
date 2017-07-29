@@ -10,8 +10,7 @@ var fs = require('fs'),
 	_ = require('lodash'),
 	yaml = require('js-yaml'),
 
-	ENCODING = 'utf-8',
-	PACKAGES = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies'];
+	ENCODING = 'utf-8';
 
 exports.db = require('./database');
 
@@ -81,49 +80,6 @@ exports.checkContributors = function (contributors) {
 			_.forEach(contributors, function (contributor, index) {
 				assert(contributor.name, `Project contributor ${index} name missing`);
 				assert(/@.+\./i.test(contributor.email), `Project contributor ${index} email invalid`);
-			});
-		});
-	};
-};
-
-/**
- * Creates and returns a test suite to check dependencies.
- *
- * @param {Object} packageJson - The package manifest to process.
- * @param {?String} [mode=package] - The type of package to process.
- * @returns {Function} The test suite for the given set of conditions.
- */
-exports.checkDependencies = function (packageJson, mode) {
-	mode = mode || 'package';
-	var packageDependencies = _.pick(packageJson, PACKAGES);
-
-	return function () {
-		it('should exist and be an object', function () {
-			assert(!_.isEmpty(packageDependencies) && _.isObject(packageDependencies), 'Project has no dependencies');
-		});
-
-		it('should have precise dependency versions', function () {
-			_.forEach(packageDependencies, function (dependencies, type) {
-				_.forEach(dependencies, function (version, name) {
-					assert(/^\d/.test(version), `${type}: ${name}@${version} is invalid`);
-				});
-			});
-		});
-
-		it('should have the same versions across package.json and node_modules', function () {
-			var isBower = mode === 'bower',
-				dependencyPath = path.join(__dirname, '..', '..', isBower ? path.join('public', 'bower')
-					: 'node_modules');
-
-			_.forEach(packageDependencies, function (dependencies) {
-				_.forEach(dependencies, function (specified, dependency) {
-					if (isBower || dependency !== 'bcrypt') {
-						// eslint-disable-next-line global-require
-						var installed = require(path.join(dependencyPath, dependency, 'package.json')).version;
-
-						assert.strictEqual(specified, installed, `Need ${dependency} ${specified}, found ${installed}`);
-					}
-				});
 			});
 		});
 	};
