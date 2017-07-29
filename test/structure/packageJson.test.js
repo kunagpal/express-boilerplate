@@ -23,50 +23,16 @@ describe('package.json', function () {
 	});
 
 	describe('scripts', function () {
-		var packageScripts = packageJSON.scripts;
+		var packageScripts = packageJSON.scripts,
+			scripts = ['archive', 'check', 'make-wiki', 'make-docs', 'start', 'stop', 'seed', 'csslint', 'eslint',
+				'lint', 'unit', 'e2e', 'structure', 'test', 'prestart', 'postinstall'];
 
 		it('should exist', function () {
 			assert(packageScripts, 'Project scripts are missing!');
 		});
 
-		it('should have a start script', function () {
-			assert(packageScripts.start, 'Project start script missing');
-		});
-
-		it('should have a stop script', function () {
-			assert(packageScripts.stop, 'Project stop script missing');
-		});
-
-		it('should have a docs script', function () {
-			assert(packageScripts['make-docs'], 'Project docs script missing');
-		});
-
-		it('should have a wiki script', function () {
-			assert(packageScripts['make-wiki'], 'Project wiki script missing');
-		});
-
-		it('should have a seed script', function () {
-			assert(packageScripts.seed, 'Project seed script missing');
-		});
-
-		it('should have a purge script', function () {
-			assert(packageScripts.purge, 'Project purge script missing');
-		});
-
-		it('should have a lint script', function () {
-			assert(packageScripts.lint, 'Project lint script missing');
-		});
-
-		it('should have a test script', function () {
-			assert(packageScripts.test, 'Project test script missing');
-		});
-
-		it('should have a postinstall script', function () {
-			assert(packageScripts.postinstall, 'Project postinstall script missing');
-		});
-
-		it('should have a prestart script', function () {
-			assert(packageScripts.prestart, 'Project prestart script missing');
+		scripts.forEach(function (script) {
+			assert(packageScripts[script], `Project ${script} script missing!`);
 		});
 	});
 
