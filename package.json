@@ -20,8 +20,6 @@
     "start": "node scripts/app/start.js",
     "stop": "node scripts/app/stop.js",
     "seed": "node scripts/database/seed.js",
-    "purge": "node scripts/database/purge.js",
-    "security": "node scripts/test/security.js",
     "csslint": "node scripts/test/cssLint.js",
     "eslint": "node scripts/test/esLint.js",
     "lint": "npm run eslint && npm run csslint",
