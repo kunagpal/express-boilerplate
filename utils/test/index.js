@@ -89,12 +89,10 @@ exports.checkContributors = function (contributors) {
 /**
  * Creates and returns a test suite to check dependencies.
  *
- * @param {Object} packageJson - The package manifest to process.
- * @param {?String} [mode=package] - The type of package to process.
  * @returns {Function} The test suite for the given set of conditions.
  */
 exports.checkDependencies = function () {
-	var packageDependencies = _.pick(require(path.resolve('package')), PACKAGES);
+	var packageDependencies = _.pick(require(path.resolve('package')), PACKAGES); // eslint-disable-line global-require
 
 	return function () {
 		it('should exist and be an object', function () {

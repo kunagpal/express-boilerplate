@@ -32,6 +32,7 @@ describe('package.json', function () {
 		});
 
 		scripts.forEach(function (script) {
+			// eslint-disable-next-line security/detect-object-injection
 			assert(packageScripts[script], `Project ${script} script missing!`);
 		});
 	});
