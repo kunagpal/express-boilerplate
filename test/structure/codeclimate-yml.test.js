@@ -15,6 +15,7 @@ describe(CODECLIMATE_PATH, function () {
 		var duplicationEngine = codeClimateYAML.engines.duplication;
 
 		assert(duplicationEngine.enabled, 'Duplication config missing / broken');
+		assert.deepStrictEqual(duplicationEngine.exclude_paths, ['test/**/*'], 'Test suite should be ignored');
 		assert.strictEqual(_.head(duplicationEngine.config.languages), 'javascript', 'Invalid language setting');
 	});
 
