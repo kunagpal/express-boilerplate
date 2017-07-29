@@ -1,5 +1,12 @@
 # Express Boilerplate Changelog
 
+## v0.3.0 (29 July 2017)
+* Ignored the test suite for CodeClimate duplication checks #441
+* Cleaned up and compacted structure tests #441
+* Added support for `X-Api-Sort`, `X-Api-Skip`, and `X-Api-Limit` headers to the REST API #440
+* Removed redundant database purge script.
+* Updated dependencies, removed bower from the project.
+
 ## v0.2.2 (05 July 2017)
 
 * :white_check_mark: Improved GET API tests #406
