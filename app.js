@@ -23,6 +23,8 @@ var fs = require('fs'),
 	expressSession = require('express-session'),
 	errorHandler = require('raven').errorHandler,
 
+	pack = require('./scripts/misc/pack'),
+
 	port,
 	app = express(),
 	env = process.env.NODE_ENV,
@@ -42,12 +44,13 @@ app.use(helmet());
 app.use(compression());
 app.use('/api', cors({ origin: false }));
 
+app.use('/static', express.static(path.resolve('public/min')));
+
 (env !== 'test') && app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser(process.env.COOKIE_SECRET, { signed: true }));
-app.use(express.static(path.resolve('public')));
 
 app.use(expressSession({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
@@ -99,10 +102,16 @@ module.exports = function (done) {
 				 * @param {?Error} err - An error object, optionally passed on from the error event.
 				 */
 				handle = function (err) {
+					// No throwing errors here, as this function is used to handle uncaught exceptions
 					db && db.close && db.close(function (error) {
-						var e = err || error; // prioritize the unhandled error over the db connection close error
+						// DB close errors aren't exactly fatal here, but log them anyway
+						error && console.error(error.message);
 
-						if (e) { throw e; }
+						if (err) {
+							console.error(err.message);
+							process.exit(1);
+						}
+
 						process.exit(0);
 					});
 				};
@@ -147,7 +156,10 @@ module.exports = function (done) {
 				return res.render('error', { error: error });
 			});
 
-			app.listen(port, done);
+			pack(function (err) {
+				if (err) { throw err; } // An error in static asset compression is usually fatal, abort app load
+				app.listen(port, done);
+			});
 		});
 };
 

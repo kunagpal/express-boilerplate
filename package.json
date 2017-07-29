@@ -16,7 +16,7 @@
     "archive": "node scripts/package/archive.js",
     "check": "node node_modules/.bin/npm-check -u",
     "make-wiki": "node scripts/docs/make-wiki.js",
-    "make-docs": "node scripts/docs/make-docs.js",
+    "make-docs": "node node_modules/.bin/jsdoc -c .jsdocrc",
     "start": "node scripts/app/start.js",
     "stop": "node scripts/app/stop.js",
     "seed": "node scripts/database/seed.js",
@@ -27,7 +27,7 @@
     "e2e": "node scripts/test/run.js e2e",
     "structure": "node scripts/test/run.js structure",
     "test": "node scripts/test",
-    "prestart": "node scripts/misc/prestart.js",
+    "pack": "node scripts/misc/pack.js",
     "postinstall": "node scripts/misc/postInstall.js"
   },
   "author": "Kunal Nagpal <kunagpal@gmail.com>",
@@ -79,6 +79,7 @@
     "nyc": "11.1.0",
     "parse-gitignore": "0.4.0",
     "recursive-readdir": "2.2.1",
+    "shelljs": "0.7.8",
     "supertest": "3.0.0"
   },
   "optionalDependencies": {
