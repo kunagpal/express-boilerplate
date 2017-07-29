@@ -93,9 +93,8 @@ exports.checkContributors = function (contributors) {
  * @param {?String} [mode=package] - The type of package to process.
  * @returns {Function} The test suite for the given set of conditions.
  */
-exports.checkDependencies = function (packageJson, mode) {
-	mode = mode || 'package';
-	var packageDependencies = _.pick(packageJson, PACKAGES);
+exports.checkDependencies = function () {
+	var packageDependencies = _.pick(require(path.resolve('package')), PACKAGES);
 
 	return function () {
 		it('should exist and be an object', function () {
@@ -110,21 +109,36 @@ exports.checkDependencies = function (packageJson, mode) {
 			});
 		});
 
+		it('should be mutually exclusive', function () {
+			var intersection = [];
+
+			_.forEach(packageDependencies, function (packages) {
+				intersection = _.intersection(intersection, Object.keys(packages));
+			});
+
+			assert.deepStrictEqual(intersection, [], `The dependencies ${intersection.join(', ')} are duplicated`);
+		});
+
 		it('should have the same versions across package.json and node_modules', function () {
-			var isBower = mode === 'bower',
-				dependencyPath = path.join(__dirname, '..', '..', isBower ? path.join('public', 'bower')
-					: 'node_modules');
+			var present = {},
+				required = {},
+				isWindows = process.platform === 'win32',
+				dependencyPath = path.join(path.resolve('node_modules'));
 
 			_.forEach(packageDependencies, function (dependencies) {
+				required = _.assign(required, dependencies);
+
 				_.forEach(dependencies, function (specified, dependency) {
-					if (isBower || dependency !== 'bcrypt') {
+					if (!(dependency === 'bcrypt' && isWindows)) {
 						// eslint-disable-next-line global-require
 						var installed = require(path.join(dependencyPath, dependency, 'package.json')).version;
 
-						assert.strictEqual(specified, installed, `Need ${dependency} ${specified}, found ${installed}`);
+						present[dependency] = installed; // eslint-disable-line security/detect-object-injection
 					}
 				});
 			});
+
+			assert.deepStrictEqual(required, present, 'The specified and present dependency versions are different!');
 		});
 	};
 };
