@@ -23,54 +23,69 @@ describe('package.json', function () {
 	});
 
 	describe('scripts', function () {
-		var packageScripts = packageJSON.scripts;
+		var packageScripts = packageJSON.scripts,
+			scripts = ['archive', 'check', 'make-wiki', 'make-docs', 'start', 'stop', 'seed', 'csslint', 'eslint',
+				'lint', 'unit', 'e2e', 'structure', 'test', 'prestart', 'postinstall'];
 
 		it('should exist', function () {
 			assert(packageScripts, 'Project scripts are missing!');
 		});
 
-		it('should have a start script', function () {
-			assert(packageScripts.start, 'Project start script missing');
-		});
-
-		it('should have a stop script', function () {
-			assert(packageScripts.stop, 'Project stop script missing');
-		});
-
-		it('should have a docs script', function () {
-			assert(packageScripts['make-docs'], 'Project docs script missing');
-		});
-
-		it('should have a wiki script', function () {
-			assert(packageScripts['make-wiki'], 'Project wiki script missing');
-		});
-
-		it('should have a seed script', function () {
-			assert(packageScripts.seed, 'Project seed script missing');
-		});
-
-		it('should have a purge script', function () {
-			assert(packageScripts.purge, 'Project purge script missing');
-		});
-
-		it('should have a lint script', function () {
-			assert(packageScripts.lint, 'Project lint script missing');
-		});
-
-		it('should have a test script', function () {
-			assert(packageScripts.test, 'Project test script missing');
-		});
-
-		it('should have a postinstall script', function () {
-			assert(packageScripts.postinstall, 'Project postinstall script missing');
-		});
-
-		it('should have a prestart script', function () {
-			assert(packageScripts.prestart, 'Project prestart script missing');
+		scripts.forEach(function (script) {
+			// eslint-disable-next-line security/detect-object-injection
+			assert(packageScripts[script], `Project ${script} script missing!`);
 		});
 	});
 
-	describe('dependencies', testUtils.checkDependencies(packageJSON));
+	describe('dependencies', function () {
+		var packageDependencies = _.pick(packageJSON,
+			['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies', 'bundledDependencies']);
+
+		it('should exist and be an object', function () {
+			assert(!_.isEmpty(packageDependencies) && _.isObject(packageDependencies), 'Project has no dependencies');
+		});
+
+		it('should have precise dependency versions', function () {
+			_.forEach(packageDependencies, function (dependencies, type) {
+				_.forEach(dependencies, function (version, name) {
+					assert(/^\d/.test(version), `${type}: ${name}@${version} is invalid`);
+				});
+			});
+		});
+
+		it('should be mutually exclusive', function () {
+			var intersection = [];
+
+			_.forEach(packageDependencies, function (packages) {
+				intersection = _.intersection(intersection, Object.keys(packages));
+			});
+
+			assert.deepStrictEqual(intersection, [], `The dependencies ${intersection.join(', ')} are duplicated`);
+		});
+
+		it('should have the same versions across package.json and node_modules', function () {
+			var present = {},
+				required = {},
+				isWindows = process.platform === 'win32',
+				dependencyPath = path.join(path.resolve('node_modules'));
+
+			_.forEach(packageDependencies, function (dependencies) {
+				required = _.assign(required, dependencies);
+
+				_.forEach(dependencies, function (specified, dependency) {
+					if (!(dependency === 'bcrypt' && isWindows)) {
+						// eslint-disable-next-line global-require
+						var installed = require(path.join(dependencyPath, dependency, 'package.json')).version;
+
+						present[dependency] = installed; // eslint-disable-line security/detect-object-injection
+					}
+				});
+			});
+
+			assert.deepStrictEqual(_.omit(required, isWindows && 'bcrypt'), present,
+				'The specified and present dependency versions are different!');
+		});
+	});
 
 	describe('repository', function () {
 		var packageRepository = packageJSON.repository;

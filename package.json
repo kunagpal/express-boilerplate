@@ -20,8 +20,6 @@
     "start": "node scripts/app/start.js",
     "stop": "node scripts/app/stop.js",
     "seed": "node scripts/database/seed.js",
-    "purge": "node scripts/database/purge.js",
-    "security": "node scripts/test/security.js",
     "csslint": "node scripts/test/cssLint.js",
     "eslint": "node scripts/test/esLint.js",
     "lint": "npm run eslint && npm run csslint",
@@ -36,7 +34,6 @@
   "dependencies": {
     "async": "2.5.0",
     "body-parser": "1.17.2",
-    "bower": "1.8.0",
     "clean-css": "4.1.7",
     "compression": "1.7.0",
     "cookie-parser": "1.4.3",
