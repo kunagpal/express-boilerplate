@@ -24,8 +24,8 @@ describe('package.json', function () {
 
 	describe('scripts', function () {
 		var packageScripts = packageJSON.scripts,
-			scripts = ['archive', 'check', 'make-wiki', 'make-docs', 'start', 'stop', 'seed', 'csslint', 'eslint',
-				'lint', 'unit', 'e2e', 'structure', 'test', 'pack', 'postinstall'];
+			scripts = ['archive', 'check', 'console', 'make-wiki', 'make-docs', 'start', 'stop', 'seed', 'csslint',
+				'eslint', 'lint', 'unit', 'e2e', 'structure', 'test', 'pack', 'postinstall'];
 
 		it('should exist', function () {
 			assert(packageScripts, 'Project scripts are missing!');
