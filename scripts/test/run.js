@@ -32,8 +32,8 @@ module.exports = function (testDir, done) {
 	console.info(chalk.blue.bold(`Running ${testDir} tests`));
 
 	process.env.NODE_ENV = 'test';
-	process.env.MONGO_URI = `mongodb://127.0.0.1/${name}-test`;
 	process.env.SESSION_SECRET = 'randomSecretString';
+	process.env.MONGO_URI = `mongodb://127.0.0.1/${name}-test`;
 
 	var nyc,
 		isUnit = testDir === UNIT;
@@ -102,10 +102,10 @@ module.exports = function (testDir, done) {
 			nyc.writeCoverageFile(); // writes fresh coverage files for the current run
 			nyc.report(); // Writes code coverage information to the console.
 			nyc.checkCoverage({ // Enforces code coverage thresholds
-				lines: 85,
-				branches: 65,
-				functions: 75,
-				statements: 80
+				statements: 90,
+				branches: 70,
+				functions: 90,
+				lines: 95
 			});
 		}
 
