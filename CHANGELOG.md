@@ -1,5 +1,9 @@
 # Express Boilerplate Changelog
 
+## v0.4.0 (31 July 2017)
+
+* Added development console, usable via `npm run console` #451
+
 ## v0.3.2 (30 July 2017)
 
 * Deduplicated REST API and incoming data sanitisation code #450
