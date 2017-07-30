@@ -27,7 +27,7 @@ var fs = require('fs'),
 
 	port,
 	app = express(),
-	env = process.env.NODE_ENV,
+	env = process.env.NODE_ENV, // repeated process.env related operations are expensive, so cache once and reuse
 	isLive = env && !_.includes(['development', 'test'], env),
 	name = process.env.npm_package_name || require('./package').name; // eslint-disable-line global-require
 
@@ -42,7 +42,15 @@ app.set('port', port = Number(process.env.PORT) || 3000);
 
 app.use(helmet());
 app.use(compression());
-app.use('/api', cors({ origin: false }));
+app.use('/api', cors({ origin: false }), function (req, res, next) {
+	var accept = req.get('accept');
+
+	// If the Accept header is generic or unspecified, set it so that API responses are JSON by default.
+	// This is necessary so that the app error handling middleware below can be reused for all kinds of requests.
+	((accept === '*/*') || !accept) && (req.headers.accept = 'application/json');
+
+	next();
+});
 
 app.use('/static', express.static(path.resolve('public/min')));
 
@@ -131,7 +139,7 @@ module.exports = function (done) {
 			app.use(function (req, res, next) {
 				var err = new Error('Not Found');
 
-				err.status = utils.NOT_FOUND;
+				err.status = 404;
 				next(err);
 			});
 
@@ -141,19 +149,31 @@ module.exports = function (done) {
 			// eslint-disable-next-line no-unused-vars
 			app.use(function (err, req, res, next) { // the last argument is necessary
 				var error = {
-					status: err.status || utils.INTERNAL_SERVER_ERROR
+					status: Number(err.status) || 500
 				};
 
 				err.name && (error.name = err.name);
 				res.status(error.status);
 
-				if (!isLive) {
+				// _.assign has not been used here to avoid creating a new object with the stack and error message.
+				if (!isLive) { // Pass the complete error stack and message to the response if running in a dev/test env
 					error.stack = err.stack;
 					error.message = err.message;
 				}
 
 				// can't use conditional _.omit on err here as details will be lost
-				return res.render('error', { error: error });
+				return res.format({
+					html: function () {
+						res.render('error', { error: error });
+					},
+					json: function () {
+						res.json({ error: error });
+					},
+					default: function () {
+						// set the status code and it's corresponding human friendly message in one go.
+						res.sendStatus(406);
+					}
+				});
 			});
 
 			pack(function (err) {

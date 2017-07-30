@@ -227,8 +227,14 @@ describe('User', function () {
 				.send({
 					name: 'Someone Else'
 				})
-				.expect(400, {
-					error: { name: 'missingId', message: 'A valid id is required in the url path' }
+				.expect(400)
+				.expect(function (res) {
+					var error = res.body.error;
+
+					assert(error, 'A valid error response should be returned');
+					assert.strictEqual(error.name, 'missingId', 'A valid error name should be returned');
+					assert.strictEqual(error.message, 'A valid id is required in the URL path', 'Bad error message');
+					assert(error.stack, 'A valid error stack should be returned');
 				})
 				.end(done);
 		});
@@ -261,8 +267,14 @@ describe('User', function () {
 		it('should not DELETE all records if id is missing', function (done) {
 			test
 				.del('/api/users')
-				.expect(400, {
-					error: { name: 'missingId', message: 'A valid id is required in the url path' }
+				.expect(400)
+				.expect(function (res) {
+					var error = res.body.error;
+
+					assert(error, 'A valid error response should be returned');
+					assert.strictEqual(error.name, 'missingId', 'A valid error name should be returned');
+					assert.strictEqual(error.message, 'A valid id is required in the URL path', 'Bad error message');
+					assert(error.stack, 'A valid error stack should be returned');
 				})
 				.end(done);
 		});

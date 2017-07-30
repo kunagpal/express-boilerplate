@@ -4,9 +4,5 @@
 
 var router = require('express').Router();
 
-/* GET users listing. */
-router.get('/', function (req, res) {
-	res.send('respond with a resource');
-});
-
+// Add some routes here
 module.exports = router;
