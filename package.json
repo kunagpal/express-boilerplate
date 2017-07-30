@@ -10,11 +10,12 @@
   "bugs": {
     "url": "https://waffle.io/kunagpal/express-boilerplate"
   },
-  "version": "0.3.2",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "archive": "node scripts/package/archive.js",
     "check": "node node_modules/.bin/npm-check -u",
+    "console": "node scripts/misc/console.js",
     "make-wiki": "node scripts/docs/make-wiki.js",
     "make-docs": "node node_modules/.bin/jsdoc -c .jsdocrc",
     "start": "node scripts/app/start.js",

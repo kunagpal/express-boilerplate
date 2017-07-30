@@ -37,4 +37,30 @@ describe('Miscellaneous helpers', function () {
 			assert.deepStrictEqual(miscUtils.makeModel(), {}, 'Invalid input is not handled correctly');
 		});
 	});
+
+	describe('error', function () {
+		_.forEach(miscUtils.error, function (handler, name) {
+			describe(name, function () {
+				it('should create an error with the default options correctly', function () {
+					var error = handler('random error');
+
+					assert(_.isError(error), `Invalid error created for ${name}`);
+					assert.strictEqual(error.name, name, `Invalid error name created for ${name}`);
+					assert.strictEqual(error.message, 'random error', `Invalid error message created for ${name}`);
+					assert(error.stack, `Invalid error message created for ${name}`);
+					assert(!error.status, `Invalid error status created for ${name}`);
+				});
+
+				it('should create an error with a specific status code', function () {
+					var error = handler('random error', 400);
+
+					assert(_.isError(error), `Invalid error created for ${name}`);
+					assert.strictEqual(error.name, name, `Invalid error name created for ${name}`);
+					assert.strictEqual(error.message, 'random error', `Invalid error message created for ${name}`);
+					assert(error.stack, `Invalid error message created for ${name}`);
+					assert.strictEqual(error.status, 400, `Invalid error status created for ${name}`);
+				});
+			});
+		});
+	});
 });

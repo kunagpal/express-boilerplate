@@ -54,10 +54,7 @@ fs.readdirSync('database').forEach(function (modelName) {
 		// Update
 		.patch(function (req, res, next) {
 			if (!(multiUpdate || req.params.id)) {
-				return next(_.assign(new Error('A valid id is required in the URL path'), {
-					status: 400,
-					name: 'missingId'
-				}));
+				return next(utils.error.missingId('A valid id is required in the URL path', 400));
 			}
 
 			req.params.id && (req.query._id = req.params.id);
@@ -68,10 +65,7 @@ fs.readdirSync('database').forEach(function (modelName) {
 		// Delete
 		.delete(function (req, res, next) {
 			if (!(multiDelete || req.params.id)) {
-				return next(_.assign(new Error('A valid id is required in the URL path'), {
-					status: 400,
-					name: 'missingId'
-				}));
+				return next(utils.error.missingId('A valid id is required in the URL path', 400));
 			}
 
 			req.params.id && (req.query._id = req.params.id);
