@@ -7,10 +7,6 @@ var _ = require('lodash'),
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
 		'SENTRY_DSN', 'MONGO_URI', 'PORT', 'NODE_ENV'];
 
-exports.NOT_FOUND = 404;
-exports.INTERNAL_SERVER_ERROR = 500;
-exports.CSRF_TOKEN_ERROR = 'EBADCSRFTOKEN';
-
 /**
  * Returns the pluralized equivalent of the provided string.
  *
