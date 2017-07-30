@@ -1,5 +1,10 @@
 # Express Boilerplate Changelog
 
+## v0.3.2 (30 July 2017)
+
+* Deduplicated REST API and incoming data sanitisation code #450
+* Added support for content-type negotiation for API error respnses #449
+
 ## v0.3.1 (30 July 2017)
 
 * Added sanity tests for static asset serving. #445
