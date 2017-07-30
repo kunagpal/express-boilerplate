@@ -18,7 +18,12 @@ fs.readdirSync('database').forEach(function (modelName) {
 		lCase = _.toLower(modelName),
 		plural = utils.pluralize(lCase),
 		multiUpdate = _.get(model, 'config.rest.multiUpdate'),
-		multiDelete = _.get(model, 'config.rest.multiDelete');
+		multiDelete = _.get(model, 'config.rest.multiDelete'),
+		onPatchOrDelete = function (req, res, next) {
+			return function (err, result) {
+				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
+			};
+		};
 
 	router
 		.route('/' + plural + '/:id?')
@@ -58,9 +63,7 @@ fs.readdirSync('database').forEach(function (modelName) {
 			req.params.id && (req.query._id = req.params.id);
 
 			// eslint-disable-next-line max-len
-			return model[`update${multiUpdate ? 'Many' : 'One'}`](req.query, { $set: req.body }, function (err, result) {
-				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
-			});
+			return model[`update${multiUpdate ? 'Many' : 'One'}`](req.query, { $set: req.body }, onPatchOrDelete(req, res, next));
 		})
 		// Delete
 		.delete(function (req, res, next) {
@@ -73,9 +76,7 @@ fs.readdirSync('database').forEach(function (modelName) {
 
 			req.params.id && (req.query._id = req.params.id);
 
-			return model[`remove${multiDelete ? 'Many' : 'One'}`](req.query, function (err, result) {
-				return err ? next(err) : res.json({ [req.query._id ? lCase : plural]: result });
-			});
+			return model[`remove${multiDelete ? 'Many' : 'One'}`](req.query, onPatchOrDelete(req, res, next));
 		});
 });
 

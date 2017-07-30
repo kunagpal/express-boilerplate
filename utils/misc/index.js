@@ -47,7 +47,12 @@ exports.makeModel = function (modelName, db) {
 		config = model && model.config,
 		autoEditedAt = config && config.autoEditedAt,
 		autoCreatedAt = config && config.autoCreatedAt,
-		collection = db.collection(_.toLower(modelName));
+		collection = db.collection(_.toLower(modelName)),
+		sanitise = function (datum) {
+			return _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
+				createdAt: new Date().toISOString()
+			}).value();
+		};
 
 	Object.freeze(config);
 	Object.freeze(config && config.rest);
@@ -72,11 +77,7 @@ exports.makeModel = function (modelName, db) {
 		 * @returns {Promise|*} A promise that can be used to resolve further tasks.
 		 */
 		insertOne: function (datum, callback) {
-			var obj = _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
-				createdAt: new Date().toISOString()
-			}).value();
-
-			return collection.insertOne(obj, callback);
+			return collection.insertOne(sanitise(datum), callback);
 		},
 
 		/**
@@ -88,11 +89,7 @@ exports.makeModel = function (modelName, db) {
 		 */
 		insertMany: function (data, callback) {
 			return collection
-				.insertMany(_.map(data, function (datum) {
-					return _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
-						createdAt: new Date().toISOString()
-					}).value();
-				}), callback);
+				.insertMany(_.map(data, sanitise), callback);
 		},
 
 		/**
