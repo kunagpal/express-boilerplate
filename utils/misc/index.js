@@ -5,7 +5,30 @@
 var _ = require('lodash'),
 
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
-		'SENTRY_DSN', 'MONGO_URI', 'PORT', 'NODE_ENV'];
+		'SENTRY_DSN', 'MONGO_URI', 'PORT', 'NODE_ENV'],
+
+	/**
+	 * Generates an error handler for the provided type.
+	 *
+	 * @param {String} type - The type of the error, assigned to the name property of the err instance.
+	 * @returns {Function} - A function that returns an error for the specified message and status, under the type.
+	 */
+	error = function (type) {
+		return function (message, status) {
+			var stack,
+				err = new Error(message);
+
+			err.name = type;
+			status && (err.status = status);
+
+			stack = err.stack.split('\n');
+			stack.splice(1, 1); // remove the element at index 1
+
+			err.stack = stack.join('\n');
+
+			return err;
+		};
+	};
 
 /**
  * Returns the pluralized equivalent of the provided string.
@@ -48,9 +71,14 @@ exports.makeModel = function (modelName, db) {
 		autoEditedAt = config && config.autoEditedAt,
 		autoCreatedAt = config && config.autoCreatedAt,
 		collection = db.collection(_.toLower(modelName)),
-		sanitise = function (datum) {
+		sanitiseInsert = function (datum) {
 			return _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
 				createdAt: new Date().toISOString()
+			}).value();
+		},
+		sanitiseUpdate = function (datum) {
+			return _(datum && datum.$set).pick(attributes).merge(autoEditedAt && {
+				editedAt: new Date().toISOString()
 			}).value();
 		};
 
@@ -77,7 +105,7 @@ exports.makeModel = function (modelName, db) {
 		 * @returns {Promise|*} A promise that can be used to resolve further tasks.
 		 */
 		insertOne: function (datum, callback) {
-			return collection.insertOne(sanitise(datum), callback);
+			return collection.insertOne(sanitiseInsert(datum), callback);
 		},
 
 		/**
@@ -89,7 +117,7 @@ exports.makeModel = function (modelName, db) {
 		 */
 		insertMany: function (data, callback) {
 			return collection
-				.insertMany(_.map(data, sanitise), callback);
+				.insertMany(_.map(data, sanitiseInsert), callback);
 		},
 
 		/**
@@ -105,9 +133,7 @@ exports.makeModel = function (modelName, db) {
 		 * @returns {Promise|*} - The promise instance for further task chaining.
 		 */
 		updateOne: function (filter, datum, options, callback) {
-			_.set(datum, '$set', _(datum && datum.$set).pick(attributes).merge(autoEditedAt && {
-				editedAt: new Date().toISOString()
-			}).value());
+			_.set(datum, '$set', sanitiseUpdate(datum));
 
 			return collection.updateOne(filter, datum, options, callback);
 		},
@@ -125,11 +151,13 @@ exports.makeModel = function (modelName, db) {
 		 * @returns {Promise|*} - The promise instance for further task chaining.
 		 */
 		updateMany: function (filter, data, options, callback) {
-			_.set(data, '$set', _(data && data.$set).pick(attributes).merge(autoEditedAt && {
-				editedAt: new Date().toISOString()
-			}).value());
+			_.set(data, '$set', sanitiseUpdate(data));
 
 			return collection.updateMany.apply(filter, data, options, callback);
 		}
 	}));
 };
+
+exports.error = _.transform(['missingId'], function (result, type) {
+	result[type] = error(type); // eslint-disable-line security/detect-object-injection
+}, {});
