@@ -48,6 +48,15 @@ MONGO=mongodb://127.0.0.1:27017/testDb
 * Run the server locally at port 3000 or "PORT" in process.env with `npm start`
 * View the website at `localhost:3000` within your browser
 
+Utility scripts:
+
+* `npm run archive`: Creates a zip archive of the form `<commit>-<branch>.zip` in `out/archive`.
+* `npm run check`: Checks for dependency updates using `npm-check`.
+* `npm run console`: Starts an interactive console with the app and it's globals pre-loaded.
+* `npm run make-docs`: Generates a project documentation manifest at `out/docs/`.
+* `npm run make-wiki`: Generates a compiled project wiki at `out/wiki/REFERENCE.md`.
+* `npm run pack`: Minifies static assets in `public/*`.
+
 External Requirements:
 
 * A MongoDB instance running locally or valid `MONGO` string in process.env
