@@ -4,7 +4,6 @@
 
 /* globals it */
 var fs = require('fs'),
-	path = require('path'),
 	assert = require('assert'),
 
 	_ = require('lodash'),
@@ -39,25 +38,6 @@ exports.ymlToJson = function (yamlPath) {
 	catch (err) {} // eslint-disable-line no-empty
 
 	return json;
-};
-
-/**
- * Accepts a single level directory and clears it.
- *
- * @param {String} dir - An absolute path to the single level directory to be cleared.
- */
-exports.clearDir = function (dir) {
-	try {
-		fs // eslint-disable-line no-sync
-			.readdirSync(dir) // public/min is meant to be a flattened representation of minified assets
-			.forEach(function (file) {
-				try {
-					fs.unlinkSync(path.join(dir, file)); // eslint-disable-line no-sync
-				}
-				catch (e) {} // eslint-disable-line no-empty
-			});
-	} catch (e) {} // eslint-disable-line no-empty, brace-style, no-sync
-	try { fs.rmdirSync(dir); } catch (e) {} // eslint-disable-line no-empty, brace-style, no-sync
 };
 
 /**

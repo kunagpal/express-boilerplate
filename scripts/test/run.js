@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 /* eslint-disable global-require, no-process-env */
-var fs = require('fs'),
-	path = require('path'),
+var path = require('path'),
 
 	NYC = require('nyc'),
 	_ = require('lodash'),
@@ -98,28 +97,19 @@ module.exports = function (testDir, done) {
 			mocha.run(next);
 		}
 	], function (err) {
-		if (!isUnit) { return done(err); }
-
-		try {
-			fs.mkdirSync(COVERAGE_DIR); // eslint-disable-line no-sync
-		}
-		catch (e) {} // eslint-disable-line no-empty
-
-		try {
-			nyc.writeCoverageFile();
-			nyc.report();
-			nyc.checkCoverage({
-				lines: 60,
-				branches: 50,
-				functions: 30,
-				statements: 60
+		if (isUnit) {
+			nyc.reset(); // resets all created code coverage manifests
+			nyc.writeCoverageFile(); // writes fresh coverage files for the current run
+			nyc.report(); // Writes code coverage information to the console.
+			nyc.checkCoverage({ // Enforces code coverage thresholds
+				lines: 85,
+				branches: 65,
+				functions: 75,
+				statements: 80
 			});
 		}
-		catch (e) {
-			console.error(e);
-		}
 
-		return done(err); // Useful when there are tests to be run after unit tests
+		return done(err);
 	});
 };
 

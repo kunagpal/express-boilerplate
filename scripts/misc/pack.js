@@ -61,9 +61,10 @@ module.exports = function (next) {
 				if (err) { return done(err); }
 
 				return async.each(scripts, function (script, callback) {
-					// eslint-disable-next-line max-len
-					fs.writeFile(path.join(TARGET_DIR, script), uglifyJs.minify(path.join(SCRIPTS, script), JS_OPTIONS).code,
-						callback);
+					var target = path.join(TARGET_DIR, script),
+						content = uglifyJs.minify(path.join(SCRIPTS, script), JS_OPTIONS).code;
+
+					return script.endsWith('.js') ? fs.writeFile(target, content, callback) : callback();
 				}, done);
 			});
 		},
@@ -78,8 +79,10 @@ module.exports = function (next) {
 				if (err) { return done(err); }
 
 				return async.each(styles, function (style, callback) {
-					// eslint-disable-next-line max-len
-					fs.writeFile(path.join(TARGET_DIR, style), cleanCss.minify([path.join(STYLES, style)]).styles, callback);
+					var target = path.join(TARGET_DIR, style),
+						content = cleanCss.minify([path.join(STYLES, style)]).styles;
+
+					return style.endsWith('.css') ? fs.writeFile(target, content, callback) : callback();
 				}, done);
 			});
 		}

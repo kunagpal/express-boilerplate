@@ -1,6 +1,15 @@
 # Express Boilerplate Changelog
 
+## v0.3.1 (30 July 2017)
+
+* Added sanity tests for static asset serving. #445
+* Renamed `prestart` script to `pack`.
+* Ensured that test app loads also pack static assets.
+* Updated dependencies.
+* Ensured that the code coverage manifest directory is cleared before code coverage generation. #448
+
 ## v0.3.0 (29 July 2017)
+
 * Ignored the test suite for CodeClimate duplication checks #441
 * Cleaned up and compacted structure tests #441
 * Added support for `X-Api-Sort`, `X-Api-Skip`, and `X-Api-Limit` headers to the REST API #440
