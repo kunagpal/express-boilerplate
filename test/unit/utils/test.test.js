@@ -10,4 +10,10 @@ describe('Test helpers', function () {
 			assert.notDeepStrictEqual(testUtils.ymlToJson('.travis.yml'), {}, 'YmlToJson might be faulty');
 		});
 	});
+
+	describe('db', function () {
+		it('should bail out for invalid count values', function (done) {
+			testUtils.db.user('a', done);
+		});
+	});
 });
