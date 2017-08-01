@@ -102,9 +102,9 @@ module.exports = function (testDir, done) {
 			nyc.writeCoverageFile(); // writes fresh coverage files for the current run
 			nyc.report(); // Writes code coverage information to the console.
 			nyc.checkCoverage({ // Enforces code coverage thresholds
-				statements: 90,
-				branches: 70,
-				functions: 90,
+				statements: 95,
+				branches: 75,
+				functions: 95,
 				lines: 95
 			});
 		}
