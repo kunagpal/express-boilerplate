@@ -279,6 +279,14 @@ describe('User', function () {
 				.end(done);
 		});
 
+		it('should return a 406 response for an unsupported response format', function (done) {
+			test
+				.del('/api/users')
+				.set('Accept', 'image/png')
+				.expect(406, 'Not Acceptable')
+				.end(done);
+		});
+
 		it('should DELETE with an id correctly', function (done) {
 			test
 				.del('/api/users/someone@example.com')

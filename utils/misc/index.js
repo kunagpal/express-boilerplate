@@ -7,6 +7,8 @@ var _ = require('lodash'),
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
 		'SENTRY_DSN', 'MONGO_URI', 'PORT', 'NODE_ENV'],
 
+	updateFields = ['$set', '$unset', '$rename'],
+
 	/**
 	 * Generates an error handler for the provided type.
 	 *
@@ -71,15 +73,30 @@ exports.makeModel = function (modelName, db) {
 		autoEditedAt = config && config.autoEditedAt,
 		autoCreatedAt = config && config.autoCreatedAt,
 		collection = db.collection(_.toLower(modelName)),
+		prune = function (datum, field) {
+			// eslint-disable-next-line security/detect-object-injection
+			return _(datum && datum[field] || datum).pick(attributes).merge(field === '$set' && autoEditedAt && {
+				editedAt: new Date().toISOString()
+			}).value();
+		},
 		sanitiseInsert = function (datum) {
 			return _(datum).pick(attributes).defaults(defaults).merge(autoCreatedAt && {
 				createdAt: new Date().toISOString()
 			}).value();
 		},
 		sanitiseUpdate = function (datum) {
-			return _(datum && datum.$set).pick(attributes).merge(autoEditedAt && {
-				editedAt: new Date().toISOString()
-			}).value();
+			var result = _.pick(datum, updateFields);
+
+			if (_.isEmpty(result)) { return { $set: prune(datum) }; }
+
+			_.forEach(updateFields, function (field) {
+				var pruned = prune(result, field);
+
+				// eslint-disable-next-line security/detect-object-injection
+				!_.isEmpty(pruned) && (result[field] = pruned);
+			});
+
+			return result;
 		};
 
 	Object.freeze(config);
@@ -133,9 +150,10 @@ exports.makeModel = function (modelName, db) {
 		 * @returns {Promise|*} - The promise instance for further task chaining.
 		 */
 		updateOne: function (filter, datum, options, callback) {
-			_.set(datum, '$set', sanitiseUpdate(datum));
+			_.isFunction(options) && (callback = options) && (options = {});
+			_.isFunction(datum) && (callback = datum) && (options = {}) && (datum = filter) && (filter = {});
 
-			return collection.updateOne(filter, datum, options, callback);
+			return collection.updateOne(filter, sanitiseUpdate(datum), options, callback);
 		},
 
 		/**
@@ -151,9 +169,10 @@ exports.makeModel = function (modelName, db) {
 		 * @returns {Promise|*} - The promise instance for further task chaining.
 		 */
 		updateMany: function (filter, data, options, callback) {
-			_.set(data, '$set', sanitiseUpdate(data));
+			_.isFunction(options) && (callback = options) && (options = {});
+			_.isFunction(data) && (callback = data) && (options = {}) && (data = filter) && (filter = {});
 
-			return collection.updateMany.apply(filter, data, options, callback);
+			return collection.updateMany(filter, sanitiseUpdate(data), options, callback);
 		}
 	}));
 };

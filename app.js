@@ -86,7 +86,7 @@ module.exports = function (done) {
 		{ w: 1 }, function (mongoError, db) {
 			if (mongoError) { throw mongoError; }
 
-			(env === 'test') && _.set(global, 'testUtils.db', {
+			(env === 'test') && _.assign(global.testUtils.db, {
 				close: db.close.bind(db),
 				purge: function (next) {
 					db.dropDatabase(next); // bind has not been used here for test performance reasons
