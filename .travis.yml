@@ -37,6 +37,7 @@ services:
 cache:
   directories:
     - node_modules
+    - $HOME/Library/Caches/Homebrew
 
 after_script:
   if [[ $TRAVIS_NODE_VERSION=~'^v?8(\.\d+){2}?$' ]]; then
