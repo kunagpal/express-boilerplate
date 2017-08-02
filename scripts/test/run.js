@@ -36,9 +36,9 @@ module.exports = function (testDir, done) {
 	process.env.MONGO_URI = `mongodb://127.0.0.1/${name}-test`;
 
 	var nyc,
-		isUnit = testDir === UNIT;
+		cover = (testDir === UNIT) && !process.env.NO_COV;
 
-	isUnit && (nyc = new NYC({
+	cover && (nyc = new NYC({
 		reporter: ['text', 'lcov'],
 		reportDir: COVERAGE_DIR,
 		tempDirectory: COVERAGE_DIR
@@ -97,7 +97,7 @@ module.exports = function (testDir, done) {
 			mocha.run(next);
 		}
 	], function (err) {
-		if (isUnit) {
+		if (cover) {
 			nyc.reset(); // resets all created code coverage manifests
 			nyc.writeCoverageFile(); // writes fresh coverage files for the current run
 			nyc.report(); // Writes code coverage information to the console.
@@ -107,6 +107,8 @@ module.exports = function (testDir, done) {
 				functions: 95,
 				lines: 95
 			});
+
+			process.exitCode && process.exit(process.exitCode);
 		}
 
 		return done(err);
