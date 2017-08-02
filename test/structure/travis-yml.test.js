@@ -46,7 +46,8 @@ describe(TRAVIS_PATH, function () {
 	});
 
 	it('should cache the node_modules', function () {
-		assert.deepStrictEqual(travisYAML.cache.directories, ['node_modules'], 'Caching may be invalid');
+		assert.deepStrictEqual(travisYAML.cache.directories, ['node_modules', '$HOME/Library/Caches/Homebrew'],
+			'Caching may be invalid');
 	});
 
 	it('should correctly publish code coverge to CodeClimate', function () {
