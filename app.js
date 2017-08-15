@@ -54,9 +54,9 @@ app.use('/api', cors({ origin: false }), function (req, res, next) {
 	next();
 });
 
+(env !== 'test') && app.use(logger('dev'));
 app.use('/static', static(path.resolve('public/min')));
 
-(env !== 'test') && app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
