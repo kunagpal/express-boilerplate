@@ -14,8 +14,7 @@ var path = require('path'),
 	COVERAGE_DIR = '.coverage',
 	TEST_FILE_PATTERN = '.test.js',
 
-	root = path.join(__dirname, '..', '..'),
-	name = process.env.npm_package_name || require(path.join(root, 'package')).name;
+	root = path.join(__dirname, '..', '..');
 
 /**
  * Runs tests from a given directory.
@@ -33,7 +32,6 @@ module.exports = function (testDir, done) {
 
 	process.env.NODE_ENV = 'test';
 	process.env.SESSION_SECRET = 'randomSecretString';
-	process.env.MONGO_URI = `mongodb://127.0.0.1/${name}-test`;
 
 	var nyc,
 		cover = (testDir === UNIT) && !process.env.NO_COV;
