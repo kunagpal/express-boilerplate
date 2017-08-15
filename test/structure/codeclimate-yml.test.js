@@ -35,7 +35,7 @@ describe(CODECLIMATE_PATH, function () {
 
 	it('should have a valid ratings structure', function () {
 		assert.deepStrictEqual(codeClimateYAML.ratings.paths, ['**.css', '**.js', '**.md', 'bin/**/*'],
-            'Missing / invalid rating paths');
+			'Missing / invalid rating paths');
 	});
 
 	it('should have a field ratings, as an array', function () {
