@@ -5,7 +5,7 @@
 var _ = require('lodash'),
 
 	REQUIRED_VARS = ['GOOGLE_ID', 'GOOGLE_KEY', 'FACEBOOK_ID', 'FACEBOOK_KEY', 'COOKIE_SECRET', 'SESSION_SECRET',
-		'SENTRY_DSN', 'MONGO_URI', 'PORT', 'NODE_ENV'],
+		'SENTRY_DSN', 'PORT', 'NODE_ENV'],
 
 	updateFields = ['$set', '$unset', '$rename'],
 

@@ -10,12 +10,14 @@ global.utils = require('./utils/misc');
 var fs = require('fs'),
 
 	cors = require('cors'),
+	async = require('async'),
 	csurf = require('csurf'),
 	logger = require('morgan'),
 	helmet = require('helmet'),
 	express = require('express'),
 	load = require('require-all'),
 	passport = require('passport'),
+	static = require('serve-static'),
 	bodyParser = require('body-parser'),
 	compression = require('compression'),
 	cookieParser = require('cookie-parser'),
@@ -52,9 +54,9 @@ app.use('/api', cors({ origin: false }), function (req, res, next) {
 	next();
 });
 
-app.use('/static', express.static(path.resolve('public/min')));
-
 (env !== 'test') && app.use(logger('dev'));
+app.use('/static', static(path.resolve('public/min')));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -102,30 +104,34 @@ module.exports = function (done) {
 				});
 			});
 
-			var routes = load(path.resolve('routes')),
+			var server,
+				routes = load(path.resolve('routes')),
 
 				/**
-				 * Handles error and SIGINT events.
+				 * Handles error and SIGINT events. No errors should be thrown here, just appropriate use of
+				 * process.exit.
 				 *
 				 * @param {?Error} err - An error object, optionally passed on from the error event.
 				 */
 				handle = function (err) {
-					// No throwing errors here, as this function is used to handle uncaught exceptions
-					db && db.close && db.close(function (error) {
-						// DB close errors aren't exactly fatal here, but log them anyway
-						error && console.error(error.message);
+					async.series([
+						function (next) {
+							server.close(next);
+						},
+						async.apply(db.close.bind(db), true)
+					], function (handleError) {
+						// and error from server/db close is non fatal in this context, simply log it
+						handleError && console.error(handleError);
 
-						if (err) {
-							console.error(err.message);
-							process.exit(1);
-						}
-
-						process.exit(0);
+						// if this handle was invoked for a fatal error, like an uncaughtException instead, log the
+						// error as usual, but reactively exit instead.
+						err && console.error(err) && (process.exitCode = 1);
+						process.exit();
 					});
 				};
 
-			app.on('error', handle);
 			process.on('SIGINT', handle);
+			process.on('SIGTERM', handle);
 			process.on('uncaughtException', handle);
 
 			app.use('/api', routes.api) && delete routes.api;
@@ -178,7 +184,8 @@ module.exports = function (done) {
 
 			pack(function (err) {
 				if (err) { throw err; } // An error in static asset compression is usually fatal, abort app load
-				app.listen(port, done);
+				server = app.listen(port, done);
+				server.on('error', handle);
 			});
 		});
 };
