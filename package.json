@@ -60,7 +60,7 @@
     "uglify-js": "3.1.1"
   },
   "devDependencies": {
-    "chalk": "2.1.0",
+    "chalk": "2.2.0",
     "csslint": "1.0.5",
     "dotenv": "4.0.0",
     "editorconfig": "0.14.1",
