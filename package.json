@@ -57,7 +57,7 @@
     "raven": "2.1.2",
     "require-all": "2.1.0",
     "serve-static": "1.12.4",
-    "uglify-js": "3.1.1"
+    "uglify-js": "3.3.12"
   },
   "devDependencies": {
     "chalk": "2.1.0",
