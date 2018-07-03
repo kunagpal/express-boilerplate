@@ -55,7 +55,7 @@
     "passport-google-oauth2": "0.1.6",
     "pm2": "2.7.0",
     "raven": "2.1.2",
-    "require-all": "2.1.0",
+    "require-all": "3.0.0",
     "serve-static": "1.12.4",
     "uglify-js": "3.1.1"
   },
