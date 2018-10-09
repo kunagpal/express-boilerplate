@@ -62,7 +62,7 @@
   "devDependencies": {
     "chalk": "2.1.0",
     "csslint": "1.0.5",
-    "dotenv": "4.0.0",
+    "dotenv": "6.1.0",
     "editorconfig": "0.14.1",
     "eslint": "3.19.0",
     "eslint-plugin-jsdoc": "3.1.2",
