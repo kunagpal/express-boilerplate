@@ -85,7 +85,7 @@
     "supertest": "3.0.0"
   },
   "optionalDependencies": {
-    "bcrypt": "1.0.3"
+    "bcrypt": "3.0.3"
   },
   "repository": {
     "type": "git",
