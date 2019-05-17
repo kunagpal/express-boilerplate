@@ -43,7 +43,7 @@
     "debug": "3.0.1",
     "ejs": "2.5.7",
     "emailjs": "1.0.12",
-    "express": "4.15.3",
+    "express": "4.17.0",
     "express-session": "1.15.5",
     "express-status-monitor": "1.0.0",
     "helmet": "3.8.1",
