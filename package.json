@@ -45,7 +45,7 @@
     "emailjs": "1.0.12",
     "express": "4.15.3",
     "express-session": "1.15.5",
-    "express-status-monitor": "1.0.0",
+    "express-status-monitor": "1.2.7",
     "helmet": "3.8.1",
     "lodash": "4.17.4",
     "mongodb": "2.2.31",
